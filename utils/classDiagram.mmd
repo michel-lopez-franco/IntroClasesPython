@@ -1,0 +1,19 @@
+classDiagram
+    class Animal {
+        +nombre: string
+        +edad: int
+        +hacer_sonido()
+    }
+    
+    class Perro {
+        +raza: string
+        +traer_objeto()
+    }
+    
+    class Gato {
+        +color: string
+        +arañar()
+    }
+    
+    Animal <|-- Perro
+    Animal <|-- Gato
