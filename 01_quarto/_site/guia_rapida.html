@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Guía rápida: Quarto + Python – Quarto + Python</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-f9e783b47c4e0957fa1f06c54ca0aa26.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No se han encontrado resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar docked quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Saltar al contenido principal</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" aria-label="Barra de herramientas">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./guia_rapida.html">Guía rápida: Quarto + Python</a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Sitio web">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Quarto + Python</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quarto + Python</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./guia_rapida.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Guía rápida: Quarto + Python</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Ejemplos</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ejemplos/01_hola_quarto.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">01 · Hola Quarto</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ejemplos/02_opciones_celdas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">02 · Opciones de celdas</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ejemplos/03_graficas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">03 · Gráficas</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ejemplos/04_tablas_ecuaciones.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">04 · Tablas, ecuaciones y callouts</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ejemplos/05_clases_python.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">05 · Documentar clases con Quarto</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ejemplos/06_presentacion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">06 · Presentación con Quarto</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ejemplos/07_animaciones_plotly.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">07 · Animaciones con Plotly</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ejemplos/08_html_js.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">08 · HTML y JavaScript en Quarto</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ejemplos/09_convertir_ipynb_py.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">09 · De .ipynb y .py a Quarto</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">En esta página</h2>
+   
+  <ul class="collapse">
+  <li><a href="#qué-es-quarto" id="toc-qué-es-quarto" class="nav-link active" data-scroll-target="#qué-es-quarto"><span class="header-section-number">1</span> ¿Qué es Quarto?</a></li>
+  <li><a href="#instalación-y-verificación" id="toc-instalación-y-verificación" class="nav-link" data-scroll-target="#instalación-y-verificación"><span class="header-section-number">2</span> Instalación y verificación</a></li>
+  <li><a href="#anatomía-de-un-archivo-.qmd" id="toc-anatomía-de-un-archivo-.qmd" class="nav-link" data-scroll-target="#anatomía-de-un-archivo-.qmd"><span class="header-section-number">3</span> Anatomía de un archivo <code>.qmd</code></a></li>
+  <li><a href="#comandos-esenciales" id="toc-comandos-esenciales" class="nav-link" data-scroll-target="#comandos-esenciales"><span class="header-section-number">4</span> Comandos esenciales</a></li>
+  <li><a href="#render-vs-preview" id="toc-render-vs-preview" class="nav-link" data-scroll-target="#render-vs-preview"><span class="header-section-number">5</span> <code>render</code> vs <code>preview</code></a></li>
+  <li><a href="#sec-proyecto" id="toc-sec-proyecto" class="nav-link" data-scroll-target="#sec-proyecto"><span class="header-section-number">6</span> Renderizar varios archivos a la vez (proyectos)</a></li>
+  <li><a href="#markdown-en-1-minuto" id="toc-markdown-en-1-minuto" class="nav-link" data-scroll-target="#markdown-en-1-minuto"><span class="header-section-number">7</span> Markdown en 1 minuto</a></li>
+  <li><a href="#opciones-de-celda" id="toc-opciones-de-celda" class="nav-link" data-scroll-target="#opciones-de-celda"><span class="header-section-number">8</span> Opciones de celda (<code>#|</code>)</a></li>
+  <li><a href="#opciones-útiles-del-yaml" id="toc-opciones-útiles-del-yaml" class="nav-link" data-scroll-target="#opciones-útiles-del-yaml"><span class="header-section-number">9</span> Opciones útiles del YAML</a></li>
+  <li><a href="#referencias-cruzadas" id="toc-referencias-cruzadas" class="nav-link" data-scroll-target="#referencias-cruzadas"><span class="header-section-number">10</span> Referencias cruzadas</a></li>
+  <li><a href="#callouts-cajas-de-aviso" id="toc-callouts-cajas-de-aviso" class="nav-link" data-scroll-target="#callouts-cajas-de-aviso"><span class="header-section-number">11</span> Callouts (cajas de aviso)</a></li>
+  <li><a href="#ejemplos-de-esta-carpeta" id="toc-ejemplos-de-esta-carpeta" class="nav-link" data-scroll-target="#ejemplos-de-esta-carpeta"><span class="header-section-number">12</span> Ejemplos de esta carpeta</a></li>
+  <li><a href="#problemas-comunes" id="toc-problemas-comunes" class="nav-link" data-scroll-target="#problemas-comunes"><span class="header-section-number">13</span> Problemas comunes</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Guía rápida: Quarto + Python</h1>
+<p class="subtitle lead">Propedéutico — Introducción a Clases en Python</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="qué-es-quarto" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="qué-es-quarto"><span class="header-section-number">1</span> ¿Qué es Quarto?</h2>
+<p><a href="https://quarto.org">Quarto</a> es un sistema de publicación científica y técnica. Permite escribir <strong>texto (Markdown) + código (Python)</strong> en un mismo archivo <code>.qmd</code> y convertirlo en:</p>
+<ul>
+<li>Páginas web (HTML)</li>
+<li>PDF (vía LaTeX o Typst)</li>
+<li>Documentos Word (<code>.docx</code>)</li>
+<li>Presentaciones (Reveal.js, PowerPoint)</li>
+<li>Sitios web, libros y blogs</li>
+</ul>
+<p>El código se ejecuta al renderizar y sus resultados (texto, tablas, gráficas) quedan incrustados en el documento final.</p>
+</section>
+<section id="instalación-y-verificación" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="instalación-y-verificación"><span class="header-section-number">2</span> Instalación y verificación</h2>
+<ol type="1">
+<li>Descargar Quarto desde <a href="https://quarto.org/docs/get-started/" class="uri">https://quarto.org/docs/get-started/</a> e instalarlo.</li>
+<li>Verificar en la terminal:</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> <span class="at">--version</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> check          <span class="co"># revisa Python, Jupyter, LaTeX, etc.</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<ol start="3" type="1">
+<li>Quarto necesita <strong>Jupyter</strong> en el entorno de Python. En este proyecto usamos <code>uv</code>:</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> sync               <span class="co"># instala dependencias de pyproject.toml (incluye jupyter)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> add jupyter        <span class="co"># sólo si no estuviera instalado</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Extensión para el editor
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>En VS Code / Positron instala la extensión <strong>Quarto</strong>. Da resaltado de sintaxis, autocompletado y el botón <strong>Preview</strong>.</p>
+</div>
+</div>
+</section>
+<section id="anatomía-de-un-archivo-.qmd" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="anatomía-de-un-archivo-.qmd"><span class="header-section-number">3</span> Anatomía de un archivo <code>.qmd</code></h2>
+<p>Un archivo Quarto tiene tres partes:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Mi primer documento"      # (1) encabezado YAML</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "Nombre"</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span><span class="co"> html</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="an">jupyter:</span><span class="co"> python3</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">## Introducción                    &lt;!-- (2) texto en Markdown --&gt;</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>Este es un párrafo con **negritas** y *cursivas*.</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}                        &lt;!-- (3) celda de código --&gt;</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">3</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(x)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<ol type="1">
+<li><strong>Encabezado YAML</strong> (entre <code>---</code>): metadatos y opciones del documento.</li>
+<li><strong>Texto en Markdown</strong>: títulos, listas, enlaces, imágenes, ecuaciones.</li>
+<li><strong>Celdas de código</strong> delimitadas con <code>```{python}</code>.</li>
+</ol>
+</section>
+<section id="comandos-esenciales" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="comandos-esenciales"><span class="header-section-number">4</span> Comandos esenciales</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Comando</th>
+<th>¿Qué hace?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>quarto render archivo.qmd</code></td>
+<td>Genera la salida (HTML por defecto)</td>
+</tr>
+<tr class="even">
+<td><code>quarto render archivo.qmd --to pdf</code></td>
+<td>Genera PDF</td>
+</tr>
+<tr class="odd">
+<td><code>quarto render archivo.qmd --to docx</code></td>
+<td>Genera Word</td>
+</tr>
+<tr class="even">
+<td><code>quarto preview archivo.qmd</code></td>
+<td>Vista previa en vivo (se recarga al guardar)</td>
+</tr>
+<tr class="odd">
+<td><code>quarto convert cuaderno.ipynb</code></td>
+<td>Convierte notebook → <code>.qmd</code></td>
+</tr>
+<tr class="even">
+<td><code>quarto convert archivo.qmd</code></td>
+<td>Convierte <code>.qmd</code> → notebook</td>
+</tr>
+<tr class="odd">
+<td><code>quarto check</code></td>
+<td>Diagnostica la instalación</td>
+</tr>
+</tbody>
+</table>
+<p>Con <code>uv</code>, para asegurar que use el Python del proyecto:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run quarto render 01_quarto/guia_rapida.qmd</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run quarto preview 01_quarto/ejemplos/01_hola_quarto.qmd</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Nota
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Quarto también renderiza directamente archivos <code>.ipynb</code>: <code>quarto render src/01_Introduccion_Clases_Objetos.ipynb</code></p>
+</div>
+</div>
+</section>
+<section id="render-vs-preview" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="render-vs-preview"><span class="header-section-number">5</span> <code>render</code> vs <code>preview</code></h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><code>quarto render</code></th>
+<th><code>quarto preview</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>¿Qué hace?</strong></td>
+<td>Ejecuta el código y <strong>genera los archivos</strong> de salida (HTML, PDF, …) una vez</td>
+<td>Renderiza, <strong>abre el navegador</strong> y se queda vigilando los cambios</td>
+</tr>
+<tr class="even">
+<td><strong>¿Termina?</strong></td>
+<td>Sí, al acabar regresa a la terminal</td>
+<td>No, se queda corriendo hasta que presionas <code>Ctrl + C</code></td>
+</tr>
+<tr class="odd">
+<td><strong>Al guardar cambios</strong></td>
+<td>Nada; hay que volver a ejecutarlo</td>
+<td>Vuelve a renderizar y <strong>recarga la página sola</strong></td>
+</tr>
+<tr class="even">
+<td><strong>Archivos generados</strong></td>
+<td>Los deja listos para entregar o publicar</td>
+<td>Sirven para ver el resultado mientras escribes; antes de entregar, haz un <code>render</code> final</td>
+</tr>
+<tr class="odd">
+<td><strong>¿Cuándo usarlo?</strong></td>
+<td>Para producir la <strong>versión final</strong></td>
+<td><strong>Mientras escribes</strong> o editas</td>
+</tr>
+</tbody>
+</table>
+<p>Flujo de trabajo típico:</p>
+<ol type="1">
+<li><code>quarto preview archivo.qmd</code> → editas, guardas y ves el cambio al instante.</li>
+<li><code>Ctrl + C</code> para detener la vista previa.</li>
+<li><code>quarto render archivo.qmd</code> → generas la versión final.</li>
+</ol>
+</section>
+<section id="sec-proyecto" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="sec-proyecto"><span class="header-section-number">6</span> Renderizar varios archivos a la vez (proyectos)</h2>
+<p>No hace falta ir archivo por archivo. Si una carpeta contiene un archivo <strong><code>_quarto.yml</code></strong>, Quarto la trata como un <strong>proyecto</strong> y puede procesar todo junto. Esta carpeta <code>01_quarto/</code> ya es un proyecto de tipo <em>website</em>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 01_quarto/_quarto.yml</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> website</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">output-dir</span><span class="kw">:</span><span class="at"> _site</span><span class="co">        # todos los HTML terminan aquí</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">render</span><span class="kw">:</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> index.qmd</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> guia_rapida.qmd</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> ejemplos/*.qmd</span><span class="co">       # todos los ejemplos con un patrón</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="fu">website</span><span class="kw">:</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">sidebar</span><span class="kw">:</span><span class="co">                 # menú lateral para navegar entre páginas</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">contents</span><span class="kw">:</span><span class="at"> ...</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Comandos (desde la raíz del repositorio):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run quarto render 01_quarto     <span class="co"># renderiza </span><span class="al">TODO</span><span class="co"> el proyecto → 01_quarto/_site/</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run quarto preview 01_quarto    <span class="co"># abre el sitio completo con menú y recarga en vivo</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>Con <code>preview</code> sobre el proyecto, al guardar un archivo <strong>sólo se vuelve a renderizar ese archivo</strong>, no todo.</li>
+<li>Las opciones del <code>_quarto.yml</code> (tema, idioma, <code>toc</code>) se aplican a todas las páginas; cada <code>.qmd</code> puede sobrescribirlas en su propio YAML.</li>
+<li>Renderizar un solo archivo sigue funcionando (<code>quarto render 01_quarto/ejemplos/03_graficas.qmd</code>); su salida también va a <code>_site/</code>.</li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Tipos de proyecto
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>default</code> (documentos sueltos), <code>website</code> (sitio con navegación), <code>book</code> (libro con capítulos) y <code>manuscript</code> (artículo científico). Se crean con <code>quarto create project</code>.</p>
+</div>
+</div>
+</section>
+<section id="markdown-en-1-minuto" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="markdown-en-1-minuto"><span class="header-section-number">7</span> Markdown en 1 minuto</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Escribes</th>
+<th>Obtienes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code># Título</code>, <code>## Subtítulo</code></td>
+<td>Encabezados</td>
+</tr>
+<tr class="even">
+<td><code>**negrita**</code>, <code>*cursiva*</code></td>
+<td><strong>negrita</strong>, <em>cursiva</em></td>
+</tr>
+<tr class="odd">
+<td><code>`codigo`</code></td>
+<td><code>codigo</code></td>
+</tr>
+<tr class="even">
+<td><code>- elemento</code></td>
+<td>Lista con viñetas</td>
+</tr>
+<tr class="odd">
+<td><code>1. elemento</code></td>
+<td>Lista numerada</td>
+</tr>
+<tr class="even">
+<td><code>[texto](https://url)</code></td>
+<td>Enlace</td>
+</tr>
+<tr class="odd">
+<td><code>![pie](imagen.png)</code></td>
+<td>Imagen</td>
+</tr>
+<tr class="even">
+<td><code>$x^2$</code></td>
+<td>Ecuación en línea: <span class="math inline">\(x^2\)</span></td>
+</tr>
+<tr class="odd">
+<td><code>$$ E = mc^2 $$</code></td>
+<td>Ecuación en bloque</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="opciones-de-celda" class="level2" data-number="8">
+<h2 data-number="8" class="anchored" data-anchor-id="opciones-de-celda"><span class="header-section-number">8</span> Opciones de celda (<code>#|</code>)</h2>
+<p>Las opciones se escriben al inicio de la celda con el prefijo <code>#|</code>:</p>
+<div id="ejemplo-opciones" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>nombres <span class="op">=</span> [<span class="st">"Ana"</span>, <span class="st">"Luis"</span>, <span class="st">"Sofía"</span>]</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> nombres:</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Hola, </span><span class="sc">{</span>n<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Hola, Ana
+Hola, Luis
+Hola, Sofía</code></pre>
+</div>
+</div>
+<p>Opciones más usadas:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Opción</th>
+<th>Valores</th>
+<th>Efecto</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>echo</code></td>
+<td><code>true</code> / <code>false</code></td>
+<td>Mostrar u ocultar el código</td>
+</tr>
+<tr class="even">
+<td><code>eval</code></td>
+<td><code>true</code> / <code>false</code></td>
+<td>Ejecutar o no el código</td>
+</tr>
+<tr class="odd">
+<td><code>output</code></td>
+<td><code>true</code> / <code>false</code> / <code>asis</code></td>
+<td>Mostrar u ocultar la salida</td>
+</tr>
+<tr class="even">
+<td><code>warning</code></td>
+<td><code>true</code> / <code>false</code></td>
+<td>Mostrar advertencias</td>
+</tr>
+<tr class="odd">
+<td><code>error</code></td>
+<td><code>true</code> / <code>false</code></td>
+<td>Continuar aunque haya error</td>
+</tr>
+<tr class="even">
+<td><code>include</code></td>
+<td><code>true</code> / <code>false</code></td>
+<td><code>false</code> = ejecuta pero no muestra nada</td>
+</tr>
+<tr class="odd">
+<td><code>code-fold</code></td>
+<td><code>true</code> / <code>false</code></td>
+<td>Código plegable</td>
+</tr>
+<tr class="even">
+<td><code>label</code></td>
+<td><code>fig-xxx</code>, <code>tbl-xxx</code></td>
+<td>Identificador para referencias cruzadas</td>
+</tr>
+<tr class="odd">
+<td><code>fig-cap</code></td>
+<td>texto</td>
+<td>Pie de figura</td>
+</tr>
+</tbody>
+</table>
+<p>También pueden fijarse <strong>para todo el documento</strong> en el YAML:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">execute</span><span class="kw">:</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">echo</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">warning</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="opciones-útiles-del-yaml" class="level2" data-number="9">
+<h2 data-number="9" class="anchored" data-anchor-id="opciones-útiles-del-yaml"><span class="header-section-number">9</span> Opciones útiles del YAML</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"Título"</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">author</span><span class="kw">:</span><span class="at"> </span><span class="st">"Nombre"</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span><span class="kw">:</span><span class="at"> today</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">lang</span><span class="kw">:</span><span class="at"> es</span><span class="co">                # textos automáticos en español ("Figura", "Tabla"...)</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span><span class="co">           # tabla de contenidos</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">number-sections</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">code-fold</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span><span class="co">     # código plegable</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">theme</span><span class="kw">:</span><span class="at"> cosmo</span><span class="co">        # temas: cosmo, flatly, darkly, journal, ...</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span><span class="at"> default</span><span class="co">          # permite --to pdf</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="fu">jupyter</span><span class="kw">:</span><span class="at"> python3</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="fu">execute</span><span class="kw">:</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">echo</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="referencias-cruzadas" class="level2" data-number="10">
+<h2 data-number="10" class="anchored" data-anchor-id="referencias-cruzadas"><span class="header-section-number">10</span> Referencias cruzadas</h2>
+<p>Etiqueta una figura con <code>#| label: fig-nombre</code> y cítala en el texto con <code>@fig-nombre</code>. Lo mismo para tablas (<code>tbl-</code>), ecuaciones (<code>eq-</code>) y secciones (<code>sec-</code>). Ver el ejemplo <a href="./ejemplos/03_graficas.html"><code>03_graficas.qmd</code></a>.</p>
+</section>
+<section id="callouts-cajas-de-aviso" class="level2" data-number="11">
+<h2 data-number="11" class="anchored" data-anchor-id="callouts-cajas-de-aviso"><span class="header-section-number">11</span> Callouts (cajas de aviso)</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cuidado</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>Texto de la advertencia.</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>:::</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Tipos: <code>callout-note</code>, <code>callout-tip</code>, <code>callout-warning</code>, <code>callout-important</code>, <code>callout-caution</code>.</p>
+</section>
+<section id="ejemplos-de-esta-carpeta" class="level2" data-number="12">
+<h2 data-number="12" class="anchored" data-anchor-id="ejemplos-de-esta-carpeta"><span class="header-section-number">12</span> Ejemplos de esta carpeta</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Archivo</th>
+<th>Tema</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="./ejemplos/01_hola_quarto.html"><code>ejemplos/01_hola_quarto.qmd</code></a></td>
+<td>Primer documento: Markdown + código</td>
+</tr>
+<tr class="even">
+<td><a href="./ejemplos/02_opciones_celdas.html"><code>ejemplos/02_opciones_celdas.qmd</code></a></td>
+<td><code>echo</code>, <code>eval</code>, <code>include</code>, código en línea</td>
+</tr>
+<tr class="odd">
+<td><a href="./ejemplos/03_graficas.html"><code>ejemplos/03_graficas.qmd</code></a></td>
+<td>Matplotlib, Plotly y referencias a figuras</td>
+</tr>
+<tr class="even">
+<td><a href="./ejemplos/04_tablas_ecuaciones.html"><code>ejemplos/04_tablas_ecuaciones.qmd</code></a></td>
+<td>Tablas, ecuaciones LaTeX y callouts</td>
+</tr>
+<tr class="odd">
+<td><a href="./ejemplos/05_clases_python.html"><code>ejemplos/05_clases_python.qmd</code></a></td>
+<td>Documentar clases (POO) con Quarto</td>
+</tr>
+<tr class="even">
+<td><a href="./ejemplos/06_presentacion.html"><code>ejemplos/06_presentacion.qmd</code></a></td>
+<td>Presentación con Reveal.js</td>
+</tr>
+<tr class="odd">
+<td><a href="./ejemplos/07_animaciones_plotly.html"><code>ejemplos/07_animaciones_plotly.qmd</code></a></td>
+<td>Animaciones con Plotly (frames, Play, slider)</td>
+</tr>
+<tr class="even">
+<td><a href="./ejemplos/08_html_js.html"><code>ejemplos/08_html_js.qmd</code></a></td>
+<td>HTML/CSS/JS crudo, HTML desde Python y Observable JS</td>
+</tr>
+<tr class="odd">
+<td><a href="./ejemplos/09_convertir_ipynb_py.html"><code>ejemplos/09_convertir_ipynb_py.qmd</code></a></td>
+<td>Convertir <code>.ipynb</code> ↔︎ <code>.qmd</code>, renderizar <code>.ipynb</code> y <code>.py</code>, <code>embed</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="problemas-comunes" class="level2" data-number="13">
+<h2 data-number="13" class="anchored" data-anchor-id="problemas-comunes"><span class="header-section-number">13</span> Problemas comunes</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Síntoma</th>
+<th>Solución</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Jupyter is not available</code></td>
+<td><code>uv add jupyter</code> o <code>pip install jupyter</code>; luego <code>quarto check</code></td>
+</tr>
+<tr class="even">
+<td><code>ModuleNotFoundError</code> al renderizar</td>
+<td>Quarto usa otro Python: renderiza con <code>uv run quarto render ...</code></td>
+</tr>
+<tr class="odd">
+<td>No genera PDF</td>
+<td>Instala LaTeX: <code>quarto install tinytex</code></td>
+</tr>
+<tr class="even">
+<td>Los cambios no aparecen</td>
+<td>Usa <code>quarto preview</code> o vuelve a ejecutar <code>quarto render</code></td>
+</tr>
+<tr class="odd">
+<td>La celda no se ejecuta</td>
+<td>Revisa que sea <code>```{python}</code> (con llaves), no <code>```python</code></td>
+</tr>
+</tbody>
+</table>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Código desplazable","output":"Salida desplazable"};
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

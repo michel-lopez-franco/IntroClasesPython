@@ -1,0 +1,2060 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>4&nbsp; Herencia – Programación Orientada a Objetos en Python</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./05_encapsulamiento.html" rel="next">
+<link href="./03_constructor_self.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-5de16f5e46225c21e2daa90d340bf64f.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-3218d7d29a29f08bc4fdf3802c3e3ca5.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-5de16f5e46225c21e2daa90d340bf64f.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-e3b950a2b943166ab6d411ad4b57e84b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-e140c1282dc1723bc70c5828ab63e8bf.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-e3b950a2b943166ab6d411ad4b57e84b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No se han encontrado resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+<script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+<script src="site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Saltar al contenido principal</a><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
+        setTimeout(() => {
+          window.scrollTo(0, scrollY);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" aria-label="Barra de herramientas">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04_herencia.html">Pilares de la POO</a></li><li class="breadcrumb-item"><a href="./04_herencia.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Herencia</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Sitio web">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Programación Orientada a Objetos en Python</a> 
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro" aria-label="Alternar modo oscuro"><i class="bi"></i></button>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Presentación</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Fundamentos</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_clases_objetos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducción a Clases y Objetos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_atributos_metodos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Atributos y Métodos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_constructor_self.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Constructor y Self</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">Pilares de la POO</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04_herencia.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Herencia</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05_encapsulamiento.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Encapsulamiento y Propiedades</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_polimorfismo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Polimorfismo</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-3-label">Conceptos avanzados</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07_metodos_especiales.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Métodos Especiales (Magic Methods)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08_composicion_agregacion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Composición y Agregación</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09_clases_abstractas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Clases Abstractas e Interfaces</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-4-label">Proyecto</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10_proyecto_integrador.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Proyecto Integrador: Sistema de Tienda en Línea</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-5-label">Apéndices</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./recursos/referencia.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Hoja de referencia de POO en Python</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#qué-es-la-herencia" id="toc-qué-es-la-herencia" class="nav-link active" data-scroll-target="#qué-es-la-herencia"><span class="header-section-number">4.1</span> ¿Qué es la Herencia?</a>
+  <ul class="collapse">
+  <li><a href="#analogía-del-mundo-real" id="toc-analogía-del-mundo-real" class="nav-link" data-scroll-target="#analogía-del-mundo-real"><span class="header-section-number">4.1.1</span> Analogía del mundo real</a></li>
+  </ul></li>
+  <li><a href="#tu-primera-herencia" id="toc-tu-primera-herencia" class="nav-link" data-scroll-target="#tu-primera-herencia"><span class="header-section-number">4.2</span> Tu Primera Herencia</a>
+  <ul class="collapse">
+  <li><a href="#ventajas-de-la-herencia" id="toc-ventajas-de-la-herencia" class="nav-link" data-scroll-target="#ventajas-de-la-herencia"><span class="header-section-number">4.2.1</span> Ventajas de la Herencia</a></li>
+  </ul></li>
+  <li><a href="#múltiples-clases-hijas" id="toc-múltiples-clases-hijas" class="nav-link" data-scroll-target="#múltiples-clases-hijas"><span class="header-section-number">4.3</span> Múltiples Clases Hijas</a></li>
+  <li><a href="#extendiendo-el-constructor-con-super" id="toc-extendiendo-el-constructor-con-super" class="nav-link" data-scroll-target="#extendiendo-el-constructor-con-super"><span class="header-section-number">4.4</span> Extendiendo el Constructor con super()</a>
+  <ul class="collapse">
+  <li><a href="#por-qué-usar-super" id="toc-por-qué-usar-super" class="nav-link" data-scroll-target="#por-qué-usar-super"><span class="header-section-number">4.4.1</span> ¿Por qué usar super()?</a></li>
+  </ul></li>
+  <li><a href="#sobrescritura-de-métodos-override" id="toc-sobrescritura-de-métodos-override" class="nav-link" data-scroll-target="#sobrescritura-de-métodos-override"><span class="header-section-number">4.5</span> Sobrescritura de Métodos (Override)</a></li>
+  <li><a href="#herencia-multinivel" id="toc-herencia-multinivel" class="nav-link" data-scroll-target="#herencia-multinivel"><span class="header-section-number">4.6</span> Herencia Multinivel</a>
+  <ul class="collapse">
+  <li><a href="#cómo-encuentra-python-un-método" id="toc-cómo-encuentra-python-un-método" class="nav-link" data-scroll-target="#cómo-encuentra-python-un-método"><span class="header-section-number">4.6.1</span> ¿Cómo encuentra Python un método?</a></li>
+  </ul></li>
+  <li><a href="#isinstance-e-issubclass" id="toc-isinstance-e-issubclass" class="nav-link" data-scroll-target="#isinstance-e-issubclass"><span class="header-section-number">4.7</span> isinstance() e issubclass()</a></li>
+  <li><a href="#ejemplo-completo-sistema-de-formas-geométricas" id="toc-ejemplo-completo-sistema-de-formas-geométricas" class="nav-link" data-scroll-target="#ejemplo-completo-sistema-de-formas-geométricas"><span class="header-section-number">4.8</span> Ejemplo Completo: Sistema de Formas Geométricas</a></li>
+  <li><a href="#ejercicios-prácticos" id="toc-ejercicios-prácticos" class="nav-link" data-scroll-target="#ejercicios-prácticos"><span class="header-section-number">4.9</span> Ejercicios Prácticos</a>
+  <ul class="collapse">
+  <li><a href="#ejercicio-1-jerarquía-de-vehículos" id="toc-ejercicio-1-jerarquía-de-vehículos" class="nav-link" data-scroll-target="#ejercicio-1-jerarquía-de-vehículos"><span class="header-section-number">4.9.1</span> Ejercicio 1: Jerarquía de Vehículos</a></li>
+  <li><a href="#ejercicio-2-sistema-de-cuentas-bancarias" id="toc-ejercicio-2-sistema-de-cuentas-bancarias" class="nav-link" data-scroll-target="#ejercicio-2-sistema-de-cuentas-bancarias"><span class="header-section-number">4.9.2</span> Ejercicio 2: Sistema de Cuentas Bancarias</a></li>
+  <li><a href="#ejercicio-3-herencia-multinivel---universidad" id="toc-ejercicio-3-herencia-multinivel---universidad" class="nav-link" data-scroll-target="#ejercicio-3-herencia-multinivel---universidad"><span class="header-section-number">4.9.3</span> Ejercicio 3: Herencia Multinivel - Universidad</a></li>
+  <li><a href="#ejercicio-4-sistema-de-productos-desafío" id="toc-ejercicio-4-sistema-de-productos-desafío" class="nav-link" data-scroll-target="#ejercicio-4-sistema-de-productos-desafío"><span class="header-section-number">4.9.4</span> Ejercicio 4: Sistema de Productos (Desafío)</a></li>
+  </ul></li>
+  <li><a href="#resumen" id="toc-resumen" class="nav-link" data-scroll-target="#resumen"><span class="header-section-number">4.10</span> Resumen</a>
+  <ul class="collapse">
+  <li><a href="#conceptos-clave" id="toc-conceptos-clave" class="nav-link" data-scroll-target="#conceptos-clave"><span class="header-section-number">4.10.1</span> Conceptos clave</a></li>
+  <li><a href="#próximo-paso" id="toc-próximo-paso" class="nav-link" data-scroll-target="#próximo-paso"><span class="header-section-number">4.10.2</span> Próximo paso</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04_herencia.html">Pilares de la POO</a></li><li class="breadcrumb-item"><a href="./04_herencia.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Herencia</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Herencia</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>Objetivos
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Al terminar este capítulo podrás:</p>
+<ul>
+<li>Crear <strong>clases hijas</strong> que heredan atributos y métodos de una clase padre.</li>
+<li>Usar <code>super()</code> para reutilizar el constructor y los métodos del padre.</li>
+<li><strong>Sobrescribir</strong> métodos para especializar el comportamiento.</li>
+<li>Construir jerarquías multinivel y verificarlas con <code>isinstance()</code> e <code>issubclass()</code>.</li>
+<li>Reconocer cuándo aplica la relación <strong>“es-un”</strong>.</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Material de este tema
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Diapositivas:</strong> <a href="slides/_site/04_herencia.html" target="_blank">abrir la presentación</a> (<strong>F</strong> pantalla completa, <strong>S</strong> notas del presentador, <strong>Esc</strong> vista general).</li>
+<li><strong>Notebook original:</strong> <a href="https://colab.research.google.com/github/michel-lopez-franco/IntroClasesPython/blob/main/src/04_Herencia.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid" alt="Abrir en Colab"></a> — ejecútalo completo en Google Colab, sin instalar nada.</li>
+</ul>
+</div>
+</div>
+<section id="qué-es-la-herencia" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="qué-es-la-herencia"><span class="header-section-number">4.1</span> ¿Qué es la Herencia?</h2>
+<p>La herencia es un mecanismo que permite crear nuevas clases basadas en clases existentes, reutilizando y extendiendo su funcionalidad.</p>
+<section id="analogía-del-mundo-real" class="level3" data-number="4.1.1">
+<h3 data-number="4.1.1" class="anchored" data-anchor-id="analogía-del-mundo-real"><span class="header-section-number">4.1.1</span> Analogía del mundo real</h3>
+<p>Piensa en la clasificación de animales:</p>
+<ul>
+<li>Todos los <strong>animales</strong> tienen características comunes: nacen, crecen, se reproducen</li>
+<li>Los <strong>mamíferos</strong> heredan esas características y agregan las suyas: tienen pelo, amamantan</li>
+<li>Los <strong>perros</strong> heredan de mamíferos y agregan: ladran, tienen razas específicas</li>
+</ul>
+<pre><code>Animal (clase padre/base)
+  ↓
+Mamífero (clase hija/derivada)
+  ↓
+Perro (clase hija/derivada)</code></pre>
+</section>
+</section>
+<section id="tu-primera-herencia" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="tu-primera-herencia"><span class="header-section-number">4.2</span> Tu Primera Herencia</h2>
+<div>
+<div id="pyodide-1" class="exercise-cell">
+
+</div>
+<script type="pyodide-1-contents">
+eyJhdHRyIjp7ImF1dG9ydW4iOnRydWUsImNhcHRpb24iOiJFamVtcGxvIGludGVyYWN0aXZvOiBtb2RpZsOtY2FsbyB5IHZ1ZWx2ZSBhIGVqZWN1dGFybG8iLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlfSwiY29kZSI6IiMgQ2xhc2UgcGFkcmUgKG8gYmFzZSwgbyBzdXBlcmNsYXNlKVxuY2xhc3MgQW5pbWFsOlxuICAgIGRlZiBfX2luaXRfXyhzZWxmLCBub21icmUpOlxuICAgICAgICBzZWxmLm5vbWJyZSA9IG5vbWJyZVxuICAgIFxuICAgIGRlZiBjb21lcihzZWxmKTpcbiAgICAgICAgcHJpbnQoZlwie3NlbGYubm9tYnJlfSBlc3TDoSBjb21pZW5kb1wiKVxuICAgIFxuICAgIGRlZiBkb3JtaXIoc2VsZik6XG4gICAgICAgIHByaW50KGZcIntzZWxmLm5vbWJyZX0gZXN0w6EgZHVybWllbmRvXCIpXG5cbiMgQ2xhc2UgaGlqYSAobyBkZXJpdmFkYSwgbyBzdWJjbGFzZSlcbmNsYXNzIFBlcnJvKEFuaW1hbCk6ICAjIFBlcnJvIGhlcmVkYSBkZSBBbmltYWxcbiAgICBkZWYgbGFkcmFyKHNlbGYpOlxuICAgICAgICBwcmludChmXCJ7c2VsZi5ub21icmV9IGRpY2U6IMKhR3VhdSBndWF1IVwiKVxuXG4jIENyZWFyIG9iamV0byBkZSBsYSBjbGFzZSBoaWphXG5taV9wZXJybyA9IFBlcnJvKFwiTWF4XCIpXG5cbiMgVXNhciBtw6l0b2RvcyBoZXJlZGFkb3MgZGUgQW5pbWFsXG5taV9wZXJyby5jb21lcigpICAgICMgSGVyZWRhZG9cbm1pX3BlcnJvLmRvcm1pcigpICAgIyBIZXJlZGFkb1xuXG4jIFVzYXIgbcOpdG9kbyBwcm9waW8gZGUgUGVycm9cbm1pX3BlcnJvLmxhZHJhcigpICAgIyBQcm9waW8gZGUgUGVycm8ifQ==
+</script>
+</div>
+<section id="ventajas-de-la-herencia" class="level3" data-number="4.2.1">
+<h3 data-number="4.2.1" class="anchored" data-anchor-id="ventajas-de-la-herencia"><span class="header-section-number">4.2.1</span> Ventajas de la Herencia</h3>
+<ol type="1">
+<li><strong>Reutilización de código</strong>: No necesitas reescribir código común</li>
+<li><strong>Organización lógica</strong>: Refleja relaciones del mundo real</li>
+<li><strong>Facilita mantenimiento</strong>: Cambios en la clase padre afectan a todas las hijas</li>
+<li><strong>Extensibilidad</strong>: Puedes agregar funcionalidad sin modificar el código original</li>
+</ol>
+</section>
+</section>
+<section id="múltiples-clases-hijas" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="múltiples-clases-hijas"><span class="header-section-number">4.3</span> Múltiples Clases Hijas</h2>
+<div id="4620a329" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Animal:</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre):</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.nombre <span class="op">=</span> nombre</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> hacer_sonido(<span class="va">self</span>):</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>nombre<span class="sc">}</span><span class="ss"> hace un sonido"</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Diferentes clases heredan de Animal</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Perro(Animal):</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> hacer_sonido(<span class="va">self</span>):</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>nombre<span class="sc">}</span><span class="ss"> dice: ¡Guau guau!"</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Gato(Animal):</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> hacer_sonido(<span class="va">self</span>):</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>nombre<span class="sc">}</span><span class="ss"> dice: ¡Miau!"</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Vaca(Animal):</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> hacer_sonido(<span class="va">self</span>):</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>nombre<span class="sc">}</span><span class="ss"> dice: ¡Muuu!"</span>)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear diferentes animales</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>perro <span class="op">=</span> Perro(<span class="st">"Rex"</span>)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>gato <span class="op">=</span> Gato(<span class="st">"Whiskers"</span>)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>vaca <span class="op">=</span> Vaca(<span class="st">"Lola"</span>)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Todos tienen el mismo método, pero con comportamiento diferente</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>perro.hacer_sonido()</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>gato.hacer_sonido()</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>vaca.hacer_sonido()</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rex dice: ¡Guau guau!
+Whiskers dice: ¡Miau!
+Lola dice: ¡Muuu!</code></pre>
+</div>
+</div>
+</section>
+<section id="extendiendo-el-constructor-con-super" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="extendiendo-el-constructor-con-super"><span class="header-section-number">4.4</span> Extendiendo el Constructor con super()</h2>
+<p><code>super()</code> permite llamar a métodos de la clase padre, especialmente útil con constructores:</p>
+<div>
+<div id="pyodide-2" class="exercise-cell">
+
+</div>
+<script type="pyodide-2-contents">
+eyJhdHRyIjp7ImF1dG9ydW4iOnRydWUsImNhcHRpb24iOiJFamVtcGxvIGludGVyYWN0aXZvOiBtb2RpZsOtY2FsbyB5IHZ1ZWx2ZSBhIGVqZWN1dGFybG8iLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlfSwiY29kZSI6ImNsYXNzIFZlaGljdWxvOlxuICAgIGRlZiBfX2luaXRfXyhzZWxmLCBtYXJjYSwgbW9kZWxvKTpcbiAgICAgICAgc2VsZi5tYXJjYSA9IG1hcmNhXG4gICAgICAgIHNlbGYubW9kZWxvID0gbW9kZWxvXG4gICAgICAgIHByaW50KGZcIlZlaMOtY3VsbyBjcmVhZG86IHttYXJjYX0ge21vZGVsb31cIilcbiAgICBcbiAgICBkZWYgaW5mbyhzZWxmKTpcbiAgICAgICAgcHJpbnQoZlwiTWFyY2E6IHtzZWxmLm1hcmNhfVwiKVxuICAgICAgICBwcmludChmXCJNb2RlbG86IHtzZWxmLm1vZGVsb31cIilcblxuY2xhc3MgQ29jaGUoVmVoaWN1bG8pOlxuICAgIGRlZiBfX2luaXRfXyhzZWxmLCBtYXJjYSwgbW9kZWxvLCBudW1fcHVlcnRhcyk6XG4gICAgICAgICMgTGxhbWFyIGFsIGNvbnN0cnVjdG9yIGRlIGxhIGNsYXNlIHBhZHJlXG4gICAgICAgIHN1cGVyKCkuX19pbml0X18obWFyY2EsIG1vZGVsbylcbiAgICAgICAgIyBBZ3JlZ2FyIGF0cmlidXRvcyBwcm9waW9zXG4gICAgICAgIHNlbGYubnVtX3B1ZXJ0YXMgPSBudW1fcHVlcnRhc1xuICAgIFxuICAgIGRlZiBpbmZvKHNlbGYpOlxuICAgICAgICAjIExsYW1hciBhbCBtw6l0b2RvIGRlIGxhIGNsYXNlIHBhZHJlXG4gICAgICAgIHN1cGVyKCkuaW5mbygpXG4gICAgICAgICMgQWdyZWdhciBpbmZvcm1hY2nDs24gcHJvcGlhXG4gICAgICAgIHByaW50KGZcIk7Dum1lcm8gZGUgcHVlcnRhczoge3NlbGYubnVtX3B1ZXJ0YXN9XCIpXG5cbiMgQ3JlYXIgb2JqZXRvXG5taV9jb2NoZSA9IENvY2hlKFwiVG95b3RhXCIsIFwiQ29yb2xsYVwiLCA0KVxucHJpbnQoKVxubWlfY29jaGUuaW5mbygpIn0=
+</script>
+</div>
+<section id="por-qué-usar-super" class="level3" data-number="4.4.1">
+<h3 data-number="4.4.1" class="anchored" data-anchor-id="por-qué-usar-super"><span class="header-section-number">4.4.1</span> ¿Por qué usar super()?</h3>
+<ol type="1">
+<li><strong>Evita duplicación</strong>: No repites código del constructor padre</li>
+<li><strong>Mantenibilidad</strong>: Si cambias la clase padre, no necesitas cambiar las hijas</li>
+<li><strong>Herencia múltiple</strong>: Funciona correctamente con herencia múltiple</li>
+</ol>
+</section>
+</section>
+<section id="sobrescritura-de-métodos-override" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="sobrescritura-de-métodos-override"><span class="header-section-number">4.5</span> Sobrescritura de Métodos (Override)</h2>
+<p>Las clases hijas pueden redefinir métodos de la clase padre:</p>
+<div id="80dc70a1" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Empleado:</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, salario_base):</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.nombre <span class="op">=</span> nombre</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.salario_base <span class="op">=</span> salario_base</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> calcular_salario(<span class="va">self</span>):</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.salario_base</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> info(<span class="va">self</span>):</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Empleado: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>nombre<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Salario: $</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>calcular_salario()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Gerente(Empleado):</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, salario_base, bono):</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(nombre, salario_base)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.bono <span class="op">=</span> bono</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Sobrescribir método de la clase padre</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> calcular_salario(<span class="va">self</span>):</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.salario_base <span class="op">+</span> <span class="va">self</span>.bono</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Vendedor(Empleado):</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, salario_base, comision_ventas, ventas):</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(nombre, salario_base)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.comision_ventas <span class="op">=</span> comision_ventas</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.ventas <span class="op">=</span> ventas</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Sobrescribir método de la clase padre</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> calcular_salario(<span class="va">self</span>):</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.salario_base <span class="op">+</span> (<span class="va">self</span>.ventas <span class="op">*</span> <span class="va">self</span>.comision_ventas)</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear diferentes tipos de empleados</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>empleado <span class="op">=</span> Empleado(<span class="st">"Juan"</span>, <span class="dv">10000</span>)</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>gerente <span class="op">=</span> Gerente(<span class="st">"Ana"</span>, <span class="dv">15000</span>, <span class="dv">5000</span>)</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>vendedor <span class="op">=</span> Vendedor(<span class="st">"Carlos"</span>, <span class="dv">8000</span>, <span class="fl">0.05</span>, <span class="dv">100000</span>)</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Todos usan info() pero con diferentes cálculos de salario</span></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>empleado.info()</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">30</span>)</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>gerente.info()</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">30</span>)</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>vendedor.info()</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Empleado: Juan
+Salario: $10000
+------------------------------
+Empleado: Ana
+Salario: $20000
+------------------------------
+Empleado: Carlos
+Salario: $13000.0</code></pre>
+</div>
+</div>
+<p>En un diagrama de clases la herencia se dibuja con una flecha de punta hueca que va de la hija al padre (<a href="#fig-herencia-empleados" class="quarto-xref">Figura&nbsp;<span>4.1</span></a>). Las hijas sólo muestran lo que <strong>agregan</strong> o <strong>sobrescriben</strong>.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-herencia-empleados" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-herencia-empleados-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+
+<pre class="mermaid mermaid-js" data-label="fig-herencia-empleados">classDiagram
+    Empleado &lt;|-- Gerente
+    Empleado &lt;|-- Vendedor
+    class Empleado {
+        +nombre
+        +salario_base
+        +calcular_salario()
+        +info()
+    }
+    class Gerente {
+        +bono
+        +calcular_salario()
+    }
+    class Vendedor {
+        +comision_ventas
+        +ventas
+        +calcular_salario()
+    }
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-herencia-empleados-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;4.1: Gerente y Vendedor heredan de Empleado y sobrescriben calcular_salario().
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="herencia-multinivel" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="herencia-multinivel"><span class="header-section-number">4.6</span> Herencia Multinivel</h2>
+<div>
+<div id="pyodide-3" class="exercise-cell">
+
+</div>
+<script type="pyodide-3-contents">
+eyJhdHRyIjp7ImF1dG9ydW4iOnRydWUsImNhcHRpb24iOiJFamVtcGxvIGludGVyYWN0aXZvOiBtb2RpZsOtY2FsbyB5IHZ1ZWx2ZSBhIGVqZWN1dGFybG8iLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlfSwiY29kZSI6IiMgTml2ZWwgMTogQ2xhc2UgYmFzZVxuY2xhc3MgU2VyVml2bzpcbiAgICBkZWYgX19pbml0X18oc2VsZiwgbm9tYnJlKTpcbiAgICAgICAgc2VsZi5ub21icmUgPSBub21icmVcbiAgICBcbiAgICBkZWYgcmVzcGlyYXIoc2VsZik6XG4gICAgICAgIHByaW50KGZcIntzZWxmLm5vbWJyZX0gZXN0w6EgcmVzcGlyYW5kb1wiKVxuXG4jIE5pdmVsIDI6IEhlcmVkYSBkZSBTZXJWaXZvXG5jbGFzcyBBbmltYWwoU2VyVml2byk6XG4gICAgZGVmIF9faW5pdF9fKHNlbGYsIG5vbWJyZSwgZXNwZWNpZSk6XG4gICAgICAgIHN1cGVyKCkuX19pbml0X18obm9tYnJlKVxuICAgICAgICBzZWxmLmVzcGVjaWUgPSBlc3BlY2llXG4gICAgXG4gICAgZGVmIG1vdmVyc2Uoc2VsZik6XG4gICAgICAgIHByaW50KGZcIntzZWxmLm5vbWJyZX0gc2UgZXN0w6EgbW92aWVuZG9cIilcblxuIyBOaXZlbCAzOiBIZXJlZGEgZGUgQW5pbWFsIChxdWUgaGVyZWRhIGRlIFNlclZpdm8pXG5jbGFzcyBQZXJybyhBbmltYWwpOlxuICAgIGRlZiBfX2luaXRfXyhzZWxmLCBub21icmUsIHJhemEpOlxuICAgICAgICBzdXBlcigpLl9faW5pdF9fKG5vbWJyZSwgXCJDYW5pcyBmYW1pbGlhcmlzXCIpXG4gICAgICAgIHNlbGYucmF6YSA9IHJhemFcbiAgICBcbiAgICBkZWYgbGFkcmFyKHNlbGYpOlxuICAgICAgICBwcmludChmXCJ7c2VsZi5ub21icmV9IGRpY2U6IMKhR3VhdSFcIilcblxuIyBDcmVhciBvYmpldG8gZGVsIG5pdmVsIG3DoXMgYmFqb1xubWlfcGVycm8gPSBQZXJybyhcIk1heFwiLCBcIkxhYnJhZG9yXCIpXG5cbiMgVGllbmUgYWNjZXNvIGEgbcOpdG9kb3MgZGUgdG9kb3MgbG9zIG5pdmVsZXNcbm1pX3BlcnJvLnJlc3BpcmFyKCkgICMgRGUgU2VyVml2b1xubWlfcGVycm8ubW92ZXJzZSgpICAgIyBEZSBBbmltYWxcbm1pX3BlcnJvLmxhZHJhcigpICAgICMgRGUgUGVycm9cblxucHJpbnQoZlwiXFxuUmF6YToge21pX3BlcnJvLnJhemF9XCIpICAgICAgIyBEZSBQZXJyb1xucHJpbnQoZlwiRXNwZWNpZToge21pX3BlcnJvLmVzcGVjaWV9XCIpICAjIERlIEFuaW1hbFxucHJpbnQoZlwiTm9tYnJlOiB7bWlfcGVycm8ubm9tYnJlfVwiKSAgICAjIERlIFNlclZpdm8ifQ==
+</script>
+</div>
+<section id="cómo-encuentra-python-un-método" class="level3" data-number="4.6.1">
+<h3 data-number="4.6.1" class="anchored" data-anchor-id="cómo-encuentra-python-un-método"><span class="header-section-number">4.6.1</span> ¿Cómo encuentra Python un método?</h3>
+<p>Cuando llamas <code>mi_perro.respirar()</code>, Python busca <code>respirar</code> primero en la clase del objeto (<code>Perro</code>) y, si no lo encuentra, <strong>sube</strong> por la jerarquía en el orden que indica <code>Perro.__mro__</code> (<em>Method Resolution Order</em>). Pulsa los botones para verlo, incluido el caso de un método que no existe y la cadena de <code>super().__init__()</code> del constructor.</p>
+<div id="anim-mro" class="anim-poo">
+  <style>
+    .anim-poo { border: 1px solid var(--bs-border-color, #ccc); border-radius: 10px; padding: 1rem; margin: 1rem 0; }
+    .anim-poo .controles { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .8rem; }
+    .anim-poo .controles button { font-family: var(--bs-font-monospace, monospace); font-size: .85rem; }
+    .anim-poo .cuerpo { display: flex; flex-wrap: wrap; gap: 1.2rem; align-items: flex-start; }
+    .anim-poo .jerarquia { flex: 0 1 260px; display: flex; flex-direction: column; align-items: stretch; }
+    .anim-poo .clase { border: 2px solid var(--bs-border-color, #bbb); border-radius: 8px; padding: .35rem .7rem;
+                       font-family: var(--bs-font-monospace, monospace); font-size: .85rem; transition: all .25s; }
+    .anim-poo .clase b { display: block; font-size: .95rem; }
+    .anim-poo .flecha { text-align: center; line-height: 1.3; opacity: .6; font-size: .8rem; }
+    .anim-poo .clase.buscando { border-color: #f0ad4e; background: rgba(240,173,78,.18); }
+    .anim-poo .clase.encontrado { border-color: #3fb618; background: rgba(63,182,24,.18); }
+    .anim-poo .clase.fallo { border-color: #ff0039; background: rgba(255,0,57,.12); }
+    .anim-poo .registro { flex: 1 1 280px; min-height: 12rem; font-family: var(--bs-font-monospace, monospace);
+                          font-size: .82rem; white-space: pre-wrap; background: rgba(128,128,128,.08);
+                          border-radius: 8px; padding: .6rem .8rem; margin: 0; }
+  </style>
+  <div class="controles">
+    <button class="btn btn-sm btn-outline-primary" data-metodo="ladrar">mi_perro.ladrar()</button>
+    <button class="btn btn-sm btn-outline-primary" data-metodo="moverse">mi_perro.moverse()</button>
+    <button class="btn btn-sm btn-outline-primary" data-metodo="respirar">mi_perro.respirar()</button>
+    <button class="btn btn-sm btn-outline-danger" data-metodo="volar">mi_perro.volar()</button>
+    <button class="btn btn-sm btn-outline-success" data-metodo="__init__">Perro("Max", "Labrador")</button>
+  </div>
+  <div class="cuerpo">
+    <div class="jerarquia">
+      <div class="clase" data-clase="object"><b>object</b>(clase base de todo)</div>
+      <div class="flecha">▲ hereda de</div>
+      <div class="clase" data-clase="SerVivo"><b>SerVivo</b>__init__(nombre)<br>respirar()</div>
+      <div class="flecha">▲ hereda de</div>
+      <div class="clase" data-clase="Animal"><b>Animal</b>__init__(nombre, especie)<br>moverse()</div>
+      <div class="flecha">▲ hereda de</div>
+      <div class="clase" data-clase="Perro"><b>Perro</b>__init__(nombre, raza)<br>ladrar()</div>
+    </div>
+    <pre class="registro" aria-live="polite">Elige una llamada para ver cómo Python busca el método.</pre>
+  </div>
+  <script>
+  (() => {
+    const raiz = document.getElementById("anim-mro");
+    const mro = ["Perro", "Animal", "SerVivo", "object"];
+    const metodos = { Perro: ["__init__", "ladrar"], Animal: ["__init__", "moverse"],
+                      SerVivo: ["__init__", "respirar"], object: ["__init__"] };
+    const cajas = Object.fromEntries([...raiz.querySelectorAll(".clase")].map(c => [c.dataset.clase, c]));
+    const registro = raiz.querySelector(".registro");
+    const botones = raiz.querySelectorAll("button");
+    const pausa = ms => new Promise(r => setTimeout(r, ms));
+    const limpiar = () => Object.values(cajas).forEach(c => c.classList.remove("buscando", "encontrado", "fallo"));
+    const escribir = t => { registro.textContent += t + "\n"; };
+
+    async function buscar(metodo) {
+      escribir(`¿Dónde está ${metodo}()? Orden de búsqueda (MRO): ${mro.join(" → ")}`);
+      for (const clase of mro) {
+        cajas[clase].classList.add("buscando");
+        await pausa(700);
+        cajas[clase].classList.remove("buscando");
+        if (metodos[clase].includes(metodo)) {
+          cajas[clase].classList.add("encontrado");
+          escribir(`  ✓ ${clase} define ${metodo}() → se ejecuta ${clase}.${metodo}()`);
+          return clase;
+        }
+        cajas[clase].classList.add("fallo");
+        escribir(clase === "object"
+          ? `  ✗ ${clase} tampoco lo define y ya no hay más clases.`
+          : `  ✗ ${clase} no define ${metodo}(), subimos…`);
+        await pausa(300);
+      }
+      escribir(`AttributeError: 'Perro' object has no attribute '${metodo}'`);
+      return null;
+    }
+
+    async function constructor() {
+      const cadena = [
+        ["Perro",   'Perro.__init__(self, "Max", "Labrador")', 'super().__init__("Max", "Canis familiaris")'],
+        ["Animal",  'Animal.__init__(self, "Max", "Canis familiaris")', 'super().__init__("Max")'],
+        ["SerVivo", 'SerVivo.__init__(self, "Max")', 'self.nombre = "Max"'],
+      ];
+      escribir('Perro("Max", "Labrador") llama a __init__; cada super() sube un nivel:');
+      for (const [clase, llamada, siguiente] of cadena) {
+        cajas[clase].classList.add("buscando");
+        escribir(`  → ${llamada}\n      ${siguiente}`);
+        await pausa(1000);
+        cajas[clase].classList.replace("buscando", "encontrado");
+      }
+      escribir("  ← SerVivo asignó nombre");
+      await pausa(500);
+      escribir('  ← Animal asignó especie = "Canis familiaris"');
+      await pausa(500);
+      escribir('  ← Perro asignó raza = "Labrador"   ✓ objeto listo');
+    }
+
+    botones.forEach(b => b.addEventListener("click", async () => {
+      botones.forEach(x => x.disabled = true);
+      limpiar();
+      registro.textContent = "";
+      if (b.dataset.metodo === "__init__") await constructor();
+      else await buscar(b.dataset.metodo);
+      botones.forEach(x => x.disabled = false);
+    }));
+  })();
+  </script>
+</div>
+<p>Puedes consultar ese orden directamente:</p>
+<div id="79054b62" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># La misma jerarquía de la herencia multinivel (sin el contenido de los métodos)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SerVivo: <span class="cf">pass</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Animal(SerVivo): <span class="cf">pass</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Perro(Animal): <span class="cf">pass</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>([clase.<span class="va">__name__</span> <span class="cf">for</span> clase <span class="kw">in</span> Perro.__mro__])</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>['Perro', 'Animal', 'SerVivo', 'object']</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="isinstance-e-issubclass" class="level2" data-number="4.7">
+<h2 data-number="4.7" class="anchored" data-anchor-id="isinstance-e-issubclass"><span class="header-section-number">4.7</span> isinstance() e issubclass()</h2>
+<p>Funciones útiles para verificar relaciones de herencia:</p>
+<div id="81ae108d" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Animal:</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Perro(Animal):</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Gato(Animal):</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>mi_perro <span class="op">=</span> Perro()</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>mi_gato <span class="op">=</span> Gato()</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co"># isinstance() - verifica si un objeto es instancia de una clase</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"isinstance() - Verificar objetos:"</span>)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"mi_perro es instancia de Perro: </span><span class="sc">{</span><span class="bu">isinstance</span>(mi_perro, Perro)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"mi_perro es instancia de Animal: </span><span class="sc">{</span><span class="bu">isinstance</span>(mi_perro, Animal)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"mi_perro es instancia de Gato: </span><span class="sc">{</span><span class="bu">isinstance</span>(mi_perro, Gato)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="co"># issubclass() - verifica si una clase es subclase de otra</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"issubclass() - Verificar clases:"</span>)</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Perro es subclase de Animal: </span><span class="sc">{</span><span class="bu">issubclass</span>(Perro, Animal)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Gato es subclase de Animal: </span><span class="sc">{</span><span class="bu">issubclass</span>(Gato, Animal)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Perro es subclase de Gato: </span><span class="sc">{</span><span class="bu">issubclass</span>(Perro, Gato)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Animal es subclase de Perro: </span><span class="sc">{</span><span class="bu">issubclass</span>(Animal, Perro)<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>isinstance() - Verificar objetos:
+mi_perro es instancia de Perro: True
+mi_perro es instancia de Animal: True
+mi_perro es instancia de Gato: False
+
+issubclass() - Verificar clases:
+Perro es subclase de Animal: True
+Gato es subclase de Animal: True
+Perro es subclase de Gato: False
+Animal es subclase de Perro: False</code></pre>
+</div>
+</div>
+</section>
+<section id="ejemplo-completo-sistema-de-formas-geométricas" class="level2" data-number="4.8">
+<h2 data-number="4.8" class="anchored" data-anchor-id="ejemplo-completo-sistema-de-formas-geométricas"><span class="header-section-number">4.8</span> Ejemplo Completo: Sistema de Formas Geométricas</h2>
+<div id="de75e104" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Forma:</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Clase base para todas las formas geométricas"""</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, color<span class="op">=</span><span class="st">"Negro"</span>):</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.color <span class="op">=</span> color</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> area(<span class="va">self</span>):</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Las subclases deben implementar este método"</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> perimetro(<span class="va">self</span>):</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Las subclases deben implementar este método"</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> descripcion(<span class="va">self</span>):</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"Soy una forma de color </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>color<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Rectangulo(Forma):</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, ancho, alto, color<span class="op">=</span><span class="st">"Negro"</span>):</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(color)</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.ancho <span class="op">=</span> ancho</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.alto <span class="op">=</span> alto</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> area(<span class="va">self</span>):</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.ancho <span class="op">*</span> <span class="va">self</span>.alto</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> perimetro(<span class="va">self</span>):</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">2</span> <span class="op">*</span> (<span class="va">self</span>.ancho <span class="op">+</span> <span class="va">self</span>.alto)</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> descripcion(<span class="va">self</span>):</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"Rectángulo </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>color<span class="sc">}</span><span class="ss"> de </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>ancho<span class="sc">}</span><span class="ss">x</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>alto<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Circulo(Forma):</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, radio, color<span class="op">=</span><span class="st">"Negro"</span>):</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(color)</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.radio <span class="op">=</span> radio</span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> area(<span class="va">self</span>):</span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> math.pi <span class="op">*</span> <span class="va">self</span>.radio <span class="op">**</span> <span class="dv">2</span></span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> perimetro(<span class="va">self</span>):</span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">2</span> <span class="op">*</span> math.pi <span class="op">*</span> <span class="va">self</span>.radio</span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> descripcion(<span class="va">self</span>):</span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"Círculo </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>color<span class="sc">}</span><span class="ss"> con radio </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>radio<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Cuadrado(Rectangulo):  <span class="co"># Hereda de Rectangulo</span></span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, lado, color<span class="op">=</span><span class="st">"Negro"</span>):</span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Un cuadrado es un rectángulo con ancho = alto</span></span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(lado, lado, color)</span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> descripcion(<span class="va">self</span>):</span>
+<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"Cuadrado </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>color<span class="sc">}</span><span class="ss"> de lado </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>ancho<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a><span class="co"># Función que funciona con cualquier forma</span></span>
+<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mostrar_info_forma(forma):</span>
+<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(forma.descripcion())</span>
+<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  Área: </span><span class="sc">{</span>forma<span class="sc">.</span>area()<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb10-58"><a href="#cb10-58" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  Perímetro: </span><span class="sc">{</span>forma<span class="sc">.</span>perimetro()<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb10-59"><a href="#cb10-59" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">40</span>)</span>
+<span id="cb10-60"><a href="#cb10-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-61"><a href="#cb10-61" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear diferentes formas</span></span>
+<span id="cb10-62"><a href="#cb10-62" aria-hidden="true" tabindex="-1"></a>rectangulo <span class="op">=</span> Rectangulo(<span class="dv">5</span>, <span class="dv">10</span>, <span class="st">"Rojo"</span>)</span>
+<span id="cb10-63"><a href="#cb10-63" aria-hidden="true" tabindex="-1"></a>circulo <span class="op">=</span> Circulo(<span class="dv">7</span>, <span class="st">"Azul"</span>)</span>
+<span id="cb10-64"><a href="#cb10-64" aria-hidden="true" tabindex="-1"></a>cuadrado <span class="op">=</span> Cuadrado(<span class="dv">6</span>, <span class="st">"Verde"</span>)</span>
+<span id="cb10-65"><a href="#cb10-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-66"><a href="#cb10-66" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar información de todas</span></span>
+<span id="cb10-67"><a href="#cb10-67" aria-hidden="true" tabindex="-1"></a>formas <span class="op">=</span> [rectangulo, circulo, cuadrado]</span>
+<span id="cb10-68"><a href="#cb10-68" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> forma <span class="kw">in</span> formas:</span>
+<span id="cb10-69"><a href="#cb10-69" aria-hidden="true" tabindex="-1"></a>    mostrar_info_forma(forma)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rectángulo Rojo de 5x10
+  Área: 50.00
+  Perímetro: 30.00
+----------------------------------------
+Círculo Azul con radio 7
+  Área: 153.94
+  Perímetro: 43.98
+----------------------------------------
+Cuadrado Verde de lado 6
+  Área: 36.00
+  Perímetro: 24.00
+----------------------------------------</code></pre>
+</div>
+</div>
+<p>La jerarquía del ejemplo de formas tiene dos niveles: <code>Cuadrado</code> es un caso particular de <code>Rectangulo</code>, que a su vez es una <code>Forma</code> (<a href="#fig-herencia-formas" class="quarto-xref">Figura&nbsp;<span>4.2</span></a>).</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-herencia-formas" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-herencia-formas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+
+<pre class="mermaid mermaid-js" data-label="fig-herencia-formas">classDiagram
+    Forma &lt;|-- Rectangulo
+    Forma &lt;|-- Circulo
+    Rectangulo &lt;|-- Cuadrado
+    class Forma {
+        +color
+        +area()
+        +perimetro()
+        +descripcion()
+    }
+    class Rectangulo {
+        +ancho
+        +alto
+        +area()
+        +perimetro()
+    }
+    class Circulo {
+        +radio
+        +area()
+        +perimetro()
+    }
+    class Cuadrado {
+        +descripcion()
+    }
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-herencia-formas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;4.2: Jerarquía de formas geométricas: herencia de dos niveles.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="ejercicios-prácticos" class="level2" data-number="4.9">
+<h2 data-number="4.9" class="anchored" data-anchor-id="ejercicios-prácticos"><span class="header-section-number">4.9</span> Ejercicios Prácticos</h2>
+<section id="ejercicio-1-jerarquía-de-vehículos" class="level3" data-number="4.9.1">
+<h3 data-number="4.9.1" class="anchored" data-anchor-id="ejercicio-1-jerarquía-de-vehículos"><span class="header-section-number">4.9.1</span> Ejercicio 1: Jerarquía de Vehículos</h3>
+<p>Crea una jerarquía de clases:</p>
+<ul>
+<li>Clase base <code>Vehiculo</code> con: marca, modelo, año, método <code>info()</code></li>
+<li>Clase <code>Coche</code> que hereda de <code>Vehiculo</code> y agrega: num_puertas</li>
+<li>Clase <code>Motocicleta</code> que hereda de <code>Vehiculo</code> y agrega: tipo (deportiva, touring, etc.)</li>
+</ul>
+<p>Crea al menos un objeto de cada tipo y muestra su información.</p>
+<div>
+<div id="pyodide-4" class="exercise-cell">
+
+</div>
+<script type="pyodide-4-contents">
+eyJhdHRyIjp7ImNhcHRpb24iOiJQcnVlYmEgdMO6OiBlamVyY2ljaW8gMSIsImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1pbi1saW5lcyI6OH0sImNvZGUiOiIjIEVzY3JpYmUgYXF1w60gdHUgc29sdWNpw7NuIn0=
+</script>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Solución del ejercicio 1
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="cd8a5aa7" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Vehiculo:</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, marca, modelo, año):</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.marca <span class="op">=</span> marca</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.modelo <span class="op">=</span> modelo</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.año <span class="op">=</span> año</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> info(<span class="va">self</span>):</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>marca<span class="sc">}</span><span class="ss"> </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>modelo<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>a<span class="sc">ñ</span>o<span class="sc">}</span><span class="ss">)"</span>, end<span class="op">=</span><span class="st">""</span>)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Coche(Vehiculo):</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, marca, modelo, año, num_puertas):</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(marca, modelo, año)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.num_puertas <span class="op">=</span> num_puertas</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> info(<span class="va">self</span>):</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().info()</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f" - </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>num_puertas<span class="sc">}</span><span class="ss"> puertas"</span>)</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Motocicleta(Vehiculo):</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, marca, modelo, año, tipo):</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(marca, modelo, año)</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.tipo <span class="op">=</span> tipo</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> info(<span class="va">self</span>):</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().info()</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f" - moto </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>tipo<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> v <span class="kw">in</span> [Coche(<span class="st">"Mazda"</span>, <span class="st">"3"</span>, <span class="dv">2022</span>, <span class="dv">4</span>), Motocicleta(<span class="st">"Honda"</span>, <span class="st">"CBR500R"</span>, <span class="dv">2021</span>, <span class="st">"deportiva"</span>)]:</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>    v.info()</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Mazda 3 (2022) - 4 puertas
+Honda CBR500R (2021) - moto deportiva</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="ejercicio-2-sistema-de-cuentas-bancarias" class="level3" data-number="4.9.2">
+<h3 data-number="4.9.2" class="anchored" data-anchor-id="ejercicio-2-sistema-de-cuentas-bancarias"><span class="header-section-number">4.9.2</span> Ejercicio 2: Sistema de Cuentas Bancarias</h3>
+<p>Crea:</p>
+<ul>
+<li>Clase base <code>CuentaBancaria</code> con: titular, saldo, métodos <code>depositar()</code>, <code>retirar()</code>, <code>consultar_saldo()</code></li>
+<li>Clase <code>CuentaAhorro</code> que hereda y agrega: tasa_interes, método <code>aplicar_interes()</code></li>
+<li>Clase <code>CuentaCorriente</code> que hereda y agrega: limite_sobregiro, modifica <code>retirar()</code> para permitir sobregiro</li>
+</ul>
+<p>Prueba todas las funcionalidades.</p>
+<div>
+<div id="pyodide-5" class="exercise-cell">
+
+</div>
+<script type="pyodide-5-contents">
+eyJhdHRyIjp7ImNhcHRpb24iOiJQcnVlYmEgdMO6OiBlamVyY2ljaW8gMiIsImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1pbi1saW5lcyI6OH0sImNvZGUiOiIjIEVzY3JpYmUgYXF1w60gdHUgc29sdWNpw7NuIn0=
+</script>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Solución del ejercicio 2
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="b987afe9" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="interpolate-6-1"><a href="#interpolate-6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> CuentaBancaria:</span>
+<span id="interpolate-6-2"><a href="#interpolate-6-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, titular, saldo<span class="op">=</span><span class="dv">0</span>):</span>
+<span id="interpolate-6-3"><a href="#interpolate-6-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.titular <span class="op">=</span> titular</span>
+<span id="interpolate-6-4"><a href="#interpolate-6-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.saldo <span class="op">=</span> saldo</span>
+<span id="interpolate-6-5"><a href="#interpolate-6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-6-6"><a href="#interpolate-6-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> depositar(<span class="va">self</span>, cantidad):</span>
+<span id="interpolate-6-7"><a href="#interpolate-6-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.saldo <span class="op">+=</span> cantidad</span>
+<span id="interpolate-6-8"><a href="#interpolate-6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-6-9"><a href="#interpolate-6-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> retirar(<span class="va">self</span>, cantidad):</span>
+<span id="interpolate-6-10"><a href="#interpolate-6-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> cantidad <span class="op">&gt;</span> <span class="va">self</span>.saldo:</span>
+<span id="interpolate-6-11"><a href="#interpolate-6-11" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"  Fondos insuficientes para retirar $</span><span class="sc">{</span>cantidad<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="interpolate-6-12"><a href="#interpolate-6-12" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">False</span></span>
+<span id="interpolate-6-13"><a href="#interpolate-6-13" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.saldo <span class="op">-=</span> cantidad</span>
+<span id="interpolate-6-14"><a href="#interpolate-6-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">True</span></span>
+<span id="interpolate-6-15"><a href="#interpolate-6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-6-16"><a href="#interpolate-6-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> consultar_saldo(<span class="va">self</span>):</span>
+<span id="interpolate-6-17"><a href="#interpolate-6-17" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>titular<span class="sc">}</span><span class="ss">: saldo $</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>saldo<span class="sc">:,.2f}</span><span class="ss">"</span>)</span>
+<span id="interpolate-6-18"><a href="#interpolate-6-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.saldo</span>
+<span id="interpolate-6-19"><a href="#interpolate-6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-6-20"><a href="#interpolate-6-20" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> CuentaAhorro(CuentaBancaria):</span>
+<span id="interpolate-6-21"><a href="#interpolate-6-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, titular, saldo<span class="op">=</span><span class="dv">0</span>, tasa_interes<span class="op">=</span><span class="fl">0.05</span>):</span>
+<span id="interpolate-6-22"><a href="#interpolate-6-22" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(titular, saldo)</span>
+<span id="interpolate-6-23"><a href="#interpolate-6-23" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.tasa_interes <span class="op">=</span> tasa_interes</span>
+<span id="interpolate-6-24"><a href="#interpolate-6-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-6-25"><a href="#interpolate-6-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> aplicar_interes(<span class="va">self</span>):</span>
+<span id="interpolate-6-26"><a href="#interpolate-6-26" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.saldo <span class="op">+=</span> <span class="va">self</span>.saldo <span class="op">*</span> <span class="va">self</span>.tasa_interes</span>
+<span id="interpolate-6-27"><a href="#interpolate-6-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-6-28"><a href="#interpolate-6-28" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> CuentaCorriente(CuentaBancaria):</span>
+<span id="interpolate-6-29"><a href="#interpolate-6-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, titular, saldo<span class="op">=</span><span class="dv">0</span>, limite_sobregiro<span class="op">=</span><span class="dv">1000</span>):</span>
+<span id="interpolate-6-30"><a href="#interpolate-6-30" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(titular, saldo)</span>
+<span id="interpolate-6-31"><a href="#interpolate-6-31" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.limite_sobregiro <span class="op">=</span> limite_sobregiro</span>
+<span id="interpolate-6-32"><a href="#interpolate-6-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-6-33"><a href="#interpolate-6-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> retirar(<span class="va">self</span>, cantidad):  <span class="co"># Sobrescribe: permite saldo negativo hasta el límite</span></span>
+<span id="interpolate-6-34"><a href="#interpolate-6-34" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> cantidad <span class="op">&gt;</span> <span class="va">self</span>.saldo <span class="op">+</span> <span class="va">self</span>.limite_sobregiro:</span>
+<span id="interpolate-6-35"><a href="#interpolate-6-35" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"  Excede el sobregiro permitido ($</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>limite_sobregiro<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="interpolate-6-36"><a href="#interpolate-6-36" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">False</span></span>
+<span id="interpolate-6-37"><a href="#interpolate-6-37" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.saldo <span class="op">-=</span> cantidad</span>
+<span id="interpolate-6-38"><a href="#interpolate-6-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">True</span></span>
+<span id="interpolate-6-39"><a href="#interpolate-6-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-6-40"><a href="#interpolate-6-40" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Cuenta de ahorro:"</span>)</span>
+<span id="interpolate-6-41"><a href="#interpolate-6-41" aria-hidden="true" tabindex="-1"></a>ahorro <span class="op">=</span> CuentaAhorro(<span class="st">"Ana"</span>, <span class="dv">10000</span>, <span class="fl">0.03</span>)</span>
+<span id="interpolate-6-42"><a href="#interpolate-6-42" aria-hidden="true" tabindex="-1"></a>ahorro.retirar(<span class="dv">20000</span>)</span>
+<span id="interpolate-6-43"><a href="#interpolate-6-43" aria-hidden="true" tabindex="-1"></a>ahorro.aplicar_interes()</span>
+<span id="interpolate-6-44"><a href="#interpolate-6-44" aria-hidden="true" tabindex="-1"></a>ahorro.consultar_saldo()</span>
+<span id="interpolate-6-45"><a href="#interpolate-6-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-6-46"><a href="#interpolate-6-46" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Cuenta corriente:"</span>)</span>
+<span id="interpolate-6-47"><a href="#interpolate-6-47" aria-hidden="true" tabindex="-1"></a>corriente <span class="op">=</span> CuentaCorriente(<span class="st">"Luis"</span>, <span class="dv">500</span>, limite_sobregiro<span class="op">=</span><span class="dv">1000</span>)</span>
+<span id="interpolate-6-48"><a href="#interpolate-6-48" aria-hidden="true" tabindex="-1"></a>corriente.retirar(<span class="dv">1200</span>)   <span class="co"># Queda en -700: permitido</span></span>
+<span id="interpolate-6-49"><a href="#interpolate-6-49" aria-hidden="true" tabindex="-1"></a>corriente.consultar_saldo()</span>
+<span id="interpolate-6-50"><a href="#interpolate-6-50" aria-hidden="true" tabindex="-1"></a>corriente.retirar(<span class="dv">500</span>)    <span class="co"># Excede el límite</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Cuenta de ahorro:
+  Fondos insuficientes para retirar $20000
+  Ana: saldo $10,300.00
+Cuenta corriente:
+  Luis: saldo $-700.00
+  Excede el sobregiro permitido ($1000)</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>False</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="ejercicio-3-herencia-multinivel---universidad" class="level3" data-number="4.9.3">
+<h3 data-number="4.9.3" class="anchored" data-anchor-id="ejercicio-3-herencia-multinivel---universidad"><span class="header-section-number">4.9.3</span> Ejercicio 3: Herencia Multinivel - Universidad</h3>
+<p>Crea una jerarquía de 3 niveles:</p>
+<ol type="1">
+<li><code>Persona</code>: nombre, edad, método <code>presentarse()</code></li>
+<li><code>Estudiante</code> (hereda de Persona): agrega matricula, carrera, calificaciones (lista), método <code>agregar_calificacion()</code></li>
+<li><code>EstudianteInternacional</code> (hereda de Estudiante): agrega pais_origen, requiere_visa (bool), método <code>info_visa()</code></li>
+</ol>
+<p>Crea un objeto de EstudianteInternacional y verifica que tiene acceso a todos los métodos.</p>
+<div>
+<div id="pyodide-7" class="exercise-cell">
+
+</div>
+<script type="pyodide-7-contents">
+eyJhdHRyIjp7ImNhcHRpb24iOiJQcnVlYmEgdMO6OiBlamVyY2ljaW8gMyIsImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1pbi1saW5lcyI6OH0sImNvZGUiOiIjIEVzY3JpYmUgYXF1w60gdHUgc29sdWNpw7NuIn0=
+</script>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Solución del ejercicio 3
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="d9424c12" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Persona:</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, edad):</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.nombre <span class="op">=</span> nombre</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.edad <span class="op">=</span> edad</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> presentarse(<span class="va">self</span>):</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Hola, soy </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>nombre<span class="sc">}</span><span class="ss"> y tengo </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>edad<span class="sc">}</span><span class="ss"> años"</span>)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Estudiante(Persona):</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, edad, matricula, carrera):</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(nombre, edad)</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.matricula <span class="op">=</span> matricula</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.carrera <span class="op">=</span> carrera</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.calificaciones <span class="op">=</span> []</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> agregar_calificacion(<span class="va">self</span>, calificacion):</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.calificaciones.append(calificacion)</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> EstudianteInternacional(Estudiante):</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, edad, matricula, carrera, pais_origen, requiere_visa):</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(nombre, edad, matricula, carrera)</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.pais_origen <span class="op">=</span> pais_origen</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.requiere_visa <span class="op">=</span> requiere_visa</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> info_visa(<span class="va">self</span>):</span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>        estado <span class="op">=</span> <span class="st">"requiere visa"</span> <span class="cf">if</span> <span class="va">self</span>.requiere_visa <span class="cf">else</span> <span class="st">"no requiere visa"</span></span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>nombre<span class="sc">}</span><span class="ss"> viene de </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>pais_origen<span class="sc">}</span><span class="ss"> y </span><span class="sc">{</span>estado<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>ei <span class="op">=</span> EstudianteInternacional(<span class="st">"Yuki"</span>, <span class="dv">24</span>, <span class="st">"A123"</span>, <span class="st">"Computación"</span>, <span class="st">"Japón"</span>, <span class="va">True</span>)</span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>ei.presentarse()                 <span class="co"># De Persona</span></span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>ei.agregar_calificacion(<span class="fl">9.5</span>)     <span class="co"># De Estudiante</span></span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>ei.info_visa()                   <span class="co"># Propio</span></span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Calificaciones:"</span>, ei.calificaciones)</span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"¿Es Persona?"</span>, <span class="bu">isinstance</span>(ei, Persona))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Hola, soy Yuki y tengo 24 años
+Yuki viene de Japón y requiere visa
+Calificaciones: [9.5]
+¿Es Persona? True</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="ejercicio-4-sistema-de-productos-desafío" class="level3" data-number="4.9.4">
+<h3 data-number="4.9.4" class="anchored" data-anchor-id="ejercicio-4-sistema-de-productos-desafío"><span class="header-section-number">4.9.4</span> Ejercicio 4: Sistema de Productos (Desafío)</h3>
+<p>Crea un sistema de productos con herencia:</p>
+<ol type="1">
+<li>Clase base <code>Producto</code>:
+<ul>
+<li>Atributos: nombre, precio_base, stock</li>
+<li>Métodos: <code>calcular_precio_final()</code>, <code>info()</code>, <code>reducir_stock(cantidad)</code></li>
+</ul></li>
+<li>Clase <code>ProductoElectronico</code> (hereda de Producto):
+<ul>
+<li>Agrega: garantia_meses, marca</li>
+<li>Sobrescribe <code>calcular_precio_final()</code>: agrega 10% de impuesto</li>
+</ul></li>
+<li>Clase <code>ProductoAlimenticio</code> (hereda de Producto):
+<ul>
+<li>Agrega: fecha_caducidad</li>
+<li>Sobrescribe <code>calcular_precio_final()</code>: si está próximo a caducar (tu decides el criterio), aplica 30% de descuento</li>
+</ul></li>
+<li>Crea una función <code>procesar_compra(producto, cantidad)</code> que:
+<ul>
+<li>Verifique si hay stock suficiente</li>
+<li>Muestre el precio final</li>
+<li>Reduzca el stock</li>
+<li>Funcione con cualquier tipo de producto</li>
+</ul></li>
+</ol>
+<p>Prueba con varios productos diferentes.</p>
+<div>
+<div id="pyodide-8" class="exercise-cell">
+
+</div>
+<script type="pyodide-8-contents">
+eyJhdHRyIjp7ImNhcHRpb24iOiJQcnVlYmEgdMO6OiBlamVyY2ljaW8gNCIsImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1pbi1saW5lcyI6OH0sImNvZGUiOiIjIEVzY3JpYmUgYXF1w60gdHUgc29sdWNpw7NuIn0=
+</script>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Solución del ejercicio 4
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="8657a522" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> date, timedelta</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Producto:</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, precio_base, stock):</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.nombre <span class="op">=</span> nombre</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.precio_base <span class="op">=</span> precio_base</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.stock <span class="op">=</span> stock</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> calcular_precio_final(<span class="va">self</span>):</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.precio_base</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> reducir_stock(<span class="va">self</span>, cantidad):</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.stock <span class="op">-=</span> cantidad</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> info(<span class="va">self</span>):</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>nombre<span class="sc">}</span><span class="ss">: $</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>calcular_precio_final()<span class="sc">:.2f}</span><span class="ss"> (stock </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>stock<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ProductoElectronico(Producto):</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, precio_base, stock, garantia_meses, marca):</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(nombre, precio_base, stock)</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.garantia_meses <span class="op">=</span> garantia_meses</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.marca <span class="op">=</span> marca</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> calcular_precio_final(<span class="va">self</span>):</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.precio_base <span class="op">*</span> <span class="fl">1.10</span>  <span class="co"># +10% de impuesto</span></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ProductoAlimenticio(Producto):</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>    DIAS_PROXIMO_A_CADUCAR <span class="op">=</span> <span class="dv">5</span>  <span class="co"># Criterio elegido</span></span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, precio_base, stock, fecha_caducidad):</span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(nombre, precio_base, stock)</span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.fecha_caducidad <span class="op">=</span> fecha_caducidad</span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> calcular_precio_final(<span class="va">self</span>):</span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a>        dias <span class="op">=</span> (<span class="va">self</span>.fecha_caducidad <span class="op">-</span> date.today()).days</span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> dias <span class="op">&lt;=</span> <span class="va">self</span>.DIAS_PROXIMO_A_CADUCAR:</span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">self</span>.precio_base <span class="op">*</span> <span class="fl">0.70</span>  <span class="co"># 30% de descuento</span></span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.precio_base</span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> procesar_compra(producto, cantidad):</span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Funciona con cualquier subclase de Producto."""</span></span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> cantidad <span class="op">&gt;</span> producto.stock:</span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"✗ Stock insuficiente de </span><span class="sc">{</span>producto<span class="sc">.</span>nombre<span class="sc">}</span><span class="ss"> (hay </span><span class="sc">{</span>producto<span class="sc">.</span>stock<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span></span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a>    total <span class="op">=</span> producto.calcular_precio_final() <span class="op">*</span> cantidad</span>
+<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a>    producto.reducir_stock(cantidad)</span>
+<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"✓ </span><span class="sc">{</span>cantidad<span class="sc">}</span><span class="ss"> x </span><span class="sc">{</span>producto<span class="sc">.</span>nombre<span class="sc">}</span><span class="ss"> = $</span><span class="sc">{</span>total<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a>audifonos <span class="op">=</span> ProductoElectronico(<span class="st">"Audífonos"</span>, <span class="dv">1000</span>, <span class="dv">5</span>, <span class="dv">12</span>, <span class="st">"Sony"</span>)</span>
+<span id="cb18-50"><a href="#cb18-50" aria-hidden="true" tabindex="-1"></a>yogur <span class="op">=</span> ProductoAlimenticio(<span class="st">"Yogur"</span>, <span class="dv">20</span>, <span class="dv">30</span>, date.today() <span class="op">+</span> timedelta(days<span class="op">=</span><span class="dv">2</span>))</span>
+<span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a>arroz <span class="op">=</span> ProductoAlimenticio(<span class="st">"Arroz"</span>, <span class="dv">35</span>, <span class="dv">50</span>, date.today() <span class="op">+</span> timedelta(days<span class="op">=</span><span class="dv">200</span>))</span>
+<span id="cb18-52"><a href="#cb18-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-53"><a href="#cb18-53" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> producto, cantidad <span class="kw">in</span> [(audifonos, <span class="dv">2</span>), (yogur, <span class="dv">10</span>), (arroz, <span class="dv">3</span>), (audifonos, <span class="dv">10</span>)]:</span>
+<span id="cb18-54"><a href="#cb18-54" aria-hidden="true" tabindex="-1"></a>    procesar_compra(producto, cantidad)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>✓ 2 x Audífonos = $2200.00
+✓ 10 x Yogur = $140.00
+✓ 3 x Arroz = $105.00
+✗ Stock insuficiente de Audífonos (hay 3)</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="resumen" class="level2" data-number="4.10">
+<h2 data-number="4.10" class="anchored" data-anchor-id="resumen"><span class="header-section-number">4.10</span> Resumen</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>Lo que aprendiste en este capítulo
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>✅ Qué es la herencia y por qué es útil</li>
+<li>✅ Cómo crear clases que heredan de otras</li>
+<li>✅ El uso de <code>super()</code> para extender funcionalidad</li>
+<li>✅ Sobrescritura de métodos (override)</li>
+<li>✅ Herencia multinivel</li>
+<li>✅ Funciones <code>isinstance()</code> e <code>issubclass()</code></li>
+<li>✅ Diseño de jerarquías de clases</li>
+</ul>
+</div>
+</div>
+<section id="conceptos-clave" class="level3" data-number="4.10.1">
+<h3 data-number="4.10.1" class="anchored" data-anchor-id="conceptos-clave"><span class="header-section-number">4.10.1</span> Conceptos clave</h3>
+<ul>
+<li><strong>DRY (Don’t Repeat Yourself)</strong>: La herencia ayuda a evitar duplicación de código</li>
+<li><strong>Relación “es-un”</strong>: Usa herencia cuando una clase “es un” tipo de otra clase
+<ul>
+<li>Un Perro “es un” Animal ✓</li>
+<li>Un Coche “tiene un” Motor (esto NO es herencia, es composición) ✗</li>
+</ul></li>
+</ul>
+</section>
+<section id="próximo-paso" class="level3" data-number="4.10.2">
+<h3 data-number="4.10.2" class="anchored" data-anchor-id="próximo-paso"><span class="header-section-number">4.10.2</span> Próximo paso</h3>
+<p>En el siguiente capítulo aprenderás:</p>
+<ul>
+<li><strong>Encapsulamiento</strong>: Atributos privados y públicos</li>
+<li>Propiedades y decoradores <code>@property</code></li>
+<li>Getters y setters</li>
+<li>Protección de datos</li>
+</ul>
+<p><strong>¡Ya dominas uno de los pilares fundamentales de la POO!</strong></p>
+
+
+<script type="pyodide-data">
+eyJvcHRpb25zIjp7ImVudiI6eyJQTE9UTFlfUkVOREVSRVIiOiJwbG90bHlfbWltZXR5cGUifSwiaW5kZXhVUkwiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvcHlvZGlkZS92MC4yOC4xL2Z1bGwvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsicHlvZGlkZV9odHRwIiwibWljcm9waXAiLCJpcHl0aG9uIl19fQ==
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTgiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl84ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS04LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtOC1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzggPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzgsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTciLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl83ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS03LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzcgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzcsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl81ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS01LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzUgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzUsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTQiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl80ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS00LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNC1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzQgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzQsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTMiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8zID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0zLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzMgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzMsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTIiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8yID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0yLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzIgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzIsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTEiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8xID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0xLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzEgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzEsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJpbnRlcnBvbGF0ZS02IiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoie1xuICBjb25zdCB7IGludGVycG9sYXRlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuICBjb25zdCBibG9ja19pZCA9IFwiNlwiO1xuICBjb25zdCBsYW5ndWFnZSA9IFwicHl0aG9uXCI7XG4gIGNvbnN0IGRlZl9tYXAgPSB7XG5jYW50aWRhZCxcbn07XG4gIGNvbnN0IGVsZW0gPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChgaW50ZXJwb2xhdGUtJHtibG9ja19pZH1gKTtcblxuICAvLyBTdG9yZSBvcmlnaW5hbCB0ZW1wbGF0ZWQgSFRNTCBmb3IgcmVmZXJlbmNlIGluIGZ1dHVyZSByZWFjdGl2ZSB1cGRhdGVzXG4gIGlmICghZWxlbS5vcmlnSFRNTCkgZWxlbS5vcmlnSFRNTCA9IGVsZW0uaW5uZXJIVE1MO1xuXG4gIC8vIEludGVycG9sYXRlIHJlYWN0aXZlIE9KUyB2YXJpYWJsZXMgaW50byBlc3RhYmxpc2hlZCBIVE1MIGVsZW1lbnRcbiAgZWxlbS5pbm5lckhUTUwgPSBlbGVtLm9yaWdIVE1MO1xuICBPYmplY3Qua2V5cyhkZWZfbWFwKS5mb3JFYWNoKChkZWYpID0+XG4gICAgaW50ZXJwb2xhdGUoZWxlbSwgXCIke1wiICsgZGVmICsgXCJ9XCIsIGRlZl9tYXBbZGVmXSwgbGFuZ3VhZ2UpXG4gICk7XG59XG4ifSx7ImNlbGxOYW1lIjoicHlvZGlkZS1wcmVsdWRlIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoicHlvZGlkZU9qcyA9IHtcbiAgY29uc3Qge1xuICAgIFB5b2RpZGVFdmFsdWF0b3IsXG4gICAgUHlvZGlkZUVudmlyb25tZW50TWFuYWdlcixcbiAgICBzZXR1cFB5dGhvbixcbiAgICBzdGFydFB5b2RpZGVXb3JrZXIsXG4gICAgYjY0RGVjb2RlLFxuICAgIGNvbGxhcHNlUGF0aCxcbiAgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG5cbiAgY29uc3Qgc3RhdHVzQ29udGFpbmVyID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoXCJleGVyY2lzZS1sb2FkaW5nLXN0YXR1c1wiKTtcbiAgY29uc3QgaW5kaWNhdG9yQ29udGFpbmVyID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoXCJleGVyY2lzZS1sb2FkaW5nLWluZGljYXRvclwiKTtcbiAgaW5kaWNhdG9yQ29udGFpbmVyLmNsYXNzTGlzdC5yZW1vdmUoXCJkLW5vbmVcIik7XG5cbiAgbGV0IHN0YXR1c1RleHQgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpXG4gIHN0YXR1c1RleHQuY2xhc3NMaXN0ID0gXCJleGVyY2lzZS1sb2FkaW5nLWRldGFpbHNcIjtcbiAgc3RhdHVzVGV4dCA9IHN0YXR1c0NvbnRhaW5lci5hcHBlbmRDaGlsZChzdGF0dXNUZXh0KTtcbiAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBJbml0aWFsaXNlYDtcblxuICAvLyBIb2lzdCBpbmRpY2F0b3Igb3V0IGZyb20gZmluYWwgc2xpZGUgd2hlbiBydW5uaW5nIHVuZGVyIHJldmVhbFxuICBjb25zdCByZXZlYWxTdGF0dXMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLnJldmVhbCAuZXhlcmNpc2UtbG9hZGluZy1pbmRpY2F0b3JcIik7XG4gIGlmIChyZXZlYWxTdGF0dXMpIHtcbiAgICByZXZlYWxTdGF0dXMucmVtb3ZlKCk7XG4gICAgZG9jdW1lbnQucXVlcnlTZWxlY3RvcihcIi5yZXZlYWwgPiAuc2xpZGVzXCIpLmFwcGVuZENoaWxkKHJldmVhbFN0YXR1cyk7XG4gIH1cblxuICAvLyBNYWtlIGFueSByZXZlYWwgc2xpZGVzIHdpdGggbGl2ZSBjZWxscyBzY3JvbGxhYmxlXG4gIGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3JBbGwoXCIucmV2ZWFsIC5leGVyY2lzZS1jZWxsXCIpLmZvckVhY2goKGVsKSA9PiB7XG4gICAgZWwuY2xvc2VzdCgnc2VjdGlvbi5zbGlkZScpLmNsYXNzTGlzdC5hZGQoXCJzY3JvbGxhYmxlXCIpO1xuICB9KVxuXG4gIC8vIFB5b2RpZGUgc3VwcGxlbWVudGFsIGRhdGEgYW5kIG9wdGlvbnNcbiAgY29uc3QgZGF0YUNvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS1kYXRhXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgZGF0YSA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKGRhdGFDb250ZW50KSk7XG5cbiAgLy8gR3JhYiBsaXN0IG9mIHJlc291cmNlcyB0byBiZSBkb3dubG9hZGVkXG4gIGNvbnN0IGZpbGVzQ29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJ2ZnMtZmlsZVxcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGZpbGVzID0gSlNPTi5wYXJzZShiNjREZWNvZGUoZmlsZXNDb250ZW50KSk7XG5cbiAgbGV0IHB5b2RpZGVQcm9taXNlID0gKGFzeW5jICgpID0+IHtcbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIFB5b2RpZGVgO1xuICAgIGNvbnN0IHB5b2RpZGUgPSBhd2FpdCBzdGFydFB5b2RpZGVXb3JrZXIoZGF0YS5vcHRpb25zKTtcblxuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcGFja2FnZTogbWljcm9waXBgO1xuICAgIGF3YWl0IHB5b2RpZGUubG9hZFBhY2thZ2UoXCJtaWNyb3BpcFwiKTtcbiAgICBjb25zdCBtaWNyb3BpcCA9IGF3YWl0IHB5b2RpZGUucHlpbXBvcnQoXCJtaWNyb3BpcFwiKTtcbiAgICBhd2FpdCBkYXRhLnBhY2thZ2VzLnBrZ3MubWFwKChwa2cpID0+ICgpID0+IHtcbiAgICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcGFja2FnZTogJHtwa2d9YDtcbiAgICAgIHJldHVybiBtaWNyb3BpcC5pbnN0YWxsKHBrZyk7XG4gICAgfSkucmVkdWNlKChjdXIsIG5leHQpID0+IGN1ci50aGVuKG5leHQpLCBQcm9taXNlLnJlc29sdmUoKSk7XG4gICAgYXdhaXQgbWljcm9waXAuZGVzdHJveSgpO1xuXG4gICAgLy8gRG93bmxvYWQgYW5kIGluc3RhbGwgcmVzb3VyY2VzXG4gICAgYXdhaXQgZmlsZXMubWFwKChmaWxlKSA9PiBhc3luYyAoKSA9PiB7XG4gICAgICBjb25zdCBuYW1lID0gZmlsZS5zdWJzdHJpbmcoZmlsZS5sYXN0SW5kZXhPZignLycpICsgMSk7XG4gICAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIHJlc291cmNlOiAke25hbWV9YDtcbiAgICAgIGNvbnN0IHJlc3BvbnNlID0gYXdhaXQgZmV0Y2goZmlsZSk7XG4gICAgICBpZiAoIXJlc3BvbnNlLm9rKSB7XG4gICAgICAgIHRocm93IG5ldyBFcnJvcihgQ2FuJ3QgZG93bmxvYWQgXFxgJHtmaWxlfVxcYC4gRXJyb3IgJHtyZXNwb25zZS5zdGF0dXN9OiBcIiR7cmVzcG9uc2Uuc3RhdHVzVGV4dH1cIi5gKTtcbiAgICAgIH1cbiAgICAgIGNvbnN0IGRhdGEgPSBhd2FpdCByZXNwb25zZS5hcnJheUJ1ZmZlcigpO1xuXG4gICAgICAvLyBTdG9yZSBVUkxzIGluIHRoZSBjd2Qgd2l0aG91dCBhbnkgc3ViZGlyZWN0b3J5IHN0cnVjdHVyZVxuICAgICAgaWYgKGZpbGUuaW5jbHVkZXMoXCI6Ly9cIikpIHtcbiAgICAgICAgZmlsZSA9IG5hbWU7XG4gICAgICB9XG5cbiAgICAgIC8vIENvbGxhcHNlIGhpZ2hlciBkaXJlY3Rvcnkgc3RydWN0dXJlXG4gICAgICBmaWxlID0gY29sbGFwc2VQYXRoKGZpbGUpO1xuXG4gICAgICAvLyBDcmVhdGUgZGlyZWN0b3J5IHRyZWUsIGlnbm9yaW5nIFwiZGlyZWN0b3J5IGV4aXN0c1wiIFZGUyBlcnJvcnNcbiAgICAgIGNvbnN0IHBhcnRzID0gZmlsZS5zcGxpdCgnLycpLnNsaWNlKDAsIC0xKTtcbiAgICAgIGxldCBwYXRoID0gJyc7XG4gICAgICB3aGlsZSAocGFydHMubGVuZ3RoID4gMCkge1xuICAgICAgICBwYXRoICs9IHBhcnRzLnNoaWZ0KCkgKyAnLyc7XG4gICAgICAgIHRyeSB7XG4gICAgICAgICAgYXdhaXQgcHlvZGlkZS5GUy5ta2RpcihwYXRoKTtcbiAgICAgICAgfSBjYXRjaCAoZSkge1xuICAgICAgICAgIGlmIChlLm5hbWUgIT09IFwiRXJybm9FcnJvclwiKSB0aHJvdyBlO1xuICAgICAgICAgIGlmIChlLmVycm5vICE9PSAyMCkge1xuICAgICAgICAgICAgY29uc3QgZXJyb3JUZXh0UHRyID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLl9zdHJlcnJvcihlLmVycm5vKTtcbiAgICAgICAgICAgIGNvbnN0IGVycm9yVGV4dCA9IGF3YWl0IHB5b2RpZGUuX21vZHVsZS5VVEY4VG9TdHJpbmcoZXJyb3JUZXh0UHRyKTtcbiAgICAgICAgICAgIHRocm93IG5ldyBFcnJvcihgRmlsZXN5c3RlbSBFcnJvciAke2UuZXJybm99IFwiJHtlcnJvclRleHR9XCIuYCk7XG4gICAgICAgICAgfVxuICAgICAgICB9XG4gICAgICB9XG5cbiAgICAgIC8vIFdyaXRlIHRoaXMgZmlsZSB0byB0aGUgVkZTXG4gICAgICB0cnkge1xuICAgICAgICByZXR1cm4gYXdhaXQgcHlvZGlkZS5GUy53cml0ZUZpbGUoZmlsZSwgbmV3IFVpbnQ4QXJyYXkoZGF0YSkpO1xuICAgICAgfSBjYXRjaCAoZSkge1xuICAgICAgICBpZiAoZS5uYW1lICE9PSBcIkVycm5vRXJyb3JcIikgdGhyb3cgZTtcbiAgICAgICAgY29uc3QgZXJyb3JUZXh0UHRyID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLl9zdHJlcnJvcihlLmVycm5vKTtcbiAgICAgICAgY29uc3QgZXJyb3JUZXh0ID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLlVURjhUb1N0cmluZyhlcnJvclRleHRQdHIpO1xuICAgICAgICB0aHJvdyBuZXcgRXJyb3IoYEZpbGVzeXN0ZW0gRXJyb3IgJHtlLmVycm5vfSBcIiR7ZXJyb3JUZXh0fVwiLmApO1xuICAgICAgfVxuICAgIH0pLnJlZHVjZSgoY3VyLCBuZXh0KSA9PiBjdXIudGhlbihuZXh0KSwgUHJvbWlzZS5yZXNvbHZlKCkpO1xuXG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBQeW9kaWRlIGVudmlyb25tZW50IHNldHVwYDtcbiAgICBhd2FpdCBzZXR1cFB5dGhvbihweW9kaWRlKTtcblxuICAgIHN0YXR1c1RleHQucmVtb3ZlKCk7XG4gICAgaWYgKHN0YXR1c0NvbnRhaW5lci5jaGlsZHJlbi5sZW5ndGggPT0gMCkge1xuICAgICAgc3RhdHVzQ29udGFpbmVyLnBhcmVudE5vZGUucmVtb3ZlKCk7XG4gICAgfVxuICAgIHJldHVybiBweW9kaWRlO1xuICB9KSgpLmNhdGNoKChlcnIpID0+IHtcbiAgICBzdGF0dXNUZXh0LnN0eWxlLmNvbG9yID0gXCJ2YXIoLS1leGVyY2lzZS1lZGl0b3ItaGwtZXIsICNBRDAwMDApXCI7XG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGVyci5tZXNzYWdlO1xuICAgIC8vaW5kaWNhdG9yQ29udGFpbmVyLnF1ZXJ5U2VsZWN0b3IoXCIuc3Bpbm5lci1ncm93XCIpLmNsYXNzTGlzdC5hZGQoXCJkLW5vbmVcIik7XG4gICAgdGhyb3cgZXJyO1xuICB9KTtcblxuICAvLyBLZWVwIHRyYWNrIG9mIGluaXRpYWwgT0pTIGJsb2NrIHJlbmRlclxuICBjb25zdCByZW5kZXJlZE9qcyA9IHt9O1xuXG4gIGNvbnN0IHByb2Nlc3MgPSBhc3luYyAoY29udGV4dCwgaW5wdXRzKSA9PiB7XG4gICAgY29uc3QgcHlvZGlkZSA9IGF3YWl0IHB5b2RpZGVQcm9taXNlO1xuICAgIGNvbnN0IGV2YWx1YXRvciA9IG5ldyBQeW9kaWRlRXZhbHVhdG9yKHB5b2RpZGUsIGNvbnRleHQpO1xuICAgIGF3YWl0IGV2YWx1YXRvci5wcm9jZXNzKGlucHV0cyk7XG4gICAgcmV0dXJuIGV2YWx1YXRvci5jb250YWluZXI7XG4gIH1cblxuICByZXR1cm4ge1xuICAgIHB5b2RpZGVQcm9taXNlLFxuICAgIHJlbmRlcmVkT2pzLFxuICAgIHByb2Nlc3MsXG4gIH07XG59XG4ifV19
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+W10=
+</script>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script>
+// Traduce al español los textos de la interfaz de quarto-live (la extensión no tiene opción de idioma).
+(function () {
+  const traducciones = [
+    [/^Run Code$/, "Ejecutar"],
+    [/^Start Over$/, "Reiniciar"],
+    [/^Show Solution$/, "Ver solución"],
+    [/^Show Hint$/, "Ver pista"],
+    [/^Downloading Pyodide/, "Descargando Python (Pyodide)…"],
+    [/^Initialise$/, "Iniciando…"],
+    [/^Pyodide environment setup$/, "Preparando el entorno de Python…"],
+    [/^Downloading package: (.*)$/, "Descargando paquete: $1"],
+    [/^Downloading resource: (.*)$/, "Descargando recurso: $1"],
+  ];
+  function traducir(raiz) {
+    const recorrido = document.createTreeWalker(raiz, NodeFilter.SHOW_TEXT);
+    let nodo;
+    while ((nodo = recorrido.nextNode())) {
+      const texto = nodo.nodeValue.trim();
+      if (!texto) continue;
+      for (const [patron, reemplazo] of traducciones) {
+        if (patron.test(texto)) {
+          nodo.nodeValue = nodo.nodeValue.replace(texto, texto.replace(patron, reemplazo));
+          break;
+        }
+      }
+    }
+  }
+  const observador = new MutationObserver((cambios) => {
+    for (const c of cambios) {
+      if (c.type === "characterData") traducir(c.target.parentNode || document.body);
+      for (const n of c.addedNodes) traducir(n.nodeType === 1 ? n : n.parentNode || document.body);
+    }
+  });
+  document.addEventListener("DOMContentLoaded", () => {
+    traducir(document.body);
+    observador.observe(document.body, { childList: true, subtree: true, characterData: true });
+  });
+})();
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W119
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../..";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Alternar modo oscuro");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Alternar modo oscuro");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Código desplazable","output":"Salida desplazable"};
+  </script>
+<nav class="page-navigation" aria-label="Página">
+  <div class="nav-page nav-page-previous">
+      <a href="./03_constructor_self.html" class="pagination-link" aria-label="Constructor y Self">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Constructor y Self</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./05_encapsulamiento.html" class="pagination-link" aria-label="Encapsulamiento y Propiedades">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Encapsulamiento y Propiedades</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

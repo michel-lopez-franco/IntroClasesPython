@@ -1,0 +1,26 @@
+{
+  "01_quarto/guia_rapida.qmd": {
+    "guia_rapida.html": "8c0d6098"
+  },
+  "01_quarto/ejemplos/01_hola_quarto.qmd": {
+    "01_hola_quarto.html": "522cfb9f"
+  },
+  "01_quarto/ejemplos/04_tablas_ecuaciones.qmd": {
+    "04_tablas_ecuaciones.html": "d69f0767"
+  },
+  "01_quarto/ejemplos/05_clases_python.qmd": {
+    "05_clases_python.html": "96560421"
+  },
+  "01_quarto/ejemplos/06_presentacion.qmd": {
+    "06_presentacion.html": "3a48d798"
+  },
+  "01_quarto/ejemplos/02_opciones_celdas.qmd": {
+    "02_opciones_celdas.html": "f8f11235"
+  },
+  "01_quarto/ejemplos/03_graficas.qmd": {
+    "03_graficas.html": "f39be595"
+  },
+  "src/01_Introduccion_Clases_Objetos.ipynb": {
+    "01_Introduccion_Clases_Objetos.html": "32d5a9c5"
+  }
+}

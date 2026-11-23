@@ -1,0 +1,39 @@
+{
+  "index.qmd": {
+    "index.html": "9a34b6d5"
+  },
+  "guia_rapida.qmd": {
+    "guia_rapida.html": "72f60102"
+  },
+  "ejemplos/01_hola_quarto.qmd": {
+    "01_hola_quarto.html": "7fcc4fca"
+  },
+  "ejemplos/02_opciones_celdas.qmd": {
+    "02_opciones_celdas.html": "345c26f9"
+  },
+  "ejemplos/03_graficas.qmd": {
+    "03_graficas.html": "d627cb49"
+  },
+  "ejemplos/04_tablas_ecuaciones.qmd": {
+    "04_tablas_ecuaciones.html": "d8a49d6b"
+  },
+  "ejemplos/05_clases_python.qmd": {
+    "05_clases_python.html": "29c8e361"
+  },
+  "ejemplos/06_presentacion.qmd": {
+    "06_presentacion.html": "1db8e700"
+  },
+  "ejemplos/07_animaciones_plotly.qmd": {
+    "07_animaciones_plotly.html": "e646230e"
+  },
+  "ejemplos/08_html_js.qmd": {
+    "08_html_js.html": "ba6077b5"
+  },
+  "ejemplos/09_convertir_ipynb_py.qmd": {
+    "09_convertir_ipynb_py.html": "c896e90d"
+  },
+  "ejemplos/09_conversion/notebook_ejemplo.ipynb": {
+    "notebook_ejemplo.out.ipynb": "192a2197",
+    "notebook_ejemplo-preview.html": "3b01879b"
+  }
+}

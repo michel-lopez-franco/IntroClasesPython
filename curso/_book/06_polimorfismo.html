@@ -1,0 +1,2175 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>6&nbsp; Polimorfismo – Programación Orientada a Objetos en Python</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./07_metodos_especiales.html" rel="next">
+<link href="./05_encapsulamiento.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-5de16f5e46225c21e2daa90d340bf64f.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-3218d7d29a29f08bc4fdf3802c3e3ca5.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-5de16f5e46225c21e2daa90d340bf64f.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-e3b950a2b943166ab6d411ad4b57e84b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-e140c1282dc1723bc70c5828ab63e8bf.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-e3b950a2b943166ab6d411ad4b57e84b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No se han encontrado resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+<script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+<script src="site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Saltar al contenido principal</a><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
+        setTimeout(() => {
+          window.scrollTo(0, scrollY);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" aria-label="Barra de herramientas">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04_herencia.html">Pilares de la POO</a></li><li class="breadcrumb-item"><a href="./06_polimorfismo.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Polimorfismo</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Sitio web">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Programación Orientada a Objetos en Python</a> 
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro" aria-label="Alternar modo oscuro"><i class="bi"></i></button>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Presentación</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Fundamentos</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_clases_objetos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducción a Clases y Objetos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_atributos_metodos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Atributos y Métodos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_constructor_self.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Constructor y Self</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">Pilares de la POO</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04_herencia.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Herencia</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05_encapsulamiento.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Encapsulamiento y Propiedades</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_polimorfismo.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Polimorfismo</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-3-label">Conceptos avanzados</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07_metodos_especiales.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Métodos Especiales (Magic Methods)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08_composicion_agregacion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Composición y Agregación</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09_clases_abstractas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Clases Abstractas e Interfaces</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-4-label">Proyecto</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10_proyecto_integrador.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Proyecto Integrador: Sistema de Tienda en Línea</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-5-label">Apéndices</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./recursos/referencia.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Hoja de referencia de POO en Python</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#qué-es-el-polimorfismo" id="toc-qué-es-el-polimorfismo" class="nav-link active" data-scroll-target="#qué-es-el-polimorfismo"><span class="header-section-number">6.1</span> ¿Qué es el Polimorfismo?</a>
+  <ul class="collapse">
+  <li><a href="#analogía-del-mundo-real" id="toc-analogía-del-mundo-real" class="nav-link" data-scroll-target="#analogía-del-mundo-real"><span class="header-section-number">6.1.1</span> Analogía del mundo real</a></li>
+  </ul></li>
+  <li><a href="#polimorfismo-básico-con-herencia" id="toc-polimorfismo-básico-con-herencia" class="nav-link" data-scroll-target="#polimorfismo-básico-con-herencia"><span class="header-section-number">6.2</span> Polimorfismo Básico con Herencia</a>
+  <ul class="collapse">
+  <li><a href="#la-magia-del-polimorfismo" id="toc-la-magia-del-polimorfismo" class="nav-link" data-scroll-target="#la-magia-del-polimorfismo"><span class="header-section-number">6.2.1</span> La Magia del Polimorfismo</a></li>
+  <li><a href="#el-despacho-polimórfico-paso-a-paso" id="toc-el-despacho-polimórfico-paso-a-paso" class="nav-link" data-scroll-target="#el-despacho-polimórfico-paso-a-paso"><span class="header-section-number">6.2.2</span> El despacho polimórfico, paso a paso</a></li>
+  </ul></li>
+  <li><a href="#duck-typing" id="toc-duck-typing" class="nav-link" data-scroll-target="#duck-typing"><span class="header-section-number">6.3</span> Duck Typing</a></li>
+  <li><a href="#polimorfismo-con-diferentes-clases" id="toc-polimorfismo-con-diferentes-clases" class="nav-link" data-scroll-target="#polimorfismo-con-diferentes-clases"><span class="header-section-number">6.4</span> Polimorfismo con Diferentes Clases</a></li>
+  <li><a href="#polimorfismo-con-operadores" id="toc-polimorfismo-con-operadores" class="nav-link" data-scroll-target="#polimorfismo-con-operadores"><span class="header-section-number">6.5</span> Polimorfismo con Operadores</a></li>
+  <li><a href="#ejemplo-sistema-de-notificaciones" id="toc-ejemplo-sistema-de-notificaciones" class="nav-link" data-scroll-target="#ejemplo-sistema-de-notificaciones"><span class="header-section-number">6.6</span> Ejemplo: Sistema de Notificaciones</a></li>
+  <li><a href="#ejemplo-sistema-de-archivos" id="toc-ejemplo-sistema-de-archivos" class="nav-link" data-scroll-target="#ejemplo-sistema-de-archivos"><span class="header-section-number">6.7</span> Ejemplo: Sistema de Archivos</a></li>
+  <li><a href="#ejercicios-prácticos" id="toc-ejercicios-prácticos" class="nav-link" data-scroll-target="#ejercicios-prácticos"><span class="header-section-number">6.8</span> Ejercicios Prácticos</a>
+  <ul class="collapse">
+  <li><a href="#ejercicio-1-formas-geométricas" id="toc-ejercicio-1-formas-geométricas" class="nav-link" data-scroll-target="#ejercicio-1-formas-geométricas"><span class="header-section-number">6.8.1</span> Ejercicio 1: Formas Geométricas</a></li>
+  <li><a href="#ejercicio-2-sistema-de-transporte" id="toc-ejercicio-2-sistema-de-transporte" class="nav-link" data-scroll-target="#ejercicio-2-sistema-de-transporte"><span class="header-section-number">6.8.2</span> Ejercicio 2: Sistema de Transporte</a></li>
+  <li><a href="#ejercicio-3-sistema-de-empleados" id="toc-ejercicio-3-sistema-de-empleados" class="nav-link" data-scroll-target="#ejercicio-3-sistema-de-empleados"><span class="header-section-number">6.8.3</span> Ejercicio 3: Sistema de Empleados</a></li>
+  <li><a href="#ejercicio-4-sistema-de-jugadores-de-videojuego-desafío" id="toc-ejercicio-4-sistema-de-jugadores-de-videojuego-desafío" class="nav-link" data-scroll-target="#ejercicio-4-sistema-de-jugadores-de-videojuego-desafío"><span class="header-section-number">6.8.4</span> Ejercicio 4: Sistema de Jugadores de Videojuego (Desafío)</a></li>
+  </ul></li>
+  <li><a href="#resumen" id="toc-resumen" class="nav-link" data-scroll-target="#resumen"><span class="header-section-number">6.9</span> Resumen</a>
+  <ul class="collapse">
+  <li><a href="#conceptos-clave" id="toc-conceptos-clave" class="nav-link" data-scroll-target="#conceptos-clave"><span class="header-section-number">6.9.1</span> Conceptos Clave</a></li>
+  <li><a href="#los-4-pilares-de-poo-ya-los-conoces-todos" id="toc-los-4-pilares-de-poo-ya-los-conoces-todos" class="nav-link" data-scroll-target="#los-4-pilares-de-poo-ya-los-conoces-todos"><span class="header-section-number">6.9.2</span> Los 4 Pilares de POO (¡Ya los conoces todos!)</a></li>
+  <li><a href="#próximo-paso" id="toc-próximo-paso" class="nav-link" data-scroll-target="#próximo-paso"><span class="header-section-number">6.9.3</span> Próximo paso</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04_herencia.html">Pilares de la POO</a></li><li class="breadcrumb-item"><a href="./06_polimorfismo.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Polimorfismo</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Polimorfismo</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>Objetivos
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Al terminar este capítulo podrás:</p>
+<ul>
+<li>Explicar el polimorfismo como “mismo mensaje, distinto comportamiento”.</li>
+<li>Aplicar polimorfismo mediante herencia y sobrescritura de métodos.</li>
+<li>Usar <em>duck typing</em> para escribir funciones que aceptan cualquier objeto con los métodos adecuados.</li>
+<li>Diseñar sistemas extensibles sin cadenas de <code>if</code> que pregunten por el tipo.</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Material de este tema
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Diapositivas:</strong> <a href="slides/_site/06_polimorfismo.html" target="_blank">abrir la presentación</a> (<strong>F</strong> pantalla completa, <strong>S</strong> notas del presentador, <strong>Esc</strong> vista general).</li>
+<li><strong>Notebook original:</strong> <a href="https://colab.research.google.com/github/michel-lopez-franco/IntroClasesPython/blob/main/src/06_Polimorfismo.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid" alt="Abrir en Colab"></a> — ejecútalo completo en Google Colab, sin instalar nada.</li>
+</ul>
+</div>
+</div>
+<section id="qué-es-el-polimorfismo" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="qué-es-el-polimorfismo"><span class="header-section-number">6.1</span> ¿Qué es el Polimorfismo?</h2>
+<p>Polimorfismo significa “muchas formas”. Es la capacidad de objetos de diferentes clases de responder al mismo método de manera diferente.</p>
+<section id="analogía-del-mundo-real" class="level3" data-number="6.1.1">
+<h3 data-number="6.1.1" class="anchored" data-anchor-id="analogía-del-mundo-real"><span class="header-section-number">6.1.1</span> Analogía del mundo real</h3>
+<p>Piensa en el comando “habla”:</p>
+<ul>
+<li>Un <strong>perro</strong> responde: “¡Guau!”</li>
+<li>Un <strong>gato</strong> responde: “¡Miau!”</li>
+<li>Un <strong>pato</strong> responde: “¡Cuac!”</li>
+</ul>
+<p>Todos responden al mismo comando, pero cada uno a su manera. Eso es polimorfismo.</p>
+</section>
+</section>
+<section id="polimorfismo-básico-con-herencia" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="polimorfismo-básico-con-herencia"><span class="header-section-number">6.2</span> Polimorfismo Básico con Herencia</h2>
+<div>
+<div id="pyodide-1" class="exercise-cell">
+
+</div>
+<script type="pyodide-1-contents">
+eyJhdHRyIjp7ImF1dG9ydW4iOnRydWUsImNhcHRpb24iOiJFamVtcGxvIGludGVyYWN0aXZvOiBtb2RpZsOtY2FsbyB5IHZ1ZWx2ZSBhIGVqZWN1dGFybG8iLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlfSwiY29kZSI6ImNsYXNzIEFuaW1hbDpcbiAgICBkZWYgX19pbml0X18oc2VsZiwgbm9tYnJlKTpcbiAgICAgICAgc2VsZi5ub21icmUgPSBub21icmVcbiAgICBcbiAgICBkZWYgaGFjZXJfc29uaWRvKHNlbGYpOlxuICAgICAgICBwYXNzICAjIE3DqXRvZG8gZ2Vuw6lyaWNvXG5cbmNsYXNzIFBlcnJvKEFuaW1hbCk6XG4gICAgZGVmIGhhY2VyX3NvbmlkbyhzZWxmKTpcbiAgICAgICAgcmV0dXJuIGZcIntzZWxmLm5vbWJyZX0gZGljZTogwqFHdWF1IVwiXG5cbmNsYXNzIEdhdG8oQW5pbWFsKTpcbiAgICBkZWYgaGFjZXJfc29uaWRvKHNlbGYpOlxuICAgICAgICByZXR1cm4gZlwie3NlbGYubm9tYnJlfSBkaWNlOiDCoU1pYXUhXCJcblxuY2xhc3MgVmFjYShBbmltYWwpOlxuICAgIGRlZiBoYWNlcl9zb25pZG8oc2VsZik6XG4gICAgICAgIHJldHVybiBmXCJ7c2VsZi5ub21icmV9IGRpY2U6IMKhTXV1dSFcIlxuXG4jIENyZWFyIGRpZmVyZW50ZXMgYW5pbWFsZXNcbmFuaW1hbGVzID0gW1xuICAgIFBlcnJvKFwiUmV4XCIpLFxuICAgIEdhdG8oXCJXaGlza2Vyc1wiKSxcbiAgICBWYWNhKFwiTG9sYVwiKSxcbiAgICBQZXJybyhcIk1heFwiKVxuXVxuXG4jIFBvbGltb3JmaXNtbyBlbiBhY2Npw7NuOiBtaXNtbyBtw6l0b2RvLCBkaWZlcmVudGVzIHJlc3VsdGFkb3NcbmZvciBhbmltYWwgaW4gYW5pbWFsZXM6XG4gICAgcHJpbnQoYW5pbWFsLmhhY2VyX3NvbmlkbygpKSJ9
+</script>
+</div>
+<section id="la-magia-del-polimorfismo" class="level3" data-number="6.2.1">
+<h3 data-number="6.2.1" class="anchored" data-anchor-id="la-magia-del-polimorfismo"><span class="header-section-number">6.2.1</span> La Magia del Polimorfismo</h3>
+<p>No necesitamos saber el tipo exacto del objeto. Solo necesitamos saber que tiene el método <code>hacer_sonido()</code>.</p>
+</section>
+<section id="el-despacho-polimórfico-paso-a-paso" class="level3" data-number="6.2.2">
+<h3 data-number="6.2.2" class="anchored" data-anchor-id="el-despacho-polimórfico-paso-a-paso"><span class="header-section-number">6.2.2</span> El despacho polimórfico, paso a paso</h3>
+<p>En cada vuelta del ciclo, la variable <code>animal</code> apunta a un objeto distinto. Python no mira el nombre de la variable sino el <strong>tipo real del objeto</strong> para decidir qué versión de <code>hacer_sonido()</code> ejecutar.</p>
+<div id="anim-poli" class="anim-poli">
+  <style>
+    .anim-poli { border: 1px solid var(--bs-border-color, #ccc); border-radius: 10px; padding: 1rem; margin: 1rem 0; }
+    .anim-poli .mono { font-family: var(--bs-font-monospace, monospace); font-size: .85rem; }
+    .anim-poli .fila { display: flex; flex-wrap: wrap; gap: .5rem; margin: .6rem 0; align-items: center; }
+    .anim-poli .obj, .anim-poli .clase { border: 2px solid var(--bs-border-color, #bbb); border-radius: 8px;
+                                        padding: .3rem .6rem; transition: all .25s; }
+    .anim-poli .obj.activo { border-color: #2780e3; background: rgba(39,128,227,.15); transform: translateY(-3px); }
+    .anim-poli .clase.activa { border-color: #3fb618; background: rgba(63,182,24,.18); }
+    .anim-poli .clase.base { border-style: dashed; opacity: .75; }
+    .anim-poli .etiqueta { min-width: 5.5rem; opacity: .7; font-size: .85rem; }
+    .anim-poli .salida { white-space: pre-wrap; background: rgba(128,128,128,.08); border-radius: 8px;
+                         padding: .5rem .8rem; min-height: 6.5rem; margin: .6rem 0 0; }
+    .anim-poli .paso { min-height: 1.4rem; }
+  </style>
+  <pre class="mono" style="margin-bottom:.4rem">for animal in animales:
+    print(animal.hacer_sonido())</pre>
+  <div class="fila"><span class="etiqueta">animales</span></div>
+  <div class="fila"><span class="etiqueta">clases</span></div>
+  <div class="paso mono"></div>
+  <pre class="salida mono" aria-live="polite"></pre>
+  <div class="fila">
+    <button class="btn btn-sm btn-primary" data-accion="todo">▶ Ejecutar el ciclo</button>
+    <button class="btn btn-sm btn-outline-primary" data-accion="paso">Siguiente iteración</button>
+    <button class="btn btn-sm btn-outline-secondary" data-accion="reiniciar">Reiniciar</button>
+  </div>
+  <script>
+  (() => {
+    const raiz = document.getElementById("anim-poli");
+    const [filaObjs, filaClases] = raiz.querySelectorAll(".fila");
+    const pasoTxt = raiz.querySelector(".paso");
+    const salida = raiz.querySelector(".salida");
+    const sonidos = { Perro: "¡Guau!", Gato: "¡Miau!", Vaca: "¡Muuu!" };
+    const animales = [["Perro", "Rex"], ["Gato", "Whiskers"], ["Vaca", "Lola"], ["Perro", "Max"]];
+
+    const crear = (fila, clase, texto) => {
+      const e = document.createElement("span"); e.className = clase + " mono"; e.innerHTML = texto;
+      fila.appendChild(e); return e;
+    };
+    const objs = animales.map(([c, n], i) => crear(filaObjs, "obj", `[${i}] ${c}("${n}")`));
+    const base = crear(filaClases, "clase base", "Animal.hacer_sonido()<br><small>genérico</small>");
+    const clases = Object.fromEntries(Object.keys(sonidos).map(c =>
+      [c, crear(filaClases, "clase", `${c}.hacer_sonido()<br><small>sobrescrito</small>`)]));
+
+    let i = 0, ocupado = false;
+    const pausa = ms => new Promise(r => setTimeout(r, ms));
+    const limpiar = () => raiz.querySelectorAll(".activo, .activa").forEach(e => e.classList.remove("activo", "activa"));
+
+    async function iteracion() {
+      if (i >= animales.length) { pasoTxt.textContent = "Fin del ciclo. Pulsa Reiniciar."; return false; }
+      const [clase, nombre] = animales[i];
+      limpiar();
+      objs[i].classList.add("activo");
+      pasoTxt.textContent = `animal = animales[${i}]   →  type(animal) es ${clase}`;
+      await pausa(800);
+      clases[clase].classList.add("activa");
+      pasoTxt.textContent = `animal.hacer_sonido()  →  Python ejecuta ${clase}.hacer_sonido()`;
+      await pausa(800);
+      salida.textContent += `${nombre} dice: ${sonidos[clase]}\n`;
+      i++;
+      return true;
+    }
+    function reiniciar() { i = 0; limpiar(); salida.textContent = ""; pasoTxt.textContent = "Mismo mensaje, distinto comportamiento: pulsa ▶."; }
+
+    raiz.querySelectorAll("button").forEach(b => b.addEventListener("click", async () => {
+      if (ocupado) return;
+      ocupado = true;
+      const accion = b.dataset.accion;
+      if (accion === "reiniciar") reiniciar();
+      else if (accion === "paso") await iteracion();
+      else { if (i >= animales.length) reiniciar(); while (await iteracion()) await pausa(300); limpiar(); }
+      ocupado = false;
+    }));
+    reiniciar();
+  })();
+  </script>
+</div>
+</section>
+</section>
+<section id="duck-typing" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="duck-typing"><span class="header-section-number">6.3</span> Duck Typing</h2>
+<blockquote class="blockquote">
+<p>“Si camina como un pato y grazna como un pato, entonces debe ser un pato.”</p>
+</blockquote>
+<p>En Python, el polimorfismo no requiere herencia. Solo necesitas que los objetos tengan el mismo método.</p>
+<div>
+<div id="pyodide-2" class="exercise-cell">
+
+</div>
+<script type="pyodide-2-contents">
+eyJhdHRyIjp7ImF1dG9ydW4iOnRydWUsImNhcHRpb24iOiJFamVtcGxvIGludGVyYWN0aXZvOiBtb2RpZsOtY2FsbyB5IHZ1ZWx2ZSBhIGVqZWN1dGFybG8iLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlfSwiY29kZSI6IiMgRXN0YXMgY2xhc2VzIE5PIHRpZW5lbiByZWxhY2nDs24gZGUgaGVyZW5jaWFcbmNsYXNzIFBhdG86XG4gICAgZGVmIGhhYmxhcihzZWxmKTpcbiAgICAgICAgcmV0dXJuIFwiwqFDdWFjIGN1YWMhXCJcblxuY2xhc3MgUGVyc29uYTpcbiAgICBkZWYgaGFibGFyKHNlbGYpOlxuICAgICAgICByZXR1cm4gXCLCoUhvbGEhXCJcblxuY2xhc3MgUm9ib3Q6XG4gICAgZGVmIGhhYmxhcihzZWxmKTpcbiAgICAgICAgcmV0dXJuIFwiQmVlcCBib29wXCJcblxuIyBGdW5jacOzbiBxdWUgYWNlcHRhIGN1YWxxdWllciBvYmpldG8gY29uIG3DqXRvZG8gaGFibGFyKClcbmRlZiBoYWNlcl9oYWJsYXIoY29zYSk6XG4gICAgcHJpbnQoY29zYS5oYWJsYXIoKSlcblxuIyBGdW5jaW9uYSBjb24gdG9kb3MsIHNpbiBpbXBvcnRhciBsYSBjbGFzZVxuaGFjZXJfaGFibGFyKFBhdG8oKSlcbmhhY2VyX2hhYmxhcihQZXJzb25hKCkpXG5oYWNlcl9oYWJsYXIoUm9ib3QoKSkifQ==
+</script>
+</div>
+</section>
+<section id="polimorfismo-con-diferentes-clases" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="polimorfismo-con-diferentes-clases"><span class="header-section-number">6.4</span> Polimorfismo con Diferentes Clases</h2>
+<p>Un ejemplo más práctico: diferentes formas de pago</p>
+<div id="35850360" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="interpolate-3-1"><a href="#interpolate-3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TarjetaCredito:</span>
+<span id="interpolate-3-2"><a href="#interpolate-3-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, numero, titular):</span>
+<span id="interpolate-3-3"><a href="#interpolate-3-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.numero <span class="op">=</span> numero</span>
+<span id="interpolate-3-4"><a href="#interpolate-3-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.titular <span class="op">=</span> titular</span>
+<span id="interpolate-3-5"><a href="#interpolate-3-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="interpolate-3-6"><a href="#interpolate-3-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> procesar_pago(<span class="va">self</span>, monto):</span>
+<span id="interpolate-3-7"><a href="#interpolate-3-7" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Procesando $</span><span class="sc">{</span>monto<span class="sc">}</span><span class="ss"> con tarjeta de crédito"</span>)</span>
+<span id="interpolate-3-8"><a href="#interpolate-3-8" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Titular: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>titular<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="interpolate-3-9"><a href="#interpolate-3-9" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Últimos 4 dígitos: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>numero[<span class="op">-</span><span class="dv">4</span>:]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="interpolate-3-10"><a href="#interpolate-3-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">True</span></span>
+<span id="interpolate-3-11"><a href="#interpolate-3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-3-12"><a href="#interpolate-3-12" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> PayPal:</span>
+<span id="interpolate-3-13"><a href="#interpolate-3-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, email):</span>
+<span id="interpolate-3-14"><a href="#interpolate-3-14" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.email <span class="op">=</span> email</span>
+<span id="interpolate-3-15"><a href="#interpolate-3-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="interpolate-3-16"><a href="#interpolate-3-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> procesar_pago(<span class="va">self</span>, monto):</span>
+<span id="interpolate-3-17"><a href="#interpolate-3-17" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Procesando $</span><span class="sc">{</span>monto<span class="sc">}</span><span class="ss"> con PayPal"</span>)</span>
+<span id="interpolate-3-18"><a href="#interpolate-3-18" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Email: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>email<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="interpolate-3-19"><a href="#interpolate-3-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">True</span></span>
+<span id="interpolate-3-20"><a href="#interpolate-3-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-3-21"><a href="#interpolate-3-21" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Efectivo:</span>
+<span id="interpolate-3-22"><a href="#interpolate-3-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> procesar_pago(<span class="va">self</span>, monto):</span>
+<span id="interpolate-3-23"><a href="#interpolate-3-23" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Recibiendo $</span><span class="sc">{</span>monto<span class="sc">}</span><span class="ss"> en efectivo"</span>)</span>
+<span id="interpolate-3-24"><a href="#interpolate-3-24" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Por favor, entregue el dinero al cajero"</span>)</span>
+<span id="interpolate-3-25"><a href="#interpolate-3-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">True</span></span>
+<span id="interpolate-3-26"><a href="#interpolate-3-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-3-27"><a href="#interpolate-3-27" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Carrito:</span>
+<span id="interpolate-3-28"><a href="#interpolate-3-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="interpolate-3-29"><a href="#interpolate-3-29" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.total <span class="op">=</span> <span class="dv">0</span></span>
+<span id="interpolate-3-30"><a href="#interpolate-3-30" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="interpolate-3-31"><a href="#interpolate-3-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> agregar_monto(<span class="va">self</span>, monto):</span>
+<span id="interpolate-3-32"><a href="#interpolate-3-32" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.total <span class="op">+=</span> monto</span>
+<span id="interpolate-3-33"><a href="#interpolate-3-33" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="interpolate-3-34"><a href="#interpolate-3-34" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Este método acepta CUALQUIER forma de pago</span></span>
+<span id="interpolate-3-35"><a href="#interpolate-3-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> pagar(<span class="va">self</span>, metodo_pago):</span>
+<span id="interpolate-3-36"><a href="#interpolate-3-36" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Total a pagar: $</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>total<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="interpolate-3-37"><a href="#interpolate-3-37" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">40</span>)</span>
+<span id="interpolate-3-38"><a href="#interpolate-3-38" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="interpolate-3-39"><a href="#interpolate-3-39" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> metodo_pago.procesar_pago(<span class="va">self</span>.total):</span>
+<span id="interpolate-3-40"><a href="#interpolate-3-40" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">"✓ Pago exitoso"</span>)</span>
+<span id="interpolate-3-41"><a href="#interpolate-3-41" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.total <span class="op">=</span> <span class="dv">0</span></span>
+<span id="interpolate-3-42"><a href="#interpolate-3-42" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="interpolate-3-43"><a href="#interpolate-3-43" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">"✗ Pago fallido"</span>)</span>
+<span id="interpolate-3-44"><a href="#interpolate-3-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-3-45"><a href="#interpolate-3-45" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear carrito</span></span>
+<span id="interpolate-3-46"><a href="#interpolate-3-46" aria-hidden="true" tabindex="-1"></a>carrito <span class="op">=</span> Carrito()</span>
+<span id="interpolate-3-47"><a href="#interpolate-3-47" aria-hidden="true" tabindex="-1"></a>carrito.agregar_monto(<span class="dv">100</span>)</span>
+<span id="interpolate-3-48"><a href="#interpolate-3-48" aria-hidden="true" tabindex="-1"></a>carrito.agregar_monto(<span class="dv">50</span>)</span>
+<span id="interpolate-3-49"><a href="#interpolate-3-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-3-50"><a href="#interpolate-3-50" aria-hidden="true" tabindex="-1"></a><span class="co"># Probar con diferentes métodos de pago</span></span>
+<span id="interpolate-3-51"><a href="#interpolate-3-51" aria-hidden="true" tabindex="-1"></a>tarjeta <span class="op">=</span> TarjetaCredito(<span class="st">"1234567890123456"</span>, <span class="st">"Ana García"</span>)</span>
+<span id="interpolate-3-52"><a href="#interpolate-3-52" aria-hidden="true" tabindex="-1"></a>carrito.pagar(tarjeta)</span>
+<span id="interpolate-3-53"><a href="#interpolate-3-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-3-54"><a href="#interpolate-3-54" aria-hidden="true" tabindex="-1"></a><span class="co"># Otro carrito, otro método</span></span>
+<span id="interpolate-3-55"><a href="#interpolate-3-55" aria-hidden="true" tabindex="-1"></a>carrito.agregar_monto(<span class="dv">75</span>)</span>
+<span id="interpolate-3-56"><a href="#interpolate-3-56" aria-hidden="true" tabindex="-1"></a>paypal <span class="op">=</span> PayPal(<span class="st">"usuario@example.com"</span>)</span>
+<span id="interpolate-3-57"><a href="#interpolate-3-57" aria-hidden="true" tabindex="-1"></a>carrito.pagar(paypal)</span>
+<span id="interpolate-3-58"><a href="#interpolate-3-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-3-59"><a href="#interpolate-3-59" aria-hidden="true" tabindex="-1"></a><span class="co"># Otro más</span></span>
+<span id="interpolate-3-60"><a href="#interpolate-3-60" aria-hidden="true" tabindex="-1"></a>carrito.agregar_monto(<span class="dv">200</span>)</span>
+<span id="interpolate-3-61"><a href="#interpolate-3-61" aria-hidden="true" tabindex="-1"></a>efectivo <span class="op">=</span> Efectivo()</span>
+<span id="interpolate-3-62"><a href="#interpolate-3-62" aria-hidden="true" tabindex="-1"></a>carrito.pagar(efectivo)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Total a pagar: $150
+----------------------------------------
+Procesando $150 con tarjeta de crédito
+Titular: Ana García
+Últimos 4 dígitos: 3456
+✓ Pago exitoso
+
+Total a pagar: $75
+----------------------------------------
+Procesando $75 con PayPal
+Email: usuario@example.com
+✓ Pago exitoso
+
+Total a pagar: $200
+----------------------------------------
+Recibiendo $200 en efectivo
+Por favor, entregue el dinero al cajero
+✓ Pago exitoso</code></pre>
+</div>
+</div>
+<p>Observa en la <a href="#fig-pagos-duck" class="quarto-xref">Figura&nbsp;<span>6.1</span></a> que las tres formas de pago <strong>no comparten una clase padre</strong>: <code>Carrito</code> sólo depende de que exista un método <code>procesar_pago(monto)</code>.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-pagos-duck" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pagos-duck-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+
+<pre class="mermaid mermaid-js" data-label="fig-pagos-duck">classDiagram
+    class Carrito {
+        +total
+        +agregar_monto(monto)
+        +pagar(metodo_pago)
+    }
+    class TarjetaCredito {
+        +numero
+        +titular
+        +procesar_pago(monto)
+    }
+    class PayPal {
+        +email
+        +procesar_pago(monto)
+    }
+    class Efectivo {
+        +procesar_pago(monto)
+    }
+    Carrito ..&gt; TarjetaCredito : usa
+    Carrito ..&gt; PayPal : usa
+    Carrito ..&gt; Efectivo : usa
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pagos-duck-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;6.1: Duck typing: Carrito usa cualquier objeto que tenga procesar_pago(), sin herencia.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="polimorfismo-con-operadores" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="polimorfismo-con-operadores"><span class="header-section-number">6.5</span> Polimorfismo con Operadores</h2>
+<p>Python permite polimorfismo con operadores incorporados:</p>
+<div id="083ed13a" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># El operador + funciona diferente según el tipo</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Números:"</span>, <span class="dv">5</span> <span class="op">+</span> <span class="dv">3</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Strings:"</span>, <span class="st">"Hola"</span> <span class="op">+</span> <span class="st">" "</span> <span class="op">+</span> <span class="st">"Mundo"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Listas:"</span>, [<span class="dv">1</span>, <span class="dv">2</span>] <span class="op">+</span> [<span class="dv">3</span>, <span class="dv">4</span>])</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># len() funciona con diferentes tipos</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">len() polimórfico:"</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"String:"</span>, <span class="bu">len</span>(<span class="st">"Hola"</span>))</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Lista:"</span>, <span class="bu">len</span>([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>]))</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Diccionario:"</span>, <span class="bu">len</span>({<span class="st">"a"</span>: <span class="dv">1</span>, <span class="st">"b"</span>: <span class="dv">2</span>}))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Números: 8
+Strings: Hola Mundo
+Listas: [1, 2, 3, 4]
+
+len() polimórfico:
+String: 4
+Lista: 5
+Diccionario: 2</code></pre>
+</div>
+</div>
+</section>
+<section id="ejemplo-sistema-de-notificaciones" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="ejemplo-sistema-de-notificaciones"><span class="header-section-number">6.6</span> Ejemplo: Sistema de Notificaciones</h2>
+<div id="0e702549" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Email:</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, destinatario):</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.destinatario <span class="op">=</span> destinatario</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> enviar(<span class="va">self</span>, mensaje):</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"📧 Enviando email a </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>destinatario<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Mensaje: </span><span class="sc">{</span>mensaje<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>()</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SMS:</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, numero):</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.numero <span class="op">=</span> numero</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> enviar(<span class="va">self</span>, mensaje):</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Limitar a 160 caracteres</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        mensaje_corto <span class="op">=</span> mensaje[:<span class="dv">160</span>]</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"📱 Enviando SMS a </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>numero<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Mensaje: </span><span class="sc">{</span>mensaje_corto<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">len</span>(mensaje) <span class="op">&gt;</span> <span class="dv">160</span>:</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">"(Mensaje truncado)"</span>)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>()</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Push:</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, dispositivo_id):</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.dispositivo_id <span class="op">=</span> dispositivo_id</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> enviar(<span class="va">self</span>, mensaje):</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"🔔 Enviando notificación push al dispositivo </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>dispositivo_id<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Mensaje: </span><span class="sc">{</span>mensaje<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>()</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SistemaNotificaciones:</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.canales <span class="op">=</span> []</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> agregar_canal(<span class="va">self</span>, canal):</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.canales.append(canal)</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> notificar_todos(<span class="va">self</span>, mensaje):</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">50</span>)</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Enviando notificaciones..."</span>)</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">50</span>)</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> canal <span class="kw">in</span> <span class="va">self</span>.canales:</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Polimorfismo: cada canal envía a su manera</span></span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>            canal.enviar(mensaje)</span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a><span class="co"># Configurar sistema</span></span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>sistema <span class="op">=</span> SistemaNotificaciones()</span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>sistema.agregar_canal(Email(<span class="st">"usuario@example.com"</span>))</span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>sistema.agregar_canal(SMS(<span class="st">"+52-123-456-7890"</span>))</span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>sistema.agregar_canal(Push(<span class="st">"device-12345"</span>))</span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a><span class="co"># Enviar notificación a todos los canales</span></span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>sistema.notificar_todos(<span class="st">"¡Tu pedido ha sido enviado! Número de seguimiento: ABC123"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>==================================================
+Enviando notificaciones...
+==================================================
+📧 Enviando email a usuario@example.com
+Mensaje: ¡Tu pedido ha sido enviado! Número de seguimiento: ABC123
+
+📱 Enviando SMS a +52-123-456-7890
+Mensaje: ¡Tu pedido ha sido enviado! Número de seguimiento: ABC123
+
+🔔 Enviando notificación push al dispositivo device-12345
+Mensaje: ¡Tu pedido ha sido enviado! Número de seguimiento: ABC123
+</code></pre>
+</div>
+</div>
+</section>
+<section id="ejemplo-sistema-de-archivos" class="level2" data-number="6.7">
+<h2 data-number="6.7" class="anchored" data-anchor-id="ejemplo-sistema-de-archivos"><span class="header-section-number">6.7</span> Ejemplo: Sistema de Archivos</h2>
+<div id="479769cf" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Archivo:</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, tamaño):</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.nombre <span class="op">=</span> nombre</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.tamaño <span class="op">=</span> tamaño  <span class="co"># en KB</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> abrir(<span class="va">self</span>):</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Abriendo archivo: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>nombre<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> obtener_tamaño(<span class="va">self</span>):</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.tamaño</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> obtener_info(<span class="va">self</span>):</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>nombre<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>tama<span class="sc">ñ</span>o<span class="sc">}</span><span class="ss"> KB)"</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ArchivoImagen(Archivo):</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, tamaño, resolucion):</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(nombre, tamaño)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.resolucion <span class="op">=</span> resolucion</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> abrir(<span class="va">self</span>):</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"🖼️  Abriendo imagen: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>nombre<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Resolución: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>resolucion<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> obtener_info(<span class="va">self</span>):</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>nombre<span class="sc">}</span><span class="ss"> - </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>resolucion<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>tama<span class="sc">ñ</span>o<span class="sc">}</span><span class="ss"> KB)"</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ArchivoAudio(Archivo):</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, tamaño, duracion):</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(nombre, tamaño)</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.duracion <span class="op">=</span> duracion  <span class="co"># en segundos</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> abrir(<span class="va">self</span>):</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"🎵 Reproduciendo audio: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>nombre<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Duración: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>duracion<span class="sc">}</span><span class="ss"> segundos"</span>)</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> obtener_info(<span class="va">self</span>):</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>nombre<span class="sc">}</span><span class="ss"> - </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>duracion<span class="sc">}</span><span class="ss">s (</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>tama<span class="sc">ñ</span>o<span class="sc">}</span><span class="ss"> KB)"</span></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ArchivoVideo(Archivo):</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, tamaño, duracion, resolucion):</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(nombre, tamaño)</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.duracion <span class="op">=</span> duracion</span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.resolucion <span class="op">=</span> resolucion</span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> abrir(<span class="va">self</span>):</span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"🎬 Reproduciendo video: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>nombre<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Duración: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>duracion<span class="sc">}</span><span class="ss">s - Resolución: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>resolucion<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> obtener_info(<span class="va">self</span>):</span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>nombre<span class="sc">}</span><span class="ss"> - </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>resolucion<span class="sc">}</span><span class="ss"> - </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>duracion<span class="sc">}</span><span class="ss">s (</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>tama<span class="sc">ñ</span>o<span class="sc">}</span><span class="ss"> KB)"</span></span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Carpeta:</span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre):</span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.nombre <span class="op">=</span> nombre</span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.contenido <span class="op">=</span> []</span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> agregar(<span class="va">self</span>, item):</span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.contenido.append(item)</span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> listar(<span class="va">self</span>):</span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">📁 Carpeta: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>nombre<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">50</span>)</span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> item <span class="kw">in</span> <span class="va">self</span>.contenido:</span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"  • </span><span class="sc">{</span>item<span class="sc">.</span>obtener_info()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> abrir_todo(<span class="va">self</span>):</span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Abriendo archivos de: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>nombre<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">50</span>)</span>
+<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> item <span class="kw">in</span> <span class="va">self</span>.contenido:</span>
+<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Polimorfismo: cada archivo se abre a su manera</span></span>
+<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a>            item.abrir()</span>
+<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>()</span>
+<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> obtener_tamaño_total(<span class="va">self</span>):</span>
+<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a>        total <span class="op">=</span> <span class="bu">sum</span>(item.obtener_tamaño() <span class="cf">for</span> item <span class="kw">in</span> <span class="va">self</span>.contenido)</span>
+<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> total</span>
+<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear archivos de diferentes tipos</span></span>
+<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a>foto1 <span class="op">=</span> ArchivoImagen(<span class="st">"vacaciones.jpg"</span>, <span class="dv">2500</span>, <span class="st">"1920x1080"</span>)</span>
+<span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a>foto2 <span class="op">=</span> ArchivoImagen(<span class="st">"perfil.png"</span>, <span class="dv">150</span>, <span class="st">"500x500"</span>)</span>
+<span id="cb6-81"><a href="#cb6-81" aria-hidden="true" tabindex="-1"></a>cancion <span class="op">=</span> ArchivoAudio(<span class="st">"favorita.mp3"</span>, <span class="dv">3500</span>, <span class="dv">180</span>)</span>
+<span id="cb6-82"><a href="#cb6-82" aria-hidden="true" tabindex="-1"></a>video <span class="op">=</span> ArchivoVideo(<span class="st">"tutorial.mp4"</span>, <span class="dv">15000</span>, <span class="dv">300</span>, <span class="st">"1280x720"</span>)</span>
+<span id="cb6-83"><a href="#cb6-83" aria-hidden="true" tabindex="-1"></a>documento <span class="op">=</span> Archivo(<span class="st">"readme.txt"</span>, <span class="dv">5</span>)</span>
+<span id="cb6-84"><a href="#cb6-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-85"><a href="#cb6-85" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear carpeta y agregar archivos</span></span>
+<span id="cb6-86"><a href="#cb6-86" aria-hidden="true" tabindex="-1"></a>mi_carpeta <span class="op">=</span> Carpeta(<span class="st">"Mis Documentos"</span>)</span>
+<span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a>mi_carpeta.agregar(foto1)</span>
+<span id="cb6-88"><a href="#cb6-88" aria-hidden="true" tabindex="-1"></a>mi_carpeta.agregar(foto2)</span>
+<span id="cb6-89"><a href="#cb6-89" aria-hidden="true" tabindex="-1"></a>mi_carpeta.agregar(cancion)</span>
+<span id="cb6-90"><a href="#cb6-90" aria-hidden="true" tabindex="-1"></a>mi_carpeta.agregar(video)</span>
+<span id="cb6-91"><a href="#cb6-91" aria-hidden="true" tabindex="-1"></a>mi_carpeta.agregar(documento)</span>
+<span id="cb6-92"><a href="#cb6-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-93"><a href="#cb6-93" aria-hidden="true" tabindex="-1"></a><span class="co"># Listar contenido</span></span>
+<span id="cb6-94"><a href="#cb6-94" aria-hidden="true" tabindex="-1"></a>mi_carpeta.listar()</span>
+<span id="cb6-95"><a href="#cb6-95" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Tamaño total: </span><span class="sc">{</span>mi_carpeta<span class="sc">.</span>obtener_tama<span class="sc">ñ</span>o_total()<span class="sc">}</span><span class="ss"> KB"</span>)</span>
+<span id="cb6-96"><a href="#cb6-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-97"><a href="#cb6-97" aria-hidden="true" tabindex="-1"></a><span class="co"># Abrir todos los archivos (polimorfismo en acción)</span></span>
+<span id="cb6-98"><a href="#cb6-98" aria-hidden="true" tabindex="-1"></a>mi_carpeta.abrir_todo()</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+📁 Carpeta: Mis Documentos
+--------------------------------------------------
+  • vacaciones.jpg - 1920x1080 (2500 KB)
+  • perfil.png - 500x500 (150 KB)
+  • favorita.mp3 - 180s (3500 KB)
+  • tutorial.mp4 - 1280x720 - 300s (15000 KB)
+  • readme.txt (5 KB)
+
+Tamaño total: 21155 KB
+
+Abriendo archivos de: Mis Documentos
+==================================================
+🖼️  Abriendo imagen: vacaciones.jpg
+Resolución: 1920x1080
+
+🖼️  Abriendo imagen: perfil.png
+Resolución: 500x500
+
+🎵 Reproduciendo audio: favorita.mp3
+Duración: 180 segundos
+
+🎬 Reproduciendo video: tutorial.mp4
+Duración: 300s - Resolución: 1280x720
+
+Abriendo archivo: readme.txt
+</code></pre>
+</div>
+</div>
+<p>El sistema de archivos combina herencia (tipos de archivo) con una carpeta que trata a todos por igual (<a href="#fig-archivos" class="quarto-xref">Figura&nbsp;<span>6.2</span></a>).</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-archivos" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-archivos-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+
+<pre class="mermaid mermaid-js" data-label="fig-archivos">classDiagram
+    Archivo &lt;|-- ArchivoImagen
+    Archivo &lt;|-- ArchivoAudio
+    Archivo &lt;|-- ArchivoVideo
+    Carpeta o-- Archivo : contenido
+    class Archivo {
+        +nombre
+        +tamaño
+        +abrir()
+        +obtener_info()
+    }
+    class ArchivoImagen {
+        +resolucion
+        +abrir()
+    }
+    class ArchivoAudio {
+        +duracion
+        +abrir()
+    }
+    class ArchivoVideo {
+        +duracion
+        +resolucion
+        +abrir()
+    }
+    class Carpeta {
+        +agregar(item)
+        +listar()
+        +abrir_todo()
+    }
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-archivos-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;6.2: Carpeta llama a abrir() y obtener_info() sin saber qué tipo de archivo tiene.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="ejercicios-prácticos" class="level2" data-number="6.8">
+<h2 data-number="6.8" class="anchored" data-anchor-id="ejercicios-prácticos"><span class="header-section-number">6.8</span> Ejercicios Prácticos</h2>
+<section id="ejercicio-1-formas-geométricas" class="level3" data-number="6.8.1">
+<h3 data-number="6.8.1" class="anchored" data-anchor-id="ejercicio-1-formas-geométricas"><span class="header-section-number">6.8.1</span> Ejercicio 1: Formas Geométricas</h3>
+<p>Crea clases para diferentes formas geométricas:</p>
+<ul>
+<li><code>Circulo</code>, <code>Rectangulo</code>, <code>Triangulo</code></li>
+<li>Todas deben tener métodos: <code>calcular_area()</code> y <code>calcular_perimetro()</code></li>
+<li>Crea una función <code>mostrar_info_forma(forma)</code> que funcione con cualquier forma</li>
+<li>Crea una lista de diferentes formas y calcula el área total</li>
+</ul>
+<div>
+<div id="pyodide-4" class="exercise-cell">
+
+</div>
+<script type="pyodide-4-contents">
+eyJhdHRyIjp7ImNhcHRpb24iOiJQcnVlYmEgdMO6OiBlamVyY2ljaW8gMSIsImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1pbi1saW5lcyI6OH0sImNvZGUiOiIjIEVzY3JpYmUgYXF1w60gdHUgc29sdWNpw7NuIn0=
+</script>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Solución del ejercicio 1
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="220bf1cd" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Circulo:</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, radio):</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.radio <span class="op">=</span> radio</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> calcular_area(<span class="va">self</span>):</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> math.pi <span class="op">*</span> <span class="va">self</span>.radio <span class="op">**</span> <span class="dv">2</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> calcular_perimetro(<span class="va">self</span>):</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">2</span> <span class="op">*</span> math.pi <span class="op">*</span> <span class="va">self</span>.radio</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Rectangulo:</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, ancho, alto):</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.ancho, <span class="va">self</span>.alto <span class="op">=</span> ancho, alto</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> calcular_area(<span class="va">self</span>):</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.ancho <span class="op">*</span> <span class="va">self</span>.alto</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> calcular_perimetro(<span class="va">self</span>):</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">2</span> <span class="op">*</span> (<span class="va">self</span>.ancho <span class="op">+</span> <span class="va">self</span>.alto)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Triangulo:</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, a, b, c):</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.a, <span class="va">self</span>.b, <span class="va">self</span>.c <span class="op">=</span> a, b, c</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> calcular_perimetro(<span class="va">self</span>):</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.a <span class="op">+</span> <span class="va">self</span>.b <span class="op">+</span> <span class="va">self</span>.c</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> calcular_area(<span class="va">self</span>):  <span class="co"># Fórmula de Herón</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>        s <span class="op">=</span> <span class="va">self</span>.calcular_perimetro() <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> math.sqrt(s <span class="op">*</span> (s <span class="op">-</span> <span class="va">self</span>.a) <span class="op">*</span> (s <span class="op">-</span> <span class="va">self</span>.b) <span class="op">*</span> (s <span class="op">-</span> <span class="va">self</span>.c))</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mostrar_info_forma(forma):</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="bu">type</span>(forma)<span class="sc">.</span><span class="va">__name__</span><span class="sc">:&lt;11}</span><span class="ss"> área=</span><span class="sc">{</span>forma<span class="sc">.</span>calcular_area()<span class="sc">:7.2f}</span><span class="ss">  "</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"perímetro=</span><span class="sc">{</span>forma<span class="sc">.</span>calcular_perimetro()<span class="sc">:6.2f}</span><span class="ss">"</span>)</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>formas <span class="op">=</span> [Circulo(<span class="dv">2</span>), Rectangulo(<span class="dv">3</span>, <span class="dv">4</span>), Triangulo(<span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>)]</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> formas:</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>    mostrar_info_forma(f)</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Área total: </span><span class="sc">{</span><span class="bu">sum</span>(f.calcular_area() <span class="cf">for</span> f <span class="kw">in</span> formas)<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Circulo     área=  12.57  perímetro= 12.57
+Rectangulo  área=  12.00  perímetro= 14.00
+Triangulo   área=   6.00  perímetro= 12.00
+Área total: 30.57</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="ejercicio-2-sistema-de-transporte" class="level3" data-number="6.8.2">
+<h3 data-number="6.8.2" class="anchored" data-anchor-id="ejercicio-2-sistema-de-transporte"><span class="header-section-number">6.8.2</span> Ejercicio 2: Sistema de Transporte</h3>
+<p>Crea clases para diferentes medios de transporte:</p>
+<ul>
+<li><code>Coche</code>, <code>Bicicleta</code>, <code>Avion</code>, <code>Barco</code></li>
+<li>Todos deben tener: método <code>viajar(distancia)</code> que imprime cómo viajan</li>
+<li>Método <code>obtener_velocidad_promedio()</code> que retorna la velocidad en km/h</li>
+<li>Crea una función <code>planear_viaje(transporte, distancia)</code> que:
+<ul>
+<li>Muestre el medio de transporte</li>
+<li>Calcule el tiempo estimado (distancia / velocidad)</li>
+<li>Funcione con cualquier transporte</li>
+</ul></li>
+</ul>
+<div>
+<div id="pyodide-5" class="exercise-cell">
+
+</div>
+<script type="pyodide-5-contents">
+eyJhdHRyIjp7ImNhcHRpb24iOiJQcnVlYmEgdMO6OiBlamVyY2ljaW8gMiIsImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1pbi1saW5lcyI6OH0sImNvZGUiOiIjIEVzY3JpYmUgYXF1w60gdHUgc29sdWNpw7NuIn0=
+</script>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Solución del ejercicio 2
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="46100964" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Coche:</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> viajar(<span class="va">self</span>, distancia):</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"🚗 Conduciendo </span><span class="sc">{</span>distancia<span class="sc">}</span><span class="ss"> km por carretera"</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> obtener_velocidad_promedio(<span class="va">self</span>):</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">90</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Bicicleta:</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> viajar(<span class="va">self</span>, distancia):</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"🚲 Pedaleando </span><span class="sc">{</span>distancia<span class="sc">}</span><span class="ss"> km"</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> obtener_velocidad_promedio(<span class="va">self</span>):</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">18</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Avion:</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> viajar(<span class="va">self</span>, distancia):</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"✈️ Volando </span><span class="sc">{</span>distancia<span class="sc">}</span><span class="ss"> km"</span>)</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> obtener_velocidad_promedio(<span class="va">self</span>):</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">800</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Barco:</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> viajar(<span class="va">self</span>, distancia):</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"🚢 Navegando </span><span class="sc">{</span>distancia<span class="sc">}</span><span class="ss"> km"</span>)</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> obtener_velocidad_promedio(<span class="va">self</span>):</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">35</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> planear_viaje(transporte, distancia):</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>    transporte.viajar(distancia)</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    horas <span class="op">=</span> distancia <span class="op">/</span> transporte.obtener_velocidad_promedio()</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"   </span><span class="sc">{</span><span class="bu">type</span>(transporte)<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">: tiempo estimado </span><span class="sc">{</span>horas<span class="sc">:.1f}</span><span class="ss"> h"</span>)</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> [Coche(), Bicicleta(), Avion(), Barco()]:</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>    planear_viaje(t, <span class="dv">540</span>)  <span class="co"># Guadalajara → CDMX, aprox.</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>🚗 Conduciendo 540 km por carretera
+   Coche: tiempo estimado 6.0 h
+🚲 Pedaleando 540 km
+   Bicicleta: tiempo estimado 30.0 h
+✈️ Volando 540 km
+   Avion: tiempo estimado 0.7 h
+🚢 Navegando 540 km
+   Barco: tiempo estimado 15.4 h</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="ejercicio-3-sistema-de-empleados" class="level3" data-number="6.8.3">
+<h3 data-number="6.8.3" class="anchored" data-anchor-id="ejercicio-3-sistema-de-empleados"><span class="header-section-number">6.8.3</span> Ejercicio 3: Sistema de Empleados</h3>
+<p>Crea una jerarquía de empleados con diferentes formas de calcular salario:</p>
+<ul>
+<li><code>Empleado</code> (clase base): salario fijo</li>
+<li><code>EmpleadoPorHoras</code>: salario = horas × tarifa_por_hora</li>
+<li><code>Vendedor</code>: salario = salario_base + (ventas × comision)</li>
+<li><code>Gerente</code>: salario = salario_base + bono + (porcentaje de ventas del equipo)</li>
+</ul>
+<p>Todos deben tener:</p>
+<ul>
+<li>Método <code>calcular_salario()</code></li>
+<li>Método <code>generar_recibo()</code> que muestra nombre, puesto y salario</li>
+</ul>
+<p>Crea una función <code>procesar_nomina(empleados)</code> que genere recibos para todos.</p>
+<div>
+<div id="pyodide-6" class="exercise-cell">
+
+</div>
+<script type="pyodide-6-contents">
+eyJhdHRyIjp7ImNhcHRpb24iOiJQcnVlYmEgdMO6OiBlamVyY2ljaW8gMyIsImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1pbi1saW5lcyI6OH0sImNvZGUiOiIjIEVzY3JpYmUgYXF1w60gdHUgc29sdWNpw7NuIn0=
+</script>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Solución del ejercicio 3
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="8f284ee4" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Empleado:</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    puesto <span class="op">=</span> <span class="st">"Empleado"</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, salario_fijo):</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.nombre <span class="op">=</span> nombre</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.salario_fijo <span class="op">=</span> salario_fijo</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> calcular_salario(<span class="va">self</span>):</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.salario_fijo</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> generar_recibo(<span class="va">self</span>):</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>nombre<span class="sc">:&lt;8}</span><span class="ss"> </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>puesto<span class="sc">:&lt;16}</span><span class="ss"> $</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>calcular_salario()<span class="sc">:&gt;10,.2f}</span><span class="ss">"</span>)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> EmpleadoPorHoras(Empleado):</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    puesto <span class="op">=</span> <span class="st">"Por horas"</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, horas, tarifa_por_hora):</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(nombre, <span class="dv">0</span>)</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.horas <span class="op">=</span> horas</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.tarifa_por_hora <span class="op">=</span> tarifa_por_hora</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> calcular_salario(<span class="va">self</span>):</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.horas <span class="op">*</span> <span class="va">self</span>.tarifa_por_hora</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Vendedor(Empleado):</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>    puesto <span class="op">=</span> <span class="st">"Vendedor"</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, salario_base, ventas, comision):</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(nombre, salario_base)</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.ventas <span class="op">=</span> ventas</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.comision <span class="op">=</span> comision</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> calcular_salario(<span class="va">self</span>):</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.salario_fijo <span class="op">+</span> <span class="va">self</span>.ventas <span class="op">*</span> <span class="va">self</span>.comision</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Gerente(Empleado):</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>    puesto <span class="op">=</span> <span class="st">"Gerente"</span></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, salario_base, bono, ventas_equipo, porcentaje):</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(nombre, salario_base)</span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.bono <span class="op">=</span> bono</span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.ventas_equipo <span class="op">=</span> ventas_equipo</span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.porcentaje <span class="op">=</span> porcentaje</span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> calcular_salario(<span class="va">self</span>):</span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.salario_fijo <span class="op">+</span> <span class="va">self</span>.bono <span class="op">+</span> <span class="va">self</span>.ventas_equipo <span class="op">*</span> <span class="va">self</span>.porcentaje</span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> procesar_nomina(empleados):</span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>    total <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> e <span class="kw">in</span> empleados:</span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>        e.generar_recibo()   <span class="co"># Polimorfismo: cada uno calcula a su manera</span></span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a>        total <span class="op">+=</span> e.calcular_salario()</span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'TOTAL'</span><span class="sc">:&lt;25}</span><span class="ss"> $</span><span class="sc">{</span>total<span class="sc">:&gt;10,.2f}</span><span class="ss">"</span>)</span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a>procesar_nomina([</span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a>    Empleado(<span class="st">"Rosa"</span>, <span class="dv">12000</span>),</span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a>    EmpleadoPorHoras(<span class="st">"Iván"</span>, <span class="dv">80</span>, <span class="dv">120</span>),</span>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a>    Vendedor(<span class="st">"Marta"</span>, <span class="dv">8000</span>, <span class="dv">150000</span>, <span class="fl">0.03</span>),</span>
+<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a>    Gerente(<span class="st">"Jorge"</span>, <span class="dv">25000</span>, <span class="dv">5000</span>, <span class="dv">400000</span>, <span class="fl">0.01</span>),</span>
+<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a>])</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rosa     Empleado         $ 12,000.00
+Iván     Por horas        $  9,600.00
+Marta    Vendedor         $ 12,500.00
+Jorge    Gerente          $ 34,000.00
+TOTAL                     $ 68,100.00</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="ejercicio-4-sistema-de-jugadores-de-videojuego-desafío" class="level3" data-number="6.8.4">
+<h3 data-number="6.8.4" class="anchored" data-anchor-id="ejercicio-4-sistema-de-jugadores-de-videojuego-desafío"><span class="header-section-number">6.8.4</span> Ejercicio 4: Sistema de Jugadores de Videojuego (Desafío)</h3>
+<p>Crea un sistema de personajes de videojuego con polimorfismo:</p>
+<ol type="1">
+<li>Clase base <code>Personaje</code>:
+<ul>
+<li>Atributos: nombre, vida, nivel</li>
+<li>Métodos abstractos: <code>atacar()</code>, <code>defender(daño)</code>, <code>habilidad_especial()</code></li>
+</ul></li>
+<li>Clases derivadas:
+<ul>
+<li><code>Guerrero</code>: Alto daño físico, ataque normal fuerte</li>
+<li><code>Mago</code>: Ataques mágicos, habilidad especial poderosa</li>
+<li><code>Arquero</code>: Ataques a distancia, esquiva ataques</li>
+<li><code>Curandero</code>: Ataque débil pero puede curarse</li>
+</ul></li>
+<li>Cada clase debe implementar:
+<ul>
+<li><code>atacar()</code>: Retorna el daño causado (diferente por clase)</li>
+<li><code>defender(daño)</code>: Reduce la vida según el daño recibido (con diferentes defensas)</li>
+<li><code>habilidad_especial()</code>: Habilidad única de cada clase</li>
+<li><code>esta_vivo()</code>: Retorna True si vida &gt; 0</li>
+<li><code>info()</code>: Muestra nombre, clase, vida, nivel</li>
+</ul></li>
+<li>Crea una función <code>simular_batalla(personaje1, personaje2)</code> que:
+<ul>
+<li>Haga que se ataquen por turnos</li>
+<li>Use aleatoriamente habilidades especiales</li>
+<li>Termine cuando uno muera</li>
+<li>Muestre el ganador</li>
+</ul></li>
+</ol>
+<p>Usa polimorfismo para que la función funcione con cualquier combinación de personajes.</p>
+<div>
+<div id="pyodide-7" class="exercise-cell">
+
+</div>
+<script type="pyodide-7-contents">
+eyJhdHRyIjp7ImNhcHRpb24iOiJQcnVlYmEgdMO6OiBlamVyY2ljaW8gNCIsImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1pbi1saW5lcyI6OH0sImNvZGUiOiIjIEVzY3JpYmUgYXF1w60gdHUgc29sdWNpw7NuIn0=
+</script>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Solución del ejercicio 4
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="31ac9394" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>random.seed(<span class="dv">7</span>)  <span class="co"># Semilla fija para que el resultado sea reproducible</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Personaje:</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, vida<span class="op">=</span><span class="dv">100</span>, nivel<span class="op">=</span><span class="dv">1</span>):</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.nombre <span class="op">=</span> nombre</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.vida <span class="op">=</span> vida</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.nivel <span class="op">=</span> nivel</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># "Métodos abstractos": las subclases deben sobrescribirlos</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> atacar(<span class="va">self</span>):</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> habilidad_especial(<span class="va">self</span>):</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> defender(<span class="va">self</span>, daño):</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.vida <span class="op">=</span> <span class="bu">max</span>(<span class="dv">0</span>, <span class="va">self</span>.vida <span class="op">-</span> daño)</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> esta_vivo(<span class="va">self</span>):</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.vida <span class="op">&gt;</span> <span class="dv">0</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> info(<span class="va">self</span>):</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>nombre<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span><span class="bu">type</span>(<span class="va">self</span>)<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">) vida=</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>vida<span class="sc">}</span><span class="ss"> nivel=</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>nivel<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Guerrero(Personaje):</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> atacar(<span class="va">self</span>):</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> random.randint(<span class="dv">12</span>, <span class="dv">18</span>)</span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> defender(<span class="va">self</span>, daño):</span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().defender(<span class="bu">int</span>(daño <span class="op">*</span> <span class="fl">0.7</span>))  <span class="co"># Armadura: recibe 30% menos</span></span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> habilidad_especial(<span class="va">self</span>):</span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>nombre<span class="sc">}</span><span class="ss"> usa ¡Golpe devastador!"</span>)</span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">30</span></span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Mago(Personaje):</span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> atacar(<span class="va">self</span>):</span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> random.randint(<span class="dv">8</span>, <span class="dv">14</span>)</span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> habilidad_especial(<span class="va">self</span>):</span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>nombre<span class="sc">}</span><span class="ss"> lanza ¡Bola de fuego!"</span>)</span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">40</span></span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Arquero(Personaje):</span>
+<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> atacar(<span class="va">self</span>):</span>
+<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> random.randint(<span class="dv">10</span>, <span class="dv">15</span>)</span>
+<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> defender(<span class="va">self</span>, daño):</span>
+<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> random.random() <span class="op">&lt;</span> <span class="fl">0.3</span>:</span>
+<span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>nombre<span class="sc">}</span><span class="ss"> esquiva el ataque"</span>)</span>
+<span id="cb14-48"><a href="#cb14-48" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span></span>
+<span id="cb14-49"><a href="#cb14-49" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().defender(daño)</span>
+<span id="cb14-50"><a href="#cb14-50" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> habilidad_especial(<span class="va">self</span>):</span>
+<span id="cb14-51"><a href="#cb14-51" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>nombre<span class="sc">}</span><span class="ss"> dispara ¡Lluvia de flechas!"</span>)</span>
+<span id="cb14-52"><a href="#cb14-52" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">25</span></span>
+<span id="cb14-53"><a href="#cb14-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-54"><a href="#cb14-54" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Curandero(Personaje):</span>
+<span id="cb14-55"><a href="#cb14-55" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> atacar(<span class="va">self</span>):</span>
+<span id="cb14-56"><a href="#cb14-56" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> random.randint(<span class="dv">5</span>, <span class="dv">9</span>)</span>
+<span id="cb14-57"><a href="#cb14-57" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> habilidad_especial(<span class="va">self</span>):</span>
+<span id="cb14-58"><a href="#cb14-58" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.vida <span class="op">=</span> <span class="bu">min</span>(<span class="dv">100</span>, <span class="va">self</span>.vida <span class="op">+</span> <span class="dv">25</span>)</span>
+<span id="cb14-59"><a href="#cb14-59" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>nombre<span class="sc">}</span><span class="ss"> se cura (+25) → vida </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>vida<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb14-60"><a href="#cb14-60" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">0</span></span>
+<span id="cb14-61"><a href="#cb14-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-62"><a href="#cb14-62" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> simular_batalla(p1, p2):</span>
+<span id="cb14-63"><a href="#cb14-63" aria-hidden="true" tabindex="-1"></a>    atacante, defensor <span class="op">=</span> p1, p2</span>
+<span id="cb14-64"><a href="#cb14-64" aria-hidden="true" tabindex="-1"></a>    turno <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb14-65"><a href="#cb14-65" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> p1.esta_vivo() <span class="kw">and</span> p2.esta_vivo():</span>
+<span id="cb14-66"><a href="#cb14-66" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> random.random() <span class="op">&lt;</span> <span class="fl">0.2</span>:</span>
+<span id="cb14-67"><a href="#cb14-67" aria-hidden="true" tabindex="-1"></a>            daño <span class="op">=</span> atacante.habilidad_especial()</span>
+<span id="cb14-68"><a href="#cb14-68" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb14-69"><a href="#cb14-69" aria-hidden="true" tabindex="-1"></a>            daño <span class="op">=</span> atacante.atacar()</span>
+<span id="cb14-70"><a href="#cb14-70" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> daño:</span>
+<span id="cb14-71"><a href="#cb14-71" aria-hidden="true" tabindex="-1"></a>            defensor.defender(daño)</span>
+<span id="cb14-72"><a href="#cb14-72" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"T</span><span class="sc">{</span>turno<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>atacante<span class="sc">.</span>nombre<span class="sc">}</span><span class="ss"> → </span><span class="sc">{</span>defensor<span class="sc">.</span>nombre<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>da<span class="sc">ñ</span>o<span class="sc">}</span><span class="ss">); "</span></span>
+<span id="cb14-73"><a href="#cb14-73" aria-hidden="true" tabindex="-1"></a>                  <span class="ss">f"vida de </span><span class="sc">{</span>defensor<span class="sc">.</span>nombre<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>defensor<span class="sc">.</span>vida<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb14-74"><a href="#cb14-74" aria-hidden="true" tabindex="-1"></a>        atacante, defensor <span class="op">=</span> defensor, atacante</span>
+<span id="cb14-75"><a href="#cb14-75" aria-hidden="true" tabindex="-1"></a>        turno <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb14-76"><a href="#cb14-76" aria-hidden="true" tabindex="-1"></a>    ganador <span class="op">=</span> p1 <span class="cf">if</span> p1.esta_vivo() <span class="cf">else</span> p2</span>
+<span id="cb14-77"><a href="#cb14-77" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"🏆 Gana </span><span class="sc">{</span>ganador<span class="sc">.</span>nombre<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb14-78"><a href="#cb14-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-79"><a href="#cb14-79" aria-hidden="true" tabindex="-1"></a>simular_batalla(Guerrero(<span class="st">"Thor"</span>), Mago(<span class="st">"Merlín"</span>))</span>
+<span id="cb14-80"><a href="#cb14-80" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb14-81"><a href="#cb14-81" aria-hidden="true" tabindex="-1"></a>simular_batalla(Arquero(<span class="st">"Robin"</span>), Curandero(<span class="st">"Aria"</span>))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>T1: Thor → Merlín (13); vida de Merlín: 87
+T2: Merlín → Thor (8); vida de Thor: 95
+  Thor usa ¡Golpe devastador!
+T3: Thor → Merlín (30); vida de Merlín: 57
+T4: Merlín → Thor (10); vida de Thor: 88
+T5: Thor → Merlín (16); vida de Merlín: 41
+T6: Merlín → Thor (8); vida de Thor: 83
+T7: Thor → Merlín (12); vida de Merlín: 29
+T8: Merlín → Thor (12); vida de Thor: 75
+T9: Thor → Merlín (18); vida de Merlín: 11
+T10: Merlín → Thor (9); vida de Thor: 69
+T11: Thor → Merlín (16); vida de Merlín: 0
+🏆 Gana Thor
+
+T1: Robin → Aria (14); vida de Aria: 86
+T2: Aria → Robin (5); vida de Robin: 95
+  Robin dispara ¡Lluvia de flechas!
+T3: Robin → Aria (25); vida de Aria: 61
+T4: Aria → Robin (7); vida de Robin: 88
+T5: Robin → Aria (14); vida de Aria: 47
+  Robin esquiva el ataque
+T6: Aria → Robin (6); vida de Robin: 88
+T7: Robin → Aria (11); vida de Aria: 36
+T8: Aria → Robin (9); vida de Robin: 79
+T9: Robin → Aria (14); vida de Aria: 22
+T10: Aria → Robin (9); vida de Robin: 70
+T11: Robin → Aria (14); vida de Aria: 8
+  Robin esquiva el ataque
+T12: Aria → Robin (7); vida de Robin: 70
+T13: Robin → Aria (15); vida de Aria: 0
+🏆 Gana Robin</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="resumen" class="level2" data-number="6.9">
+<h2 data-number="6.9" class="anchored" data-anchor-id="resumen"><span class="header-section-number">6.9</span> Resumen</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>Lo que aprendiste en este capítulo
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>✅ Qué es el polimorfismo y su importancia</li>
+<li>✅ Polimorfismo con herencia</li>
+<li>✅ Duck typing en Python</li>
+<li>✅ Polimorfismo sin herencia</li>
+<li>✅ Cómo diseñar sistemas flexibles y extensibles</li>
+<li>✅ Ventajas del polimorfismo en código real</li>
+</ul>
+</div>
+</div>
+<section id="conceptos-clave" class="level3" data-number="6.9.1">
+<h3 data-number="6.9.1" class="anchored" data-anchor-id="conceptos-clave"><span class="header-section-number">6.9.1</span> Conceptos Clave</h3>
+<ol type="1">
+<li><strong>Mismo método, diferente comportamiento</strong>: El núcleo del polimorfismo</li>
+<li><strong>Desacoplamiento</strong>: El código no necesita conocer el tipo exacto</li>
+<li><strong>Extensibilidad</strong>: Fácil agregar nuevos tipos sin modificar código existente</li>
+<li><strong>Duck Typing</strong>: “Si camina como pato y grazna como pato…”</li>
+</ol>
+</section>
+<section id="los-4-pilares-de-poo-ya-los-conoces-todos" class="level3" data-number="6.9.2">
+<h3 data-number="6.9.2" class="anchored" data-anchor-id="los-4-pilares-de-poo-ya-los-conoces-todos"><span class="header-section-number">6.9.2</span> Los 4 Pilares de POO (¡Ya los conoces todos!)</h3>
+<ol type="1">
+<li>✅ <strong>Encapsulamiento</strong>: Ocultar detalles internos</li>
+<li>✅ <strong>Abstracción</strong>: Simplificar complejidad</li>
+<li>✅ <strong>Herencia</strong>: Reutilizar código</li>
+<li>✅ <strong>Polimorfismo</strong>: Múltiples formas</li>
+</ol>
+</section>
+<section id="próximo-paso" class="level3" data-number="6.9.3">
+<h3 data-number="6.9.3" class="anchored" data-anchor-id="próximo-paso"><span class="header-section-number">6.9.3</span> Próximo paso</h3>
+<p>En el siguiente capítulo aprenderás:</p>
+<ul>
+<li><strong>Métodos especiales</strong> (magic methods)</li>
+<li>Sobrecarga de operadores</li>
+<li><code>__str__</code>, <code>__repr__</code>, <code>__len__</code>, <code>__add__</code>, etc.</li>
+<li>Hacer tus clases más “pythonicas”</li>
+</ul>
+<p><strong>¡Felicidades! Ya dominas los 4 pilares de la POO!</strong></p>
+
+
+<script type="pyodide-data">
+eyJvcHRpb25zIjp7ImVudiI6eyJQTE9UTFlfUkVOREVSRVIiOiJwbG90bHlfbWltZXR5cGUifSwiaW5kZXhVUkwiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvcHlvZGlkZS92MC4yOC4xL2Z1bGwvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsicHlvZGlkZV9odHRwIiwibWljcm9waXAiLCJpcHl0aG9uIl19fQ==
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTciLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl83ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS03LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzcgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzcsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTYiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl82ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS02LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzYgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzYsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl81ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS01LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzUgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzUsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTQiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl80ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS00LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNC1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzQgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzQsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTIiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8yID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0yLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzIgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzIsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTEiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8xID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0xLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzEgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzEsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJpbnRlcnBvbGF0ZS0zIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoie1xuICBjb25zdCB7IGludGVycG9sYXRlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuICBjb25zdCBibG9ja19pZCA9IFwiM1wiO1xuICBjb25zdCBsYW5ndWFnZSA9IFwicHl0aG9uXCI7XG4gIGNvbnN0IGRlZl9tYXAgPSB7XG5tb250byxcbm1vbnRvLFxubW9udG8sXG59O1xuICBjb25zdCBlbGVtID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoYGludGVycG9sYXRlLSR7YmxvY2tfaWR9YCk7XG5cbiAgLy8gU3RvcmUgb3JpZ2luYWwgdGVtcGxhdGVkIEhUTUwgZm9yIHJlZmVyZW5jZSBpbiBmdXR1cmUgcmVhY3RpdmUgdXBkYXRlc1xuICBpZiAoIWVsZW0ub3JpZ0hUTUwpIGVsZW0ub3JpZ0hUTUwgPSBlbGVtLmlubmVySFRNTDtcblxuICAvLyBJbnRlcnBvbGF0ZSByZWFjdGl2ZSBPSlMgdmFyaWFibGVzIGludG8gZXN0YWJsaXNoZWQgSFRNTCBlbGVtZW50XG4gIGVsZW0uaW5uZXJIVE1MID0gZWxlbS5vcmlnSFRNTDtcbiAgT2JqZWN0LmtleXMoZGVmX21hcCkuZm9yRWFjaCgoZGVmKSA9PlxuICAgIGludGVycG9sYXRlKGVsZW0sIFwiJHtcIiArIGRlZiArIFwifVwiLCBkZWZfbWFwW2RlZl0sIGxhbmd1YWdlKVxuICApO1xufVxuIn0seyJjZWxsTmFtZSI6InB5b2RpZGUtcHJlbHVkZSIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InB5b2RpZGVPanMgPSB7XG4gIGNvbnN0IHtcbiAgICBQeW9kaWRlRXZhbHVhdG9yLFxuICAgIFB5b2RpZGVFbnZpcm9ubWVudE1hbmFnZXIsXG4gICAgc2V0dXBQeXRob24sXG4gICAgc3RhcnRQeW9kaWRlV29ya2VyLFxuICAgIGI2NERlY29kZSxcbiAgICBjb2xsYXBzZVBhdGgsXG4gIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHN0YXR1c0NvbnRhaW5lciA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKFwiZXhlcmNpc2UtbG9hZGluZy1zdGF0dXNcIik7XG4gIGNvbnN0IGluZGljYXRvckNvbnRhaW5lciA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKFwiZXhlcmNpc2UtbG9hZGluZy1pbmRpY2F0b3JcIik7XG4gIGluZGljYXRvckNvbnRhaW5lci5jbGFzc0xpc3QucmVtb3ZlKFwiZC1ub25lXCIpO1xuXG4gIGxldCBzdGF0dXNUZXh0ID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKVxuICBzdGF0dXNUZXh0LmNsYXNzTGlzdCA9IFwiZXhlcmNpc2UtbG9hZGluZy1kZXRhaWxzXCI7XG4gIHN0YXR1c1RleHQgPSBzdGF0dXNDb250YWluZXIuYXBwZW5kQ2hpbGQoc3RhdHVzVGV4dCk7XG4gIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgSW5pdGlhbGlzZWA7XG5cbiAgLy8gSG9pc3QgaW5kaWNhdG9yIG91dCBmcm9tIGZpbmFsIHNsaWRlIHdoZW4gcnVubmluZyB1bmRlciByZXZlYWxcbiAgY29uc3QgcmV2ZWFsU3RhdHVzID0gZG9jdW1lbnQucXVlcnlTZWxlY3RvcihcIi5yZXZlYWwgLmV4ZXJjaXNlLWxvYWRpbmctaW5kaWNhdG9yXCIpO1xuICBpZiAocmV2ZWFsU3RhdHVzKSB7XG4gICAgcmV2ZWFsU3RhdHVzLnJlbW92ZSgpO1xuICAgIGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCIucmV2ZWFsID4gLnNsaWRlc1wiKS5hcHBlbmRDaGlsZChyZXZlYWxTdGF0dXMpO1xuICB9XG5cbiAgLy8gTWFrZSBhbnkgcmV2ZWFsIHNsaWRlcyB3aXRoIGxpdmUgY2VsbHMgc2Nyb2xsYWJsZVxuICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKFwiLnJldmVhbCAuZXhlcmNpc2UtY2VsbFwiKS5mb3JFYWNoKChlbCkgPT4ge1xuICAgIGVsLmNsb3Nlc3QoJ3NlY3Rpb24uc2xpZGUnKS5jbGFzc0xpc3QuYWRkKFwic2Nyb2xsYWJsZVwiKTtcbiAgfSlcblxuICAvLyBQeW9kaWRlIHN1cHBsZW1lbnRhbCBkYXRhIGFuZCBvcHRpb25zXG4gIGNvbnN0IGRhdGFDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInB5b2RpZGUtZGF0YVxcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGRhdGEgPSBKU09OLnBhcnNlKGI2NERlY29kZShkYXRhQ29udGVudCkpO1xuXG4gIC8vIEdyYWIgbGlzdCBvZiByZXNvdXJjZXMgdG8gYmUgZG93bmxvYWRlZFxuICBjb25zdCBmaWxlc0NvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwidmZzLWZpbGVcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBmaWxlcyA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKGZpbGVzQ29udGVudCkpO1xuXG4gIGxldCBweW9kaWRlUHJvbWlzZSA9IChhc3luYyAoKSA9PiB7XG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBQeW9kaWRlYDtcbiAgICBjb25zdCBweW9kaWRlID0gYXdhaXQgc3RhcnRQeW9kaWRlV29ya2VyKGRhdGEub3B0aW9ucyk7XG5cbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIHBhY2thZ2U6IG1pY3JvcGlwYDtcbiAgICBhd2FpdCBweW9kaWRlLmxvYWRQYWNrYWdlKFwibWljcm9waXBcIik7XG4gICAgY29uc3QgbWljcm9waXAgPSBhd2FpdCBweW9kaWRlLnB5aW1wb3J0KFwibWljcm9waXBcIik7XG4gICAgYXdhaXQgZGF0YS5wYWNrYWdlcy5wa2dzLm1hcCgocGtnKSA9PiAoKSA9PiB7XG4gICAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIHBhY2thZ2U6ICR7cGtnfWA7XG4gICAgICByZXR1cm4gbWljcm9waXAuaW5zdGFsbChwa2cpO1xuICAgIH0pLnJlZHVjZSgoY3VyLCBuZXh0KSA9PiBjdXIudGhlbihuZXh0KSwgUHJvbWlzZS5yZXNvbHZlKCkpO1xuICAgIGF3YWl0IG1pY3JvcGlwLmRlc3Ryb3koKTtcblxuICAgIC8vIERvd25sb2FkIGFuZCBpbnN0YWxsIHJlc291cmNlc1xuICAgIGF3YWl0IGZpbGVzLm1hcCgoZmlsZSkgPT4gYXN5bmMgKCkgPT4ge1xuICAgICAgY29uc3QgbmFtZSA9IGZpbGUuc3Vic3RyaW5nKGZpbGUubGFzdEluZGV4T2YoJy8nKSArIDEpO1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyByZXNvdXJjZTogJHtuYW1lfWA7XG4gICAgICBjb25zdCByZXNwb25zZSA9IGF3YWl0IGZldGNoKGZpbGUpO1xuICAgICAgaWYgKCFyZXNwb25zZS5vaykge1xuICAgICAgICB0aHJvdyBuZXcgRXJyb3IoYENhbid0IGRvd25sb2FkIFxcYCR7ZmlsZX1cXGAuIEVycm9yICR7cmVzcG9uc2Uuc3RhdHVzfTogXCIke3Jlc3BvbnNlLnN0YXR1c1RleHR9XCIuYCk7XG4gICAgICB9XG4gICAgICBjb25zdCBkYXRhID0gYXdhaXQgcmVzcG9uc2UuYXJyYXlCdWZmZXIoKTtcblxuICAgICAgLy8gU3RvcmUgVVJMcyBpbiB0aGUgY3dkIHdpdGhvdXQgYW55IHN1YmRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGlmIChmaWxlLmluY2x1ZGVzKFwiOi8vXCIpKSB7XG4gICAgICAgIGZpbGUgPSBuYW1lO1xuICAgICAgfVxuXG4gICAgICAvLyBDb2xsYXBzZSBoaWdoZXIgZGlyZWN0b3J5IHN0cnVjdHVyZVxuICAgICAgZmlsZSA9IGNvbGxhcHNlUGF0aChmaWxlKTtcblxuICAgICAgLy8gQ3JlYXRlIGRpcmVjdG9yeSB0cmVlLCBpZ25vcmluZyBcImRpcmVjdG9yeSBleGlzdHNcIiBWRlMgZXJyb3JzXG4gICAgICBjb25zdCBwYXJ0cyA9IGZpbGUuc3BsaXQoJy8nKS5zbGljZSgwLCAtMSk7XG4gICAgICBsZXQgcGF0aCA9ICcnO1xuICAgICAgd2hpbGUgKHBhcnRzLmxlbmd0aCA+IDApIHtcbiAgICAgICAgcGF0aCArPSBwYXJ0cy5zaGlmdCgpICsgJy8nO1xuICAgICAgICB0cnkge1xuICAgICAgICAgIGF3YWl0IHB5b2RpZGUuRlMubWtkaXIocGF0aCk7XG4gICAgICAgIH0gY2F0Y2ggKGUpIHtcbiAgICAgICAgICBpZiAoZS5uYW1lICE9PSBcIkVycm5vRXJyb3JcIikgdGhyb3cgZTtcbiAgICAgICAgICBpZiAoZS5lcnJubyAhPT0gMjApIHtcbiAgICAgICAgICAgIGNvbnN0IGVycm9yVGV4dFB0ciA9IGF3YWl0IHB5b2RpZGUuX21vZHVsZS5fc3RyZXJyb3IoZS5lcnJubyk7XG4gICAgICAgICAgICBjb25zdCBlcnJvclRleHQgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuVVRGOFRvU3RyaW5nKGVycm9yVGV4dFB0cik7XG4gICAgICAgICAgICB0aHJvdyBuZXcgRXJyb3IoYEZpbGVzeXN0ZW0gRXJyb3IgJHtlLmVycm5vfSBcIiR7ZXJyb3JUZXh0fVwiLmApO1xuICAgICAgICAgIH1cbiAgICAgICAgfVxuICAgICAgfVxuXG4gICAgICAvLyBXcml0ZSB0aGlzIGZpbGUgdG8gdGhlIFZGU1xuICAgICAgdHJ5IHtcbiAgICAgICAgcmV0dXJuIGF3YWl0IHB5b2RpZGUuRlMud3JpdGVGaWxlKGZpbGUsIG5ldyBVaW50OEFycmF5KGRhdGEpKTtcbiAgICAgIH0gY2F0Y2ggKGUpIHtcbiAgICAgICAgaWYgKGUubmFtZSAhPT0gXCJFcnJub0Vycm9yXCIpIHRocm93IGU7XG4gICAgICAgIGNvbnN0IGVycm9yVGV4dFB0ciA9IGF3YWl0IHB5b2RpZGUuX21vZHVsZS5fc3RyZXJyb3IoZS5lcnJubyk7XG4gICAgICAgIGNvbnN0IGVycm9yVGV4dCA9IGF3YWl0IHB5b2RpZGUuX21vZHVsZS5VVEY4VG9TdHJpbmcoZXJyb3JUZXh0UHRyKTtcbiAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBGaWxlc3lzdGVtIEVycm9yICR7ZS5lcnJub30gXCIke2Vycm9yVGV4dH1cIi5gKTtcbiAgICAgIH1cbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcblxuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgUHlvZGlkZSBlbnZpcm9ubWVudCBzZXR1cGA7XG4gICAgYXdhaXQgc2V0dXBQeXRob24ocHlvZGlkZSk7XG5cbiAgICBzdGF0dXNUZXh0LnJlbW92ZSgpO1xuICAgIGlmIChzdGF0dXNDb250YWluZXIuY2hpbGRyZW4ubGVuZ3RoID09IDApIHtcbiAgICAgIHN0YXR1c0NvbnRhaW5lci5wYXJlbnROb2RlLnJlbW92ZSgpO1xuICAgIH1cbiAgICByZXR1cm4gcHlvZGlkZTtcbiAgfSkoKS5jYXRjaCgoZXJyKSA9PiB7XG4gICAgc3RhdHVzVGV4dC5zdHlsZS5jb2xvciA9IFwidmFyKC0tZXhlcmNpc2UtZWRpdG9yLWhsLWVyLCAjQUQwMDAwKVwiO1xuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBlcnIubWVzc2FnZTtcbiAgICAvL2luZGljYXRvckNvbnRhaW5lci5xdWVyeVNlbGVjdG9yKFwiLnNwaW5uZXItZ3Jvd1wiKS5jbGFzc0xpc3QuYWRkKFwiZC1ub25lXCIpO1xuICAgIHRocm93IGVycjtcbiAgfSk7XG5cbiAgLy8gS2VlcCB0cmFjayBvZiBpbml0aWFsIE9KUyBibG9jayByZW5kZXJcbiAgY29uc3QgcmVuZGVyZWRPanMgPSB7fTtcblxuICBjb25zdCBwcm9jZXNzID0gYXN5bmMgKGNvbnRleHQsIGlucHV0cykgPT4ge1xuICAgIGNvbnN0IHB5b2RpZGUgPSBhd2FpdCBweW9kaWRlUHJvbWlzZTtcbiAgICBjb25zdCBldmFsdWF0b3IgPSBuZXcgUHlvZGlkZUV2YWx1YXRvcihweW9kaWRlLCBjb250ZXh0KTtcbiAgICBhd2FpdCBldmFsdWF0b3IucHJvY2VzcyhpbnB1dHMpO1xuICAgIHJldHVybiBldmFsdWF0b3IuY29udGFpbmVyO1xuICB9XG5cbiAgcmV0dXJuIHtcbiAgICBweW9kaWRlUHJvbWlzZSxcbiAgICByZW5kZXJlZE9qcyxcbiAgICBwcm9jZXNzLFxuICB9O1xufVxuIn1dfQ==
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+W10=
+</script>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script>
+// Traduce al español los textos de la interfaz de quarto-live (la extensión no tiene opción de idioma).
+(function () {
+  const traducciones = [
+    [/^Run Code$/, "Ejecutar"],
+    [/^Start Over$/, "Reiniciar"],
+    [/^Show Solution$/, "Ver solución"],
+    [/^Show Hint$/, "Ver pista"],
+    [/^Downloading Pyodide/, "Descargando Python (Pyodide)…"],
+    [/^Initialise$/, "Iniciando…"],
+    [/^Pyodide environment setup$/, "Preparando el entorno de Python…"],
+    [/^Downloading package: (.*)$/, "Descargando paquete: $1"],
+    [/^Downloading resource: (.*)$/, "Descargando recurso: $1"],
+  ];
+  function traducir(raiz) {
+    const recorrido = document.createTreeWalker(raiz, NodeFilter.SHOW_TEXT);
+    let nodo;
+    while ((nodo = recorrido.nextNode())) {
+      const texto = nodo.nodeValue.trim();
+      if (!texto) continue;
+      for (const [patron, reemplazo] of traducciones) {
+        if (patron.test(texto)) {
+          nodo.nodeValue = nodo.nodeValue.replace(texto, texto.replace(patron, reemplazo));
+          break;
+        }
+      }
+    }
+  }
+  const observador = new MutationObserver((cambios) => {
+    for (const c of cambios) {
+      if (c.type === "characterData") traducir(c.target.parentNode || document.body);
+      for (const n of c.addedNodes) traducir(n.nodeType === 1 ? n : n.parentNode || document.body);
+    }
+  });
+  document.addEventListener("DOMContentLoaded", () => {
+    traducir(document.body);
+    observador.observe(document.body, { childList: true, subtree: true, characterData: true });
+  });
+})();
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W119
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../..";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Alternar modo oscuro");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Alternar modo oscuro");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Código desplazable","output":"Salida desplazable"};
+  </script>
+<nav class="page-navigation" aria-label="Página">
+  <div class="nav-page nav-page-previous">
+      <a href="./05_encapsulamiento.html" class="pagination-link" aria-label="Encapsulamiento y Propiedades">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Encapsulamiento y Propiedades</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./07_metodos_especiales.html" class="pagination-link" aria-label="Métodos Especiales (Magic Methods)">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Métodos Especiales (Magic Methods)</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

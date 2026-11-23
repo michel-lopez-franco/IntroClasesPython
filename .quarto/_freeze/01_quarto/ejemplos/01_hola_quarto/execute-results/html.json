@@ -1,0 +1,12 @@
+{
+  "hash": "1fe2153801f0525f43c5b1621d8bd60a",
+  "result": {
+    "engine": "jupyter",
+    "markdown": "---\ntitle: \"01 · Hola Quarto\"\nauthor: \"Propedéutico\"\ndate: today\nlang: es\nformat: html\njupyter: python3\n---\n\n## Texto en Markdown\n\nEste es mi **primer documento** con Quarto. Puedo escribir texto con *formato*,\nlistas y enlaces:\n\n- Python es un lenguaje de propósito general.\n- Quarto mezcla texto y código.\n- Más información en [quarto.org](https://quarto.org).\n\n## Mi primera celda de código\n\n::: {#e13186b9 .cell execution_count=1}\n``` {.python .cell-code}\nmensaje = \"¡Hola desde Python!\"\nprint(mensaje)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n¡Hola desde Python!\n```\n:::\n:::\n\n\n## Las variables se comparten entre celdas\n\nTodas las celdas del documento se ejecutan en la misma sesión, en orden:\n\n::: {#a69971de .cell execution_count=2}\n``` {.python .cell-code}\na = 10\nb = 3\n```\n:::\n\n\n::: {#ffbcacc4 .cell execution_count=3}\n``` {.python .cell-code}\nprint(f\"Suma: {a + b}\")\nprint(f\"División entera: {a // b}\")\nprint(f\"Residuo: {a % b}\")\n```\n\n::: {.cell-output .cell-output-stdout}\n```\nSuma: 13\nDivisión entera: 3\nResiduo: 1\n```\n:::\n:::\n\n\n## La última expresión se muestra sola\n\nIgual que en Jupyter, no es necesario usar `print` para la última línea:\n\n::: {#0357bc9a .cell execution_count=4}\n``` {.python .cell-code}\ncuadrados = [n**2 for n in range(1, 11)]\ncuadrados\n```\n\n::: {.cell-output .cell-output-display execution_count=4}\n```\n[1, 4, 9, 16, 25, 36, 49, 64, 81, 100]\n```\n:::\n:::\n\n\n## Para renderizar\n\n```bash\nuv run quarto render 01_quarto/ejemplos/01_hola_quarto.qmd\n```\n\n",
+    "supporting": [
+      "01_hola_quarto_files"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}

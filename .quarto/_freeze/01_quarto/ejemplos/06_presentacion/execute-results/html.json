@@ -1,0 +1,12 @@
+{
+  "hash": "345f60d0d27585931b973306d8831441",
+  "result": {
+    "engine": "jupyter",
+    "markdown": "---\ntitle: \"06 · Presentación con Quarto\"\nsubtitle: \"Reveal.js + Python\"\nlang: es\nformat:\n  revealjs:\n    theme: simple\n    slide-number: true\n    code-line-numbers: true\njupyter: python3\n---\n\n## ¿Cómo funciona?\n\n- Cada `##` crea una **diapositiva** nueva\n- Se usa el formato `revealjs` en el YAML\n- El código Python se ejecuta igual que en HTML\n\n::: {.notes}\nNotas del presentador: presiona **S** durante la presentación para verlas.\n:::\n\n## Código y resultado\n\n::: {#add07c37 .cell execution_count=1}\n``` {.python .cell-code}\nlenguajes = {\"Python\": 1991, \"Java\": 1995, \"C\": 1972}\nfor nombre, anio in sorted(lenguajes.items(), key=lambda x: x[1]):\n    print(f\"{nombre}: {anio}\")\n```\n\n::: {.cell-output .cell-output-stdout}\n```\nC: 1972\nPython: 1991\nJava: 1995\n```\n:::\n:::\n\n\n## Una gráfica\n\n::: {#c2c27a10 .cell execution_count=2}\n\n::: {.cell-output .cell-output-display}\n![](06_presentacion_files/figure-revealjs/cell-3-output-1.png){width=651 height=338}\n:::\n:::\n\n\n## Aparición incremental {.smaller}\n\n::: {.incremental}\n- Primero aparece esto\n- Luego esto\n- Y al final esto\n:::\n\n## Dos columnas\n\n:::: {.columns}\n::: {.column width=\"50%\"}\n**Clase**\n\n```python\nclass Perro:\n    def ladrar(self):\n        return \"¡Guau!\"\n```\n:::\n::: {.column width=\"50%\"}\n**Objeto**\n\n```python\nfirulais = Perro()\nfirulais.ladrar()\n```\n:::\n::::\n\n## ¡Gracias! {background-color=\"#2c3e50\"}\n\nRenderizar con:\n\n```bash\nuv run quarto render 01_quarto/ejemplos/06_presentacion.qmd\n```\n\n",
+    "supporting": [
+      "06_presentacion_files"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}

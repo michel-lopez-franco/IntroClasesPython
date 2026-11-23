@@ -1,0 +1,746 @@
+[
+  {
+    "objectID": "ejemplos/09_convertir_ipynb_py.html",
+    "href": "ejemplos/09_convertir_ipynb_py.html",
+    "title": "09 · De .ipynb y .py a Quarto",
+    "section": "",
+    "text": "¿Ya tienes notebooks de Jupyter o scripts de Python? No hace falta reescribirlos. Esta página muestra varias formas de aprovecharlos con Quarto.\nArchivos de práctica en la carpeta ejemplos/09_conversion/:",
+    "crumbs": [
+      "Ejemplos",
+      "09 · De .ipynb y .py a Quarto"
+    ]
+  },
+  {
+    "objectID": "ejemplos/09_convertir_ipynb_py.html#resumen",
+    "href": "ejemplos/09_convertir_ipynb_py.html#resumen",
+    "title": "09 · De .ipynb y .py a Quarto",
+    "section": "Resumen",
+    "text": "Resumen\n\n\n\n\n\n\n\n\nTengo…\nQuiero…\nComando / técnica\n\n\n\n\n.ipynb\nConvertirlo a .qmd\nquarto convert archivo.ipynb\n\n\n.qmd\nConvertirlo a .ipynb\nquarto convert archivo.qmd\n\n\n.ipynb\nPublicarlo sin convertir\nquarto render archivo.ipynb\n\n\n.ipynb\nUsar sólo una gráfica o celda\n{{&lt; embed archivo.ipynb#etiqueta &gt;}}\n\n\n.py\nPublicarlo como documento\nAgregar celdas # %% y quarto render archivo.py\n\n\n.py (módulo)\nUsar sus funciones en un .qmd\nimport desde una celda",
+    "crumbs": [
+      "Ejemplos",
+      "09 · De .ipynb y .py a Quarto"
+    ]
+  },
+  {
+    "objectID": "ejemplos/09_convertir_ipynb_py.html#convertir-.ipynb-.qmd",
+    "href": "ejemplos/09_convertir_ipynb_py.html#convertir-.ipynb-.qmd",
+    "title": "09 · De .ipynb y .py a Quarto",
+    "section": "1. Convertir .ipynb → .qmd",
+    "text": "1. Convertir .ipynb → .qmd\nquarto convert notebook_ejemplo.ipynb          # crea notebook_ejemplo.qmd\nquarto convert notebook_ejemplo.ipynb -o otro_nombre.qmd\nQué hace la conversión:\n\nCada celda de Markdown pasa a ser texto normal.\nCada celda de código pasa a ser un bloque ```{python}.\nEl primer título # ... del notebook se convierte en el title: del YAML.\nLas opciones #| que tuvieras en las celdas se conservan.\nLas salidas se descartan: un .qmd sólo guarda código, y los resultados se generan al renderizar.\n\nResultado de convertir notebook_ejemplo.ipynb (fragmento):\n---\ntitle: Notebook de ejemplo\njupyter: python3\n---\n\nUn notebook sencillo con una clase `Rectangulo`.\n\n::: {#20f47b60 .cell execution_count=1}\n``` {.python .cell-code}\nclass Rectangulo:\n    def __init__(self, base, altura):\n        self.base = base\n        self.altura = altura\n\n    def area(self):\n        return self.base * self.altura\n```\n:::\n\n\n## Crear objetos\n\n::: {#826a4c80 .cell execution_count=2}\n``` {.python .cell-code}\nr = Rectangulo(4, 3)\nprint(f\"Área: {r.area()}\")\n```\n\n::: {.cell-output .cell-output-stdout}\n```\nÁrea: 12\n```\n:::\n:::\n\n\nConvertir varios notebooks a la vez\n# desde la raíz del repositorio: todos los notebooks de src/\nfor nb in src/*.ipynb; do quarto convert \"$nb\"; done\n\n\nY al revés: .qmd → .ipynb\nquarto convert notebook_ejemplo.qmd -o copia.ipynb\nÚtil para abrir un .qmd en Jupyter o subirlo a Google Colab.\n\n\n\n\n\n\nTip¿Por qué convertir a .qmd?\n\n\n\n\nEs texto plano: en git diff se ven los cambios claramente (un .ipynb es JSON con salidas e imágenes).\nSe edita cómodo en cualquier editor.\nNo guarda salidas viejas: siempre se generan de nuevo al renderizar.",
+    "crumbs": [
+      "Ejemplos",
+      "09 · De .ipynb y .py a Quarto"
+    ]
+  },
+  {
+    "objectID": "ejemplos/09_convertir_ipynb_py.html#renderizar-el-.ipynb-directamente-sin-convertir",
+    "href": "ejemplos/09_convertir_ipynb_py.html#renderizar-el-.ipynb-directamente-sin-convertir",
+    "title": "09 · De .ipynb y .py a Quarto",
+    "section": "2. Renderizar el .ipynb directamente (sin convertir)",
+    "text": "2. Renderizar el .ipynb directamente (sin convertir)\nQuarto puede publicar el notebook tal cual:\nquarto render notebook_ejemplo.ipynb              # usa las salidas guardadas en el notebook\nquarto render notebook_ejemplo.ipynb --execute    # vuelve a ejecutar todas las celdas\nquarto preview notebook_ejemplo.ipynb             # vista previa en vivo\n\n\n\n\n\n\nImportante\n\n\n\nPor defecto Quarto no ejecuta los .ipynb: muestra las salidas que ya tienen guardadas. Si el notebook nunca se ejecutó (o lo modificaste), usa --execute.\n\n\nPuedes agregar opciones de Quarto al notebook:\n\nYAML: agrega como primera celda una de tipo Raw con el encabezado:\n---\ntitle: \"Mi notebook\"\nformat: html\n---\nOpciones de celda: escribe #| echo: false, #| label: fig-..., etc. al inicio de las celdas de código, igual que en un .qmd.",
+    "crumbs": [
+      "Ejemplos",
+      "09 · De .ipynb y .py a Quarto"
+    ]
+  },
+  {
+    "objectID": "ejemplos/09_convertir_ipynb_py.html#insertar-una-celda-de-un-notebook-embed",
+    "href": "ejemplos/09_convertir_ipynb_py.html#insertar-una-celda-de-un-notebook-embed",
+    "title": "09 · De .ipynb y .py a Quarto",
+    "section": "3. Insertar una celda de un notebook (embed)",
+    "text": "3. Insertar una celda de un notebook (embed)\nSi sólo te interesa una gráfica o resultado de un notebook, incrústalo en tu .qmd con el shortcode embed y la label de la celda. La celda de la gráfica en notebook_ejemplo.ipynb tiene #| label: fig-areas, así que:\n{{&lt; embed 09_conversion/notebook_ejemplo.ipynb#fig-areas &gt;}}\nResultado:\n\n\n\n\n\n\n\n\n\nFigura 1: Área de rectángulos con altura 3\n\n\n\n\n\nFuente: Notebook de ejemplo\n\n\n\n\n\n\nNota\n\n\n\nembed sólo funciona dentro de un proyecto Quarto (una carpeta con _quarto.yml), como esta carpeta 01_quarto/.",
+    "crumbs": [
+      "Ejemplos",
+      "09 · De .ipynb y .py a Quarto"
+    ]
+  },
+  {
+    "objectID": "ejemplos/09_convertir_ipynb_py.html#renderizar-un-archivo-.py",
+    "href": "ejemplos/09_convertir_ipynb_py.html#renderizar-un-archivo-.py",
+    "title": "09 · De .ipynb y .py a Quarto",
+    "section": "4. Renderizar un archivo .py",
+    "text": "4. Renderizar un archivo .py\nQuarto puede renderizar un .py si lo escribes en formato percent, el mismo que usan VS Code, Spyder y PyCharm para dividir un script en celdas:\n# %% [markdown]\n# ---\n# title: \"Script de Python renderizado con Quarto\"\n# format: html\n# jupyter: python3\n# ---\n\n# %% [markdown]\n# Texto en **Markdown**: cada línea empieza con `# `.\n\n# %%\nclass Circulo:\n    def __init__(self, radio):\n        self.radio = radio\n\n    def area(self):\n        return 3.14159 * self.radio**2\n\n# %%\nfor r in [1, 2, 3]:\n    print(f\"Radio {r}: área = {Circulo(r).area():.2f}\")\n\n# %% inicia una celda de código.\n# %% [markdown] inicia una celda de texto.\nLa primera celda Markdown puede llevar el YAML.\nLas opciones #| funcionan igual dentro de las celdas de código.\n\nEl archivo sigue siendo Python válido:\npython script_ejemplo.py          # se ejecuta como script normal\nquarto render script_ejemplo.py   # genera script_ejemplo.html\nquarto preview script_ejemplo.py\n\nPasar un script normal a formato percent\n\nAl inicio, agrega una celda # %% [markdown] con el YAML (título, formato).\nDivide el código en bloques lógicos y pon # %% antes de cada uno.\nConvierte en celdas # %% [markdown] los comentarios que expliquen algo.\n\n¿Necesitas un .qmd o un .ipynb? Con el script ya en formato percent puedes usar Jupytext:\nuv add jupytext\njupytext --to ipynb script_ejemplo.py     # .py → .ipynb\nquarto convert script_ejemplo.ipynb       # .ipynb → .qmd",
+    "crumbs": [
+      "Ejemplos",
+      "09 · De .ipynb y .py a Quarto"
+    ]
+  },
+  {
+    "objectID": "ejemplos/09_convertir_ipynb_py.html#usar-un-módulo-.py-desde-un-.qmd",
+    "href": "ejemplos/09_convertir_ipynb_py.html#usar-un-módulo-.py-desde-un-.qmd",
+    "title": "09 · De .ipynb y .py a Quarto",
+    "section": "5. Usar un módulo .py desde un .qmd",
+    "text": "5. Usar un módulo .py desde un .qmd\nSi el .py es una librería de funciones o clases (sin celdas), no hace falta convertirlo: impórtalo desde una celda. El .qmd se ejecuta en su propia carpeta; si el .py está en la misma carpeta basta con import figuras. Si está en una subcarpeta, primero se agrega esa carpeta a sys.path:\n\nfrom importlib import reload\nimport sys\n\nsys.path.insert(0, \"09_conversion\")   # carpeta donde está figuras.py\nimport figuras\nreload(figuras)                       # toma cambios recientes del archivo al hacer preview\n\nfiguras.grafica_cuadrados(8)\n\n\n\n\n\n\n\nFigura 2: Gráfica creada por una función de figuras.py\n\n\n\n\n\nAsí mantienes la lógica en archivos .py (fáciles de probar y reutilizar) y en el .qmd sólo la explicación y los resultados.\n\n\n\n\n\n\nTipPara el curso\n\n\n\nLos notebooks de src/ (01_Introduccion_Clases_Objetos.ipynb, …) se pueden publicar como página web sin modificarlos: uv run quarto render src/01_Introduccion_Clases_Objetos.ipynb --execute",
+    "crumbs": [
+      "Ejemplos",
+      "09 · De .ipynb y .py a Quarto"
+    ]
+  },
+  {
+    "objectID": "ejemplos/07_animaciones_plotly.html",
+    "href": "ejemplos/07_animaciones_plotly.html",
+    "title": "07 · Animaciones con Plotly",
+    "section": "",
+    "text": "Plotly genera gráficas interactivas en JavaScript. Al renderizar a HTML, Quarto las incrusta tal cual, así que las animaciones (botón Play y barra deslizante) funcionan en el navegador sin necesidad de un servidor.",
+    "crumbs": [
+      "Ejemplos",
+      "07 · Animaciones con Plotly"
+    ]
+  },
+  {
+    "objectID": "ejemplos/07_animaciones_plotly.html#idea-básica-frames",
+    "href": "ejemplos/07_animaciones_plotly.html#idea-básica-frames",
+    "title": "07 · Animaciones con Plotly",
+    "section": "Idea básica: frames",
+    "text": "Idea básica: frames\nUna animación en Plotly es una figura con una lista de cuadros (frames). Cada cuadro contiene los datos de un instante; Plotly interpola entre ellos.\nfig = go.Figure(\n    data=[...],            # lo que se ve al inicio\n    frames=[go.Frame(data=[...], name=\"0\"), ...],   # cada instante\n    layout=go.Layout(updatemenus=[...]),            # botones Play / Pausa\n)",
+    "crumbs": [
+      "Ejemplos",
+      "07 · Animaciones con Plotly"
+    ]
+  },
+  {
+    "objectID": "ejemplos/07_animaciones_plotly.html#ejemplo-1-onda-que-se-desplaza",
+    "href": "ejemplos/07_animaciones_plotly.html#ejemplo-1-onda-que-se-desplaza",
+    "title": "07 · Animaciones con Plotly",
+    "section": "Ejemplo 1: onda que se desplaza",
+    "text": "Ejemplo 1: onda que se desplaza\n\n\nCódigo\nimport numpy as np\nimport plotly.graph_objects as go\n\nx = np.linspace(0, 4 * np.pi, 200)\nfases = np.linspace(0, 2 * np.pi, 40)\n\nframes = [\n    go.Frame(data=[go.Scatter(x=x, y=np.sin(x - f))], name=f\"{i}\")\n    for i, f in enumerate(fases)\n]\n\nbotones = dict(\n    type=\"buttons\",\n    showactive=False,\n    x=0, y=1.15, xanchor=\"left\",\n    buttons=[\n        dict(label=\"▶ Play\", method=\"animate\",\n             args=[None, {\"frame\": {\"duration\": 50, \"redraw\": False},\n                          \"fromcurrent\": True, \"transition\": {\"duration\": 0}}]),\n        dict(label=\"⏸ Pausa\", method=\"animate\",\n             args=[[None], {\"frame\": {\"duration\": 0}, \"mode\": \"immediate\"}]),\n    ],\n)\n\nfig = go.Figure(\n    data=[go.Scatter(x=x, y=np.sin(x), mode=\"lines\", line=dict(width=3))],\n    frames=frames,\n    layout=go.Layout(\n        xaxis=dict(range=[0, 4 * np.pi], title=\"x\"),\n        yaxis=dict(range=[-1.2, 1.2], title=\"sen(x − t)\"),\n        updatemenus=[botones],\n        height=400,\n    ),\n)\nfig.show()\n\n\n\n\n                            \n                                            \n\n\nFigura 1: Onda senoidal animada (presiona ▶)",
+    "crumbs": [
+      "Ejemplos",
+      "07 · Animaciones con Plotly"
+    ]
+  },
+  {
+    "objectID": "ejemplos/07_animaciones_plotly.html#ejemplo-2-barra-deslizante-slider",
+    "href": "ejemplos/07_animaciones_plotly.html#ejemplo-2-barra-deslizante-slider",
+    "title": "07 · Animaciones con Plotly",
+    "section": "Ejemplo 2: barra deslizante (slider)",
+    "text": "Ejemplo 2: barra deslizante (slider)\nCon un slider el usuario puede moverse a cualquier cuadro. Aquí, un proyectil lanzado con distintos ángulos:\n\n\nCódigo\ng, v0 = 9.81, 20\nangulos = list(range(10, 85, 5))\n\ndef trayectoria(angulo):\n    th = np.radians(angulo)\n    t_vuelo = 2 * v0 * np.sin(th) / g\n    t = np.linspace(0, t_vuelo, 60)\n    return v0 * np.cos(th) * t, v0 * np.sin(th) * t - 0.5 * g * t**2\n\nframes = []\nfor a in angulos:\n    xs, ys = trayectoria(a)\n    frames.append(go.Frame(data=[go.Scatter(x=xs, y=ys)], name=str(a)))\n\nslider = dict(\n    active=0,\n    currentvalue={\"prefix\": \"Ángulo: \", \"suffix\": \"°\"},\n    pad={\"t\": 40},\n    steps=[\n        dict(label=str(a), method=\"animate\",\n             args=[[str(a)], {\"frame\": {\"duration\": 0, \"redraw\": False}, \"mode\": \"immediate\"}])\n        for a in angulos\n    ],\n)\n\nx0, y0 = trayectoria(angulos[0])\nfig = go.Figure(\n    data=[go.Scatter(x=x0, y=y0, mode=\"lines\", fill=\"tozeroy\")],\n    frames=frames,\n    layout=go.Layout(\n        xaxis=dict(range=[0, 45], title=\"distancia (m)\"),\n        yaxis=dict(range=[0, 22], title=\"altura (m)\"),\n        sliders=[slider],\n        updatemenus=[dict(type=\"buttons\", x=0, y=1.15, xanchor=\"left\", buttons=[\n            dict(label=\"▶ Play\", method=\"animate\",\n                 args=[None, {\"frame\": {\"duration\": 300}, \"fromcurrent\": True}])])],\n        height=450,\n    ),\n)\nfig.show()\n\n\n\n\n                            \n                                            \n\n\nFigura 2: Trayectoria de un proyectil según el ángulo de lanzamiento",
+    "crumbs": [
+      "Ejemplos",
+      "07 · Animaciones con Plotly"
+    ]
+  },
+  {
+    "objectID": "ejemplos/07_animaciones_plotly.html#ejemplo-3-puntos-en-movimiento-simulación",
+    "href": "ejemplos/07_animaciones_plotly.html#ejemplo-3-puntos-en-movimiento-simulación",
+    "title": "07 · Animaciones con Plotly",
+    "section": "Ejemplo 3: puntos en movimiento (simulación)",
+    "text": "Ejemplo 3: puntos en movimiento (simulación)\nCada cuadro muestra la posición de varias partículas en un paseo aleatorio:\n\n\nCódigo\nrng = np.random.default_rng(0)\nn, pasos = 30, 60\npos = np.cumsum(rng.normal(0, 0.3, size=(pasos, n, 2)), axis=0)\n\nframes = [\n    go.Frame(data=[go.Scatter(x=pos[k, :, 0], y=pos[k, :, 1])], name=str(k))\n    for k in range(pasos)\n]\n\nfig = go.Figure(\n    data=[go.Scatter(x=pos[0, :, 0], y=pos[0, :, 1], mode=\"markers\",\n                     marker=dict(size=10, color=np.arange(n), colorscale=\"Viridis\"))],\n    frames=frames,\n    layout=go.Layout(\n        xaxis=dict(range=[-6, 6]), yaxis=dict(range=[-6, 6], scaleanchor=\"x\"),\n        updatemenus=[dict(type=\"buttons\", x=0, y=1.15, xanchor=\"left\", buttons=[\n            dict(label=\"▶ Play\", method=\"animate\",\n                 args=[None, {\"frame\": {\"duration\": 80}, \"transition\": {\"duration\": 60},\n                              \"fromcurrent\": True}])])],\n        height=500,\n    ),\n)\nfig.show()\n\n\n\n\n                            \n                                            \n\n\nFigura 3: Paseo aleatorio de 30 partículas\n\n\n\n\n\n\n\n\n\n\nTipMás fácil con pandas\n\n\n\nSi instalas pandas (uv add pandas), plotly.express crea animaciones en una línea: px.scatter(df, x=\"x\", y=\"y\", animation_frame=\"tiempo\").",
+    "crumbs": [
+      "Ejemplos",
+      "07 · Animaciones con Plotly"
+    ]
+  },
+  {
+    "objectID": "ejemplos/05_clases_python.html",
+    "href": "ejemplos/05_clases_python.html",
+    "title": "05 · Documentar clases con Quarto",
+    "section": "",
+    "text": "Quarto es ideal para explicar código paso a paso: el texto describe la idea y la celda la demuestra. Aquí un ejemplo con Programación Orientada a Objetos.",
+    "crumbs": [
+      "Ejemplos",
+      "05 · Documentar clases con Quarto"
+    ]
+  },
+  {
+    "objectID": "ejemplos/05_clases_python.html#definir-la-clase",
+    "href": "ejemplos/05_clases_python.html#definir-la-clase",
+    "title": "05 · Documentar clases con Quarto",
+    "section": "1. Definir la clase",
+    "text": "1. Definir la clase\nUna CuentaBancaria guarda un titular y un saldo, y permite depositar y retirar.\n\nclass CuentaBancaria:\n    \"\"\"Cuenta bancaria sencilla.\"\"\"\n\n    def __init__(self, titular: str, saldo: float = 0.0):\n        self.titular = titular\n        self._saldo = saldo\n\n    @property\n    def saldo(self) -&gt; float:\n        return self._saldo\n\n    def depositar(self, monto: float) -&gt; None:\n        if monto &lt;= 0:\n            raise ValueError(\"El monto debe ser positivo\")\n        self._saldo += monto\n\n    def retirar(self, monto: float) -&gt; None:\n        if monto &gt; self._saldo:\n            raise ValueError(\"Fondos insuficientes\")\n        self._saldo -= monto\n\n    def __repr__(self) -&gt; str:\n        return f\"CuentaBancaria({self.titular!r}, saldo={self._saldo:.2f})\"",
+    "crumbs": [
+      "Ejemplos",
+      "05 · Documentar clases con Quarto"
+    ]
+  },
+  {
+    "objectID": "ejemplos/05_clases_python.html#crear-objetos",
+    "href": "ejemplos/05_clases_python.html#crear-objetos",
+    "title": "05 · Documentar clases con Quarto",
+    "section": "2. Crear objetos",
+    "text": "2. Crear objetos\n\ncuenta = CuentaBancaria(\"Ana\", 1000)\ncuenta\n\nCuentaBancaria('Ana', saldo=1000.00)",
+    "crumbs": [
+      "Ejemplos",
+      "05 · Documentar clases con Quarto"
+    ]
+  },
+  {
+    "objectID": "ejemplos/05_clases_python.html#usar-los-métodos",
+    "href": "ejemplos/05_clases_python.html#usar-los-métodos",
+    "title": "05 · Documentar clases con Quarto",
+    "section": "3. Usar los métodos",
+    "text": "3. Usar los métodos\n\ncuenta.depositar(500)\ncuenta.retirar(200)\nprint(f\"Saldo de {cuenta.titular}: ${cuenta.saldo:,.2f}\")\n\nSaldo de Ana: $1,300.00",
+    "crumbs": [
+      "Ejemplos",
+      "05 · Documentar clases con Quarto"
+    ]
+  },
+  {
+    "objectID": "ejemplos/05_clases_python.html#manejo-de-errores",
+    "href": "ejemplos/05_clases_python.html#manejo-de-errores",
+    "title": "05 · Documentar clases con Quarto",
+    "section": "4. Manejo de errores",
+    "text": "4. Manejo de errores\nCon error: true mostramos la excepción sin detener el documento:\n\ncuenta.retirar(10_000)\n\n\n---------------------------------------------------------------------------\nValueError                                Traceback (most recent call last)\nCell In[4], line 1\n----&gt; 1 cuenta.retirar(10_000)\n\nCell In[1], line 19, in CuentaBancaria.retirar(self, monto)\n     17     def retirar(self, monto: float) -&gt; None:\n     18         if monto &gt; self._saldo:\n---&gt; 19             raise ValueError(\"Fondos insuficientes\")\n     20         self._saldo -= monto\n\nValueError: Fondos insuficientes",
+    "crumbs": [
+      "Ejemplos",
+      "05 · Documentar clases con Quarto"
+    ]
+  },
+  {
+    "objectID": "ejemplos/05_clases_python.html#herencia",
+    "href": "ejemplos/05_clases_python.html#herencia",
+    "title": "05 · Documentar clases con Quarto",
+    "section": "5. Herencia",
+    "text": "5. Herencia\n\nclass CuentaAhorro(CuentaBancaria):\n    def __init__(self, titular, saldo=0.0, tasa=0.05):\n        super().__init__(titular, saldo)\n        self.tasa = tasa\n\n    def aplicar_interes(self):\n        self._saldo *= 1 + self.tasa\n\nahorro = CuentaAhorro(\"Luis\", 2000, tasa=0.10)\nahorro.aplicar_interes()\nahorro\n\nCuentaBancaria('Luis', saldo=2200.00)",
+    "crumbs": [
+      "Ejemplos",
+      "05 · Documentar clases con Quarto"
+    ]
+  },
+  {
+    "objectID": "ejemplos/05_clases_python.html#diagrama-de-clases-mermaid",
+    "href": "ejemplos/05_clases_python.html#diagrama-de-clases-mermaid",
+    "title": "05 · Documentar clases con Quarto",
+    "section": "6. Diagrama de clases (Mermaid)",
+    "text": "6. Diagrama de clases (Mermaid)\nQuarto dibuja diagramas Mermaid directamente:\n\n\n\n\n\n\nclassDiagram\n    class CuentaBancaria {\n        +titular: str\n        -_saldo: float\n        +depositar(monto)\n        +retirar(monto)\n    }\n    class CuentaAhorro {\n        +tasa: float\n        +aplicar_interes()\n    }\n    CuentaBancaria &lt;|-- CuentaAhorro",
+    "crumbs": [
+      "Ejemplos",
+      "05 · Documentar clases con Quarto"
+    ]
+  },
+  {
+    "objectID": "ejemplos/03_graficas.html",
+    "href": "ejemplos/03_graficas.html",
+    "title": "03 · Gráficas",
+    "section": "",
+    "text": "Quarto incrusta automáticamente las gráficas generadas por Python. Con una label que empiece con fig- se numeran y se pueden citar: ver Figura 1 y Figura 2.",
+    "crumbs": [
+      "Ejemplos",
+      "03 · Gráficas"
+    ]
+  },
+  {
+    "objectID": "ejemplos/03_graficas.html#matplotlib",
+    "href": "ejemplos/03_graficas.html#matplotlib",
+    "title": "03 · Gráficas",
+    "section": "Matplotlib",
+    "text": "Matplotlib\n\n\nCódigo\nimport numpy as np\nimport matplotlib.pyplot as plt\n\nx = np.linspace(0, 2 * np.pi, 200)\n\nfig, ax = plt.subplots(figsize=(7, 3.5))\nax.plot(x, np.sin(x), label=\"sen(x)\")\nax.plot(x, np.cos(x), label=\"cos(x)\")\nax.set_xlabel(\"x\")\nax.set_ylabel(\"y\")\nax.legend()\nax.grid(alpha=0.3)\nplt.show()\n\n\n\n\n\n\n\n\nFigura 1: Funciones seno y coseno\n\n\n\n\n\n\n\nCódigo\nalumnos = [\"Ana\", \"Luis\", \"Sofía\", \"Pedro\"]\ncalificaciones = [9.5, 8.0, 9.0, 7.5]\n\nfig, ax = plt.subplots(figsize=(6, 3.5))\nax.bar(alumnos, calificaciones, color=\"steelblue\")\nax.axhline(8, color=\"gray\", linestyle=\"--\", label=\"Mínimo aprobatorio\")\nax.set_ylim(0, 10)\nax.set_ylabel(\"Calificación\")\nax.legend()\nplt.show()\n\n\n\n\n\n\n\n\nFigura 2: Calificaciones por alumno",
+    "crumbs": [
+      "Ejemplos",
+      "03 · Gráficas"
+    ]
+  },
+  {
+    "objectID": "ejemplos/03_graficas.html#varias-figuras-lado-a-lado",
+    "href": "ejemplos/03_graficas.html#varias-figuras-lado-a-lado",
+    "title": "03 · Gráficas",
+    "section": "Varias figuras lado a lado",
+    "text": "Varias figuras lado a lado\nCon layout-ncol las subfiguras se acomodan en columnas (Figura 3).\n\nCódigo\nrng = np.random.default_rng(42)\n\nplt.figure(figsize=(4, 3))\nplt.hist(rng.normal(size=1000), bins=30, color=\"tab:blue\")\nplt.show()\n\nplt.figure(figsize=(4, 3))\nplt.hist(rng.uniform(size=1000), bins=30, color=\"tab:orange\")\nplt.show()\n\n\n\n\n\n\n\n\n\n\n\n\n(a) Normal\n\n\n\n\n\n\n\n\n\n\n\n(b) Uniforme\n\n\n\n\n\n\n\nFigura 3: Distribuciones aleatorias",
+    "crumbs": [
+      "Ejemplos",
+      "03 · Gráficas"
+    ]
+  },
+  {
+    "objectID": "ejemplos/03_graficas.html#plotly-gráfica-interactiva",
+    "href": "ejemplos/03_graficas.html#plotly-gráfica-interactiva",
+    "title": "03 · Gráficas",
+    "section": "Plotly (gráfica interactiva)",
+    "text": "Plotly (gráfica interactiva)\nEn formato HTML, las gráficas de Plotly son interactivas (zoom, hover). Ver Figura 4.\n\n\nCódigo\nimport plotly.graph_objects as go\n\nt = np.linspace(0, 10, 100)\nfig = go.Figure(go.Scatter(x=t, y=np.exp(-0.3 * t) * np.cos(2 * t), mode=\"lines\"))\nfig.update_layout(title=\"Oscilación amortiguada\",\n                  xaxis_title=\"tiempo\", yaxis_title=\"amplitud\")\nfig.show()\n\n\n\n\n                            \n                                            \n\n\nFigura 4: Gráfica interactiva con Plotly",
+    "crumbs": [
+      "Ejemplos",
+      "03 · Gráficas"
+    ]
+  },
+  {
+    "objectID": "ejemplos/01_hola_quarto.html",
+    "href": "ejemplos/01_hola_quarto.html",
+    "title": "01 · Hola Quarto",
+    "section": "",
+    "text": "Este es mi primer documento con Quarto. Puedo escribir texto con formato, listas y enlaces:\n\nPython es un lenguaje de propósito general.\nQuarto mezcla texto y código.\nMás información en quarto.org.",
+    "crumbs": [
+      "Ejemplos",
+      "01 · Hola Quarto"
+    ]
+  },
+  {
+    "objectID": "ejemplos/01_hola_quarto.html#texto-en-markdown",
+    "href": "ejemplos/01_hola_quarto.html#texto-en-markdown",
+    "title": "01 · Hola Quarto",
+    "section": "",
+    "text": "Este es mi primer documento con Quarto. Puedo escribir texto con formato, listas y enlaces:\n\nPython es un lenguaje de propósito general.\nQuarto mezcla texto y código.\nMás información en quarto.org.",
+    "crumbs": [
+      "Ejemplos",
+      "01 · Hola Quarto"
+    ]
+  },
+  {
+    "objectID": "ejemplos/01_hola_quarto.html#mi-primera-celda-de-código",
+    "href": "ejemplos/01_hola_quarto.html#mi-primera-celda-de-código",
+    "title": "01 · Hola Quarto",
+    "section": "Mi primera celda de código",
+    "text": "Mi primera celda de código\n\nmensaje = \"¡Hola desde Python!\"\nprint(mensaje)\n\n¡Hola desde Python!",
+    "crumbs": [
+      "Ejemplos",
+      "01 · Hola Quarto"
+    ]
+  },
+  {
+    "objectID": "ejemplos/01_hola_quarto.html#las-variables-se-comparten-entre-celdas",
+    "href": "ejemplos/01_hola_quarto.html#las-variables-se-comparten-entre-celdas",
+    "title": "01 · Hola Quarto",
+    "section": "Las variables se comparten entre celdas",
+    "text": "Las variables se comparten entre celdas\nTodas las celdas del documento se ejecutan en la misma sesión, en orden:\n\na = 10\nb = 3\n\n\nprint(f\"Suma: {a + b}\")\nprint(f\"División entera: {a // b}\")\nprint(f\"Residuo: {a % b}\")\n\nSuma: 13\nDivisión entera: 3\nResiduo: 1",
+    "crumbs": [
+      "Ejemplos",
+      "01 · Hola Quarto"
+    ]
+  },
+  {
+    "objectID": "ejemplos/01_hola_quarto.html#la-última-expresión-se-muestra-sola",
+    "href": "ejemplos/01_hola_quarto.html#la-última-expresión-se-muestra-sola",
+    "title": "01 · Hola Quarto",
+    "section": "La última expresión se muestra sola",
+    "text": "La última expresión se muestra sola\nIgual que en Jupyter, no es necesario usar print para la última línea:\n\ncuadrados = [n**2 for n in range(1, 11)]\ncuadrados\n\n[1, 4, 9, 16, 25, 36, 49, 64, 81, 100]",
+    "crumbs": [
+      "Ejemplos",
+      "01 · Hola Quarto"
+    ]
+  },
+  {
+    "objectID": "ejemplos/01_hola_quarto.html#para-renderizar",
+    "href": "ejemplos/01_hola_quarto.html#para-renderizar",
+    "title": "01 · Hola Quarto",
+    "section": "Para renderizar",
+    "text": "Para renderizar\nuv run quarto render 01_quarto/ejemplos/01_hola_quarto.qmd",
+    "crumbs": [
+      "Ejemplos",
+      "01 · Hola Quarto"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Quarto + Python",
+    "section": "",
+    "text": "Este mini sitio reúne una guía rápida y ejemplos básicos para trabajar con Quarto y Python. Usa el menú lateral para navegar.\n\nEmpieza por la Guía rápida.\nRevisa los ejemplos en orden:\n\n01 · Hola Quarto\n02 · Opciones de celdas\n03 · Gráficas\n04 · Tablas, ecuaciones y callouts\n05 · Documentar clases\n06 · Presentación\n07 · Animaciones con Plotly\n08 · HTML y JavaScript\n09 · De .ipynb y .py a Quarto\n\n\n\n\n\n\n\n\nTipPara ver todo el sitio\n\n\n\nDesde la raíz del repositorio: uv run quarto preview 01_quarto",
+    "crumbs": [
+      "Quarto + Python"
+    ]
+  },
+  {
+    "objectID": "guia_rapida.html",
+    "href": "guia_rapida.html",
+    "title": "Guía rápida: Quarto + Python",
+    "section": "",
+    "text": "Quarto es un sistema de publicación científica y técnica. Permite escribir texto (Markdown) + código (Python) en un mismo archivo .qmd y convertirlo en:\n\nPáginas web (HTML)\nPDF (vía LaTeX o Typst)\nDocumentos Word (.docx)\nPresentaciones (Reveal.js, PowerPoint)\nSitios web, libros y blogs\n\nEl código se ejecuta al renderizar y sus resultados (texto, tablas, gráficas) quedan incrustados en el documento final.",
+    "crumbs": [
+      "Guía rápida: Quarto + Python"
+    ]
+  },
+  {
+    "objectID": "guia_rapida.html#qué-es-quarto",
+    "href": "guia_rapida.html#qué-es-quarto",
+    "title": "Guía rápida: Quarto + Python",
+    "section": "",
+    "text": "Quarto es un sistema de publicación científica y técnica. Permite escribir texto (Markdown) + código (Python) en un mismo archivo .qmd y convertirlo en:\n\nPáginas web (HTML)\nPDF (vía LaTeX o Typst)\nDocumentos Word (.docx)\nPresentaciones (Reveal.js, PowerPoint)\nSitios web, libros y blogs\n\nEl código se ejecuta al renderizar y sus resultados (texto, tablas, gráficas) quedan incrustados en el documento final.",
+    "crumbs": [
+      "Guía rápida: Quarto + Python"
+    ]
+  },
+  {
+    "objectID": "guia_rapida.html#instalación-y-verificación",
+    "href": "guia_rapida.html#instalación-y-verificación",
+    "title": "Guía rápida: Quarto + Python",
+    "section": "2 Instalación y verificación",
+    "text": "2 Instalación y verificación\n\nDescargar Quarto desde https://quarto.org/docs/get-started/ e instalarlo.\nVerificar en la terminal:\n\nquarto --version\nquarto check          # revisa Python, Jupyter, LaTeX, etc.\n\nQuarto necesita Jupyter en el entorno de Python. En este proyecto usamos uv:\n\nuv sync               # instala dependencias de pyproject.toml (incluye jupyter)\nuv add jupyter        # sólo si no estuviera instalado\n\n\n\n\n\n\nTipExtensión para el editor\n\n\n\nEn VS Code / Positron instala la extensión Quarto. Da resaltado de sintaxis, autocompletado y el botón Preview.",
+    "crumbs": [
+      "Guía rápida: Quarto + Python"
+    ]
+  },
+  {
+    "objectID": "guia_rapida.html#anatomía-de-un-archivo-.qmd",
+    "href": "guia_rapida.html#anatomía-de-un-archivo-.qmd",
+    "title": "Guía rápida: Quarto + Python",
+    "section": "3 Anatomía de un archivo .qmd",
+    "text": "3 Anatomía de un archivo .qmd\nUn archivo Quarto tiene tres partes:\n---\ntitle: \"Mi primer documento\"      # (1) encabezado YAML\nauthor: \"Nombre\"\nformat: html\njupyter: python3\n---\n\n## Introducción                    &lt;!-- (2) texto en Markdown --&gt;\n\nEste es un párrafo con **negritas** y *cursivas*.\n\n```{python}                        &lt;!-- (3) celda de código --&gt;\nx = 2 + 3\nprint(x)\n```\n\nEncabezado YAML (entre ---): metadatos y opciones del documento.\nTexto en Markdown: títulos, listas, enlaces, imágenes, ecuaciones.\nCeldas de código delimitadas con ```{python}.",
+    "crumbs": [
+      "Guía rápida: Quarto + Python"
+    ]
+  },
+  {
+    "objectID": "guia_rapida.html#comandos-esenciales",
+    "href": "guia_rapida.html#comandos-esenciales",
+    "title": "Guía rápida: Quarto + Python",
+    "section": "4 Comandos esenciales",
+    "text": "4 Comandos esenciales\n\n\n\n\n\n\n\nComando\n¿Qué hace?\n\n\n\n\nquarto render archivo.qmd\nGenera la salida (HTML por defecto)\n\n\nquarto render archivo.qmd --to pdf\nGenera PDF\n\n\nquarto render archivo.qmd --to docx\nGenera Word\n\n\nquarto preview archivo.qmd\nVista previa en vivo (se recarga al guardar)\n\n\nquarto convert cuaderno.ipynb\nConvierte notebook → .qmd\n\n\nquarto convert archivo.qmd\nConvierte .qmd → notebook\n\n\nquarto check\nDiagnostica la instalación\n\n\n\nCon uv, para asegurar que use el Python del proyecto:\nuv run quarto render 01_quarto/guia_rapida.qmd\nuv run quarto preview 01_quarto/ejemplos/01_hola_quarto.qmd\n\n\n\n\n\n\nNota\n\n\n\nQuarto también renderiza directamente archivos .ipynb: quarto render src/01_Introduccion_Clases_Objetos.ipynb",
+    "crumbs": [
+      "Guía rápida: Quarto + Python"
+    ]
+  },
+  {
+    "objectID": "guia_rapida.html#render-vs-preview",
+    "href": "guia_rapida.html#render-vs-preview",
+    "title": "Guía rápida: Quarto + Python",
+    "section": "5 render vs preview",
+    "text": "5 render vs preview\n\n\n\n\n\n\n\n\n\nquarto render\nquarto preview\n\n\n\n\n¿Qué hace?\nEjecuta el código y genera los archivos de salida (HTML, PDF, …) una vez\nRenderiza, abre el navegador y se queda vigilando los cambios\n\n\n¿Termina?\nSí, al acabar regresa a la terminal\nNo, se queda corriendo hasta que presionas Ctrl + C\n\n\nAl guardar cambios\nNada; hay que volver a ejecutarlo\nVuelve a renderizar y recarga la página sola\n\n\nArchivos generados\nLos deja listos para entregar o publicar\nSirven para ver el resultado mientras escribes; antes de entregar, haz un render final\n\n\n¿Cuándo usarlo?\nPara producir la versión final\nMientras escribes o editas\n\n\n\nFlujo de trabajo típico:\n\nquarto preview archivo.qmd → editas, guardas y ves el cambio al instante.\nCtrl + C para detener la vista previa.\nquarto render archivo.qmd → generas la versión final.",
+    "crumbs": [
+      "Guía rápida: Quarto + Python"
+    ]
+  },
+  {
+    "objectID": "guia_rapida.html#sec-proyecto",
+    "href": "guia_rapida.html#sec-proyecto",
+    "title": "Guía rápida: Quarto + Python",
+    "section": "6 Renderizar varios archivos a la vez (proyectos)",
+    "text": "6 Renderizar varios archivos a la vez (proyectos)\nNo hace falta ir archivo por archivo. Si una carpeta contiene un archivo _quarto.yml, Quarto la trata como un proyecto y puede procesar todo junto. Esta carpeta 01_quarto/ ya es un proyecto de tipo website:\n# 01_quarto/_quarto.yml\nproject:\n  type: website\n  output-dir: _site        # todos los HTML terminan aquí\n  render:\n    - index.qmd\n    - guia_rapida.qmd\n    - ejemplos/*.qmd       # todos los ejemplos con un patrón\nwebsite:\n  sidebar:                 # menú lateral para navegar entre páginas\n    contents: ...\nComandos (desde la raíz del repositorio):\nuv run quarto render 01_quarto     # renderiza TODO el proyecto → 01_quarto/_site/\nuv run quarto preview 01_quarto    # abre el sitio completo con menú y recarga en vivo\n\nCon preview sobre el proyecto, al guardar un archivo sólo se vuelve a renderizar ese archivo, no todo.\nLas opciones del _quarto.yml (tema, idioma, toc) se aplican a todas las páginas; cada .qmd puede sobrescribirlas en su propio YAML.\nRenderizar un solo archivo sigue funcionando (quarto render 01_quarto/ejemplos/03_graficas.qmd); su salida también va a _site/.\n\n\n\n\n\n\n\nTipTipos de proyecto\n\n\n\ndefault (documentos sueltos), website (sitio con navegación), book (libro con capítulos) y manuscript (artículo científico). Se crean con quarto create project.",
+    "crumbs": [
+      "Guía rápida: Quarto + Python"
+    ]
+  },
+  {
+    "objectID": "guia_rapida.html#markdown-en-1-minuto",
+    "href": "guia_rapida.html#markdown-en-1-minuto",
+    "title": "Guía rápida: Quarto + Python",
+    "section": "7 Markdown en 1 minuto",
+    "text": "7 Markdown en 1 minuto\n\n\n\nEscribes\nObtienes\n\n\n\n\n# Título, ## Subtítulo\nEncabezados\n\n\n**negrita**, *cursiva*\nnegrita, cursiva\n\n\n`codigo`\ncodigo\n\n\n- elemento\nLista con viñetas\n\n\n1. elemento\nLista numerada\n\n\n[texto](https://url)\nEnlace\n\n\n![pie](imagen.png)\nImagen\n\n\n$x^2$\nEcuación en línea: \\(x^2\\)\n\n\n$$ E = mc^2 $$\nEcuación en bloque",
+    "crumbs": [
+      "Guía rápida: Quarto + Python"
+    ]
+  },
+  {
+    "objectID": "guia_rapida.html#opciones-de-celda",
+    "href": "guia_rapida.html#opciones-de-celda",
+    "title": "Guía rápida: Quarto + Python",
+    "section": "8 Opciones de celda (#|)",
+    "text": "8 Opciones de celda (#|)\nLas opciones se escriben al inicio de la celda con el prefijo #|:\n\nnombres = [\"Ana\", \"Luis\", \"Sofía\"]\nfor n in nombres:\n    print(f\"Hola, {n}\")\n\nHola, Ana\nHola, Luis\nHola, Sofía\n\n\nOpciones más usadas:\n\n\n\n\n\n\n\n\nOpción\nValores\nEfecto\n\n\n\n\necho\ntrue / false\nMostrar u ocultar el código\n\n\neval\ntrue / false\nEjecutar o no el código\n\n\noutput\ntrue / false / asis\nMostrar u ocultar la salida\n\n\nwarning\ntrue / false\nMostrar advertencias\n\n\nerror\ntrue / false\nContinuar aunque haya error\n\n\ninclude\ntrue / false\nfalse = ejecuta pero no muestra nada\n\n\ncode-fold\ntrue / false\nCódigo plegable\n\n\nlabel\nfig-xxx, tbl-xxx\nIdentificador para referencias cruzadas\n\n\nfig-cap\ntexto\nPie de figura\n\n\n\nTambién pueden fijarse para todo el documento en el YAML:\nexecute:\n  echo: false\n  warning: false",
+    "crumbs": [
+      "Guía rápida: Quarto + Python"
+    ]
+  },
+  {
+    "objectID": "guia_rapida.html#opciones-útiles-del-yaml",
+    "href": "guia_rapida.html#opciones-útiles-del-yaml",
+    "title": "Guía rápida: Quarto + Python",
+    "section": "9 Opciones útiles del YAML",
+    "text": "9 Opciones útiles del YAML\n---\ntitle: \"Título\"\nauthor: \"Nombre\"\ndate: today\nlang: es                # textos automáticos en español (\"Figura\", \"Tabla\"...)\nformat:\n  html:\n    toc: true           # tabla de contenidos\n    number-sections: true\n    code-fold: true     # código plegable\n    theme: cosmo        # temas: cosmo, flatly, darkly, journal, ...\n  pdf: default          # permite --to pdf\njupyter: python3\nexecute:\n  echo: true\n---",
+    "crumbs": [
+      "Guía rápida: Quarto + Python"
+    ]
+  },
+  {
+    "objectID": "guia_rapida.html#referencias-cruzadas",
+    "href": "guia_rapida.html#referencias-cruzadas",
+    "title": "Guía rápida: Quarto + Python",
+    "section": "10 Referencias cruzadas",
+    "text": "10 Referencias cruzadas\nEtiqueta una figura con #| label: fig-nombre y cítala en el texto con @fig-nombre. Lo mismo para tablas (tbl-), ecuaciones (eq-) y secciones (sec-). Ver el ejemplo 03_graficas.qmd.",
+    "crumbs": [
+      "Guía rápida: Quarto + Python"
+    ]
+  },
+  {
+    "objectID": "guia_rapida.html#callouts-cajas-de-aviso",
+    "href": "guia_rapida.html#callouts-cajas-de-aviso",
+    "title": "Guía rápida: Quarto + Python",
+    "section": "11 Callouts (cajas de aviso)",
+    "text": "11 Callouts (cajas de aviso)\n::: {.callout-warning}\n## Cuidado\nTexto de la advertencia.\n:::\nTipos: callout-note, callout-tip, callout-warning, callout-important, callout-caution.",
+    "crumbs": [
+      "Guía rápida: Quarto + Python"
+    ]
+  },
+  {
+    "objectID": "guia_rapida.html#ejemplos-de-esta-carpeta",
+    "href": "guia_rapida.html#ejemplos-de-esta-carpeta",
+    "title": "Guía rápida: Quarto + Python",
+    "section": "12 Ejemplos de esta carpeta",
+    "text": "12 Ejemplos de esta carpeta\n\n\n\nArchivo\nTema\n\n\n\n\nejemplos/01_hola_quarto.qmd\nPrimer documento: Markdown + código\n\n\nejemplos/02_opciones_celdas.qmd\necho, eval, include, código en línea\n\n\nejemplos/03_graficas.qmd\nMatplotlib, Plotly y referencias a figuras\n\n\nejemplos/04_tablas_ecuaciones.qmd\nTablas, ecuaciones LaTeX y callouts\n\n\nejemplos/05_clases_python.qmd\nDocumentar clases (POO) con Quarto\n\n\nejemplos/06_presentacion.qmd\nPresentación con Reveal.js\n\n\nejemplos/07_animaciones_plotly.qmd\nAnimaciones con Plotly (frames, Play, slider)\n\n\nejemplos/08_html_js.qmd\nHTML/CSS/JS crudo, HTML desde Python y Observable JS\n\n\nejemplos/09_convertir_ipynb_py.qmd\nConvertir .ipynb ↔︎ .qmd, renderizar .ipynb y .py, embed",
+    "crumbs": [
+      "Guía rápida: Quarto + Python"
+    ]
+  },
+  {
+    "objectID": "guia_rapida.html#problemas-comunes",
+    "href": "guia_rapida.html#problemas-comunes",
+    "title": "Guía rápida: Quarto + Python",
+    "section": "13 Problemas comunes",
+    "text": "13 Problemas comunes\n\n\n\n\n\n\n\nSíntoma\nSolución\n\n\n\n\nJupyter is not available\nuv add jupyter o pip install jupyter; luego quarto check\n\n\nModuleNotFoundError al renderizar\nQuarto usa otro Python: renderiza con uv run quarto render ...\n\n\nNo genera PDF\nInstala LaTeX: quarto install tinytex\n\n\nLos cambios no aparecen\nUsa quarto preview o vuelve a ejecutar quarto render\n\n\nLa celda no se ejecuta\nRevisa que sea ```{python} (con llaves), no ```python",
+    "crumbs": [
+      "Guía rápida: Quarto + Python"
+    ]
+  },
+  {
+    "objectID": "ejemplos/02_opciones_celdas.html",
+    "href": "ejemplos/02_opciones_celdas.html",
+    "title": "02 · Opciones de celdas",
+    "section": "",
+    "text": "Las opciones de celda se escriben con #| al inicio del bloque.",
+    "crumbs": [
+      "Ejemplos",
+      "02 · Opciones de celdas"
+    ]
+  },
+  {
+    "objectID": "ejemplos/02_opciones_celdas.html#echo-false-ocultar-el-código-mostrar-el-resultado",
+    "href": "ejemplos/02_opciones_celdas.html#echo-false-ocultar-el-código-mostrar-el-resultado",
+    "title": "02 · Opciones de celdas",
+    "section": "echo: false — ocultar el código, mostrar el resultado",
+    "text": "echo: false — ocultar el código, mostrar el resultado\n\n\nSólo ves esta salida; el código está oculto.",
+    "crumbs": [
+      "Ejemplos",
+      "02 · Opciones de celdas"
+    ]
+  },
+  {
+    "objectID": "ejemplos/02_opciones_celdas.html#eval-false-mostrar-el-código-sin-ejecutarlo",
+    "href": "ejemplos/02_opciones_celdas.html#eval-false-mostrar-el-código-sin-ejecutarlo",
+    "title": "02 · Opciones de celdas",
+    "section": "eval: false — mostrar el código sin ejecutarlo",
+    "text": "eval: false — mostrar el código sin ejecutarlo\nÚtil para mostrar ejemplos que tardan mucho o que darían error:\n\nwhile True:\n    print(\"Esto nunca se ejecuta al renderizar\")",
+    "crumbs": [
+      "Ejemplos",
+      "02 · Opciones de celdas"
+    ]
+  },
+  {
+    "objectID": "ejemplos/02_opciones_celdas.html#include-false-ejecutar-sin-mostrar-nada",
+    "href": "ejemplos/02_opciones_celdas.html#include-false-ejecutar-sin-mostrar-nada",
+    "title": "02 · Opciones de celdas",
+    "section": "include: false — ejecutar sin mostrar nada",
+    "text": "include: false — ejecutar sin mostrar nada\nLa siguiente celda (invisible en el resultado) define datos que usamos después:",
+    "crumbs": [
+      "Ejemplos",
+      "02 · Opciones de celdas"
+    ]
+  },
+  {
+    "objectID": "ejemplos/02_opciones_celdas.html#código-en-línea",
+    "href": "ejemplos/02_opciones_celdas.html#código-en-línea",
+    "title": "02 · Opciones de celdas",
+    "section": "Código en línea",
+    "text": "Código en línea\nPuedo insertar resultados de Python dentro del texto escribiendo, por ejemplo:\nEl grupo tiene `{python} len(calificaciones)` alumnos.\nResultado:\nEl grupo tiene 4 alumnos, el promedio es 8.50 y la mejor calificación es de Ana.",
+    "crumbs": [
+      "Ejemplos",
+      "02 · Opciones de celdas"
+    ]
+  },
+  {
+    "objectID": "ejemplos/02_opciones_celdas.html#code-fold-true-código-plegable",
+    "href": "ejemplos/02_opciones_celdas.html#code-fold-true-código-plegable",
+    "title": "02 · Opciones de celdas",
+    "section": "code-fold: true — código plegable",
+    "text": "code-fold: true — código plegable\n\n\nVer el código\nfor nombre, cal in calificaciones.items():\n    estado = \"Aprobado\" if cal &gt;= 8 else \"Revisar\"\n    print(f\"{nombre:&lt;6} {cal:&gt;4}  {estado}\")\n\n\nAna     9.5  Aprobado\nLuis    8.0  Aprobado\nSofía   9.0  Aprobado\nPedro   7.5  Revisar",
+    "crumbs": [
+      "Ejemplos",
+      "02 · Opciones de celdas"
+    ]
+  },
+  {
+    "objectID": "ejemplos/02_opciones_celdas.html#error-true-mostrar-un-error-sin-detener-el-render",
+    "href": "ejemplos/02_opciones_celdas.html#error-true-mostrar-un-error-sin-detener-el-render",
+    "title": "02 · Opciones de celdas",
+    "section": "error: true — mostrar un error sin detener el render",
+    "text": "error: true — mostrar un error sin detener el render\nPor defecto un error detiene quarto render. Con error: true se muestra y continúa:\n\n1 / 0\n\n\n---------------------------------------------------------------------------\nZeroDivisionError                         Traceback (most recent call last)\nCell In[4], line 1\n----&gt; 1 1 / 0\n\nZeroDivisionError: division by zero",
+    "crumbs": [
+      "Ejemplos",
+      "02 · Opciones de celdas"
+    ]
+  },
+  {
+    "objectID": "ejemplos/02_opciones_celdas.html#warning-false-ocultar-advertencias",
+    "href": "ejemplos/02_opciones_celdas.html#warning-false-ocultar-advertencias",
+    "title": "02 · Opciones de celdas",
+    "section": "warning: false — ocultar advertencias",
+    "text": "warning: false — ocultar advertencias\n\nimport warnings\nwarnings.warn(\"Esta advertencia no se muestra\")\nprint(\"Celda ejecutada\")\n\nCelda ejecutada",
+    "crumbs": [
+      "Ejemplos",
+      "02 · Opciones de celdas"
+    ]
+  },
+  {
+    "objectID": "ejemplos/04_tablas_ecuaciones.html",
+    "href": "ejemplos/04_tablas_ecuaciones.html",
+    "title": "04 · Tablas, ecuaciones y callouts",
+    "section": "",
+    "text": "Tabla 1: Tipos básicos de Python\n\n\n\n\n\nTipo\nEjemplo\nMutable\n\n\n\n\nint\n42\nNo\n\n\nstr\n\"hola\"\nNo\n\n\nlist\n[1, 2, 3]\nSí\n\n\ndict\n{\"a\": 1}\nSí\n\n\n\n\n\n\nLa Tabla 1 resume algunos tipos de datos.",
+    "crumbs": [
+      "Ejemplos",
+      "04 · Tablas, ecuaciones y callouts"
+    ]
+  },
+  {
+    "objectID": "ejemplos/04_tablas_ecuaciones.html#tabla-escrita-en-markdown",
+    "href": "ejemplos/04_tablas_ecuaciones.html#tabla-escrita-en-markdown",
+    "title": "04 · Tablas, ecuaciones y callouts",
+    "section": "",
+    "text": "Tabla 1: Tipos básicos de Python\n\n\n\n\n\nTipo\nEjemplo\nMutable\n\n\n\n\nint\n42\nNo\n\n\nstr\n\"hola\"\nNo\n\n\nlist\n[1, 2, 3]\nSí\n\n\ndict\n{\"a\": 1}\nSí\n\n\n\n\n\n\nLa Tabla 1 resume algunos tipos de datos.",
+    "crumbs": [
+      "Ejemplos",
+      "04 · Tablas, ecuaciones y callouts"
+    ]
+  },
+  {
+    "objectID": "ejemplos/04_tablas_ecuaciones.html#tabla-generada-desde-python",
+    "href": "ejemplos/04_tablas_ecuaciones.html#tabla-generada-desde-python",
+    "title": "04 · Tablas, ecuaciones y callouts",
+    "section": "Tabla generada desde Python",
+    "text": "Tabla generada desde Python\nCon output: asis lo que imprime Python se interpreta como Markdown (Tabla 2).\n\n\n\nTabla 2: Inventario generado con Python\n\n\nproductos = [\n    (\"Laptop\", 15999.00, 5),\n    (\"Mouse\", 249.50, 40),\n    (\"Teclado\", 899.00, 12),\n]\n\nprint(\"| Producto | Precio | Existencias | Total |\")\nprint(\"|---|---:|---:|---:|\")\nfor nombre, precio, cant in productos:\n    print(f\"| {nombre} | ${precio:,.2f} | {cant} | ${precio * cant:,.2f} |\")\n\n\n\nProducto\nPrecio\nExistencias\nTotal\n\n\n\n\nLaptop\n$15,999.00\n5\n$79,995.00\n\n\nMouse\n$249.50\n40\n$9,980.00\n\n\nTeclado\n$899.00\n12\n$10,788.00\n\n\n\n\n\n\n\n\n\n\n\n\nTip\n\n\n\nSi tienes pandas instalado, basta con dejar un DataFrame como última expresión de la celda y Quarto lo muestra como tabla.",
+    "crumbs": [
+      "Ejemplos",
+      "04 · Tablas, ecuaciones y callouts"
+    ]
+  },
+  {
+    "objectID": "ejemplos/04_tablas_ecuaciones.html#ecuaciones-latex",
+    "href": "ejemplos/04_tablas_ecuaciones.html#ecuaciones-latex",
+    "title": "04 · Tablas, ecuaciones y callouts",
+    "section": "Ecuaciones (LaTeX)",
+    "text": "Ecuaciones (LaTeX)\nEn línea: el área de un círculo es \\(A = \\pi r^2\\).\nEn bloque, numerada con {#eq-...}:\n\\[\n\\bar{x} = \\frac{1}{n}\\sum_{i=1}^{n} x_i\n\\tag{1}\\]\nCalculemos la Ecuación 1 con Python:\n\ndatos = [9.5, 8.0, 9.0, 7.5]\npromedio = sum(datos) / len(datos)\nprint(f\"Promedio = {promedio:.3f}\")\n\nPromedio = 8.500",
+    "crumbs": [
+      "Ejemplos",
+      "04 · Tablas, ecuaciones y callouts"
+    ]
+  },
+  {
+    "objectID": "ejemplos/04_tablas_ecuaciones.html#callouts",
+    "href": "ejemplos/04_tablas_ecuaciones.html#callouts",
+    "title": "04 · Tablas, ecuaciones y callouts",
+    "section": "Callouts",
+    "text": "Callouts\n\n\n\n\n\n\nNotaNota\n\n\n\nInformación adicional para el lector.\n\n\n\n\n\n\n\n\nAdvertenciaAdvertencia\n\n\n\nEn Python la indentación forma parte de la sintaxis.\n\n\n\n\n\n\n\n\nImportantePlegable (clic para abrir)\n\n\n\n\n\nLos callouts pueden colapsarse con collapse=\"true\".",
+    "crumbs": [
+      "Ejemplos",
+      "04 · Tablas, ecuaciones y callouts"
+    ]
+  },
+  {
+    "objectID": "ejemplos/04_tablas_ecuaciones.html#columnas",
+    "href": "ejemplos/04_tablas_ecuaciones.html#columnas",
+    "title": "04 · Tablas, ecuaciones y callouts",
+    "section": "Columnas",
+    "text": "Columnas\n\n\nLista\nx = [1, 2, 3]\nx.append(4)\n\nTupla\nt = (1, 2, 3)\n# t.append(4) -&gt; error",
+    "crumbs": [
+      "Ejemplos",
+      "04 · Tablas, ecuaciones y callouts"
+    ]
+  },
+  {
+    "objectID": "ejemplos/06_presentacion.html#cómo-funciona",
+    "href": "ejemplos/06_presentacion.html#cómo-funciona",
+    "title": "06 · Presentación con Quarto",
+    "section": "¿Cómo funciona?",
+    "text": "¿Cómo funciona?\n\nCada ## crea una diapositiva nueva\nSe usa el formato revealjs en el YAML\nEl código Python se ejecuta igual que en HTML\n\n\nNotas del presentador: presiona S durante la presentación para verlas.",
+    "crumbs": [
+      "Ejemplos",
+      "06 · Presentación con Quarto"
+    ]
+  },
+  {
+    "objectID": "ejemplos/06_presentacion.html#código-y-resultado",
+    "href": "ejemplos/06_presentacion.html#código-y-resultado",
+    "title": "06 · Presentación con Quarto",
+    "section": "Código y resultado",
+    "text": "Código y resultado\n\nlenguajes = {\"Python\": 1991, \"Java\": 1995, \"C\": 1972}\nfor nombre, anio in sorted(lenguajes.items(), key=lambda x: x[1]):\n    print(f\"{nombre}: {anio}\")\n\nC: 1972\nPython: 1991\nJava: 1995",
+    "crumbs": [
+      "Ejemplos",
+      "06 · Presentación con Quarto"
+    ]
+  },
+  {
+    "objectID": "ejemplos/06_presentacion.html#una-gráfica",
+    "href": "ejemplos/06_presentacion.html#una-gráfica",
+    "title": "06 · Presentación con Quarto",
+    "section": "Una gráfica",
+    "text": "Una gráfica",
+    "crumbs": [
+      "Ejemplos",
+      "06 · Presentación con Quarto"
+    ]
+  },
+  {
+    "objectID": "ejemplos/06_presentacion.html#aparición-incremental",
+    "href": "ejemplos/06_presentacion.html#aparición-incremental",
+    "title": "06 · Presentación con Quarto",
+    "section": "Aparición incremental",
+    "text": "Aparición incremental\n\nPrimero aparece esto\nLuego esto\nY al final esto",
+    "crumbs": [
+      "Ejemplos",
+      "06 · Presentación con Quarto"
+    ]
+  },
+  {
+    "objectID": "ejemplos/06_presentacion.html#dos-columnas",
+    "href": "ejemplos/06_presentacion.html#dos-columnas",
+    "title": "06 · Presentación con Quarto",
+    "section": "Dos columnas",
+    "text": "Dos columnas\n\n\nClase\nclass Perro:\n    def ladrar(self):\n        return \"¡Guau!\"\n\nObjeto\nfirulais = Perro()\nfirulais.ladrar()",
+    "crumbs": [
+      "Ejemplos",
+      "06 · Presentación con Quarto"
+    ]
+  },
+  {
+    "objectID": "ejemplos/06_presentacion.html#gracias",
+    "href": "ejemplos/06_presentacion.html#gracias",
+    "title": "06 · Presentación con Quarto",
+    "section": "¡Gracias!",
+    "text": "¡Gracias!\nRenderizar con:\nuv run quarto render 01_quarto/ejemplos/06_presentacion.qmd",
+    "crumbs": [
+      "Ejemplos",
+      "06 · Presentación con Quarto"
+    ]
+  },
+  {
+    "objectID": "ejemplos/08_html_js.html",
+    "href": "ejemplos/08_html_js.html",
+    "title": "08 · HTML y JavaScript en Quarto",
+    "section": "",
+    "text": "En la salida HTML puedes agregar tu propio HTML, CSS y JavaScript. Hay tres formas:",
+    "crumbs": [
+      "Ejemplos",
+      "08 · HTML y JavaScript en Quarto"
+    ]
+  },
+  {
+    "objectID": "ejemplos/08_html_js.html#bloque-html-crudo-html",
+    "href": "ejemplos/08_html_js.html#bloque-html-crudo-html",
+    "title": "08 · HTML y JavaScript en Quarto",
+    "section": "1. Bloque HTML crudo ({=html})",
+    "text": "1. Bloque HTML crudo ({=html})\nLo que va dentro se copia tal cual al HTML final, incluidas etiquetas &lt;style&gt; y &lt;script&gt;.\n\n\n\n  Contador hecho con HTML + JavaScript\n  0\n  −\n  +\n  Reiniciar\n\n\n\nEl código fuente de ese bloque:\n```{=html}\n&lt;div id=\"valor\"&gt;0&lt;/div&gt;\n&lt;button id=\"mas\"&gt;+&lt;/button&gt;\n&lt;script&gt;\n  let cuenta = 0;\n  document.getElementById(\"mas\").onclick = () =&gt; {\n    cuenta++;\n    document.getElementById(\"valor\").textContent = cuenta;\n  };\n&lt;/script&gt;\n```\n\n\n\n\n\n\nAdvertenciaOjo con los id\n\n\n\nSi repites un mismo id en dos bloques de la página, el JavaScript sólo encontrará el primero. Usa nombres únicos.\n\n\n\nOtro ejemplo: un canvas animado",
+    "crumbs": [
+      "Ejemplos",
+      "08 · HTML y JavaScript en Quarto"
+    ]
+  },
+  {
+    "objectID": "ejemplos/08_html_js.html#html-generado-desde-python",
+    "href": "ejemplos/08_html_js.html#html-generado-desde-python",
+    "title": "08 · HTML y JavaScript en Quarto",
+    "section": "2. HTML generado desde Python",
+    "text": "2. HTML generado desde Python\nIPython.display.HTML inserta el texto como HTML. Útil cuando el contenido depende de datos:\n\nfrom IPython.display import HTML\n\nalumnos = {\"Ana\": 9.5, \"Luis\": 8.0, \"Sofía\": 9.0, \"Pedro\": 7.5}\n\nfilas = \"\"\nfor nombre, cal in alumnos.items():\n    color = \"#3fb618\" if cal &gt;= 8 else \"#ff0039\"\n    ancho = cal * 10\n    filas += f\"\"\"\n    &lt;tr&gt;\n      &lt;td&gt;{nombre}&lt;/td&gt;\n      &lt;td style=\"width:60%\"&gt;\n        &lt;div style=\"background:{color}; width:{ancho}%; color:white;\n                    padding:2px 6px; border-radius:4px\"&gt;{cal}&lt;/div&gt;\n      &lt;/td&gt;\n    &lt;/tr&gt;\"\"\"\n\nHTML(f\"&lt;table class='table'&gt;&lt;tr&gt;&lt;th&gt;Alumno&lt;/th&gt;&lt;th&gt;Calificación&lt;/th&gt;&lt;/tr&gt;{filas}&lt;/table&gt;\")\n\n\n\n\n\n\n\n\nAlumno\nCalificación\n\n\nAna\n\n9.5\n\n\n\nLuis\n\n8.0\n\n\n\nSofía\n\n9.0\n\n\n\nPedro\n\n7.5",
+    "crumbs": [
+      "Ejemplos",
+      "08 · HTML y JavaScript en Quarto"
+    ]
+  },
+  {
+    "objectID": "ejemplos/08_html_js.html#observable-js-ojs-javascript-reactivo",
+    "href": "ejemplos/08_html_js.html#observable-js-ojs-javascript-reactivo",
+    "title": "08 · HTML y JavaScript en Quarto",
+    "section": "3. Observable JS ({ojs}) — JavaScript reactivo",
+    "text": "3. Observable JS ({ojs}) — JavaScript reactivo\nQuarto incluye Observable JS: celdas de JavaScript reactivas. Si un control cambia, todo lo que depende de él se actualiza solo.\n\nControles y texto reactivo\n\nviewof nombre = Inputs.text({label: \"Tu nombre\", value: \"Ana\"})\nviewof veces  = Inputs.range([1, 10], {label: \"Repeticiones\", step: 1, value: 3})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nmd`${Array(veces).fill(`¡Hola, **${nombre}**!`).join(\" \")}`\n\n\n\n\n\n\n\n\nPasar datos de Python a JavaScript\nLa función ojs_define() envía variables de Python a las celdas {ojs}:\n\nimport numpy as np\n\nx = np.linspace(0, 10, 200)\nojs_define(datos=[{\"x\": float(xi), \"y\": float(np.sin(xi))} for xi in x])\n\n\n\n\nAhora graficamos esos datos con JavaScript, con un control que cambia la amplitud y la frecuencia en el navegador, sin volver a ejecutar Python:\n\nviewof amplitud   = Inputs.range([0.1, 3], {label: \"Amplitud\", step: 0.1, value: 1})\nviewof frecuencia = Inputs.range([0.5, 4], {label: \"Frecuencia\", step: 0.1, value: 1})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPlot.plot({\n  height: 300,\n  y: {domain: [-3, 3], grid: true},\n  marks: [\n    Plot.line(datos, {x: \"x\", y: d =&gt; amplitud * Math.sin(frecuencia * d.x),\n                      stroke: \"#2780e3\", strokeWidth: 2}),\n    Plot.line(datos, {x: \"x\", y: \"y\", stroke: \"#aaa\", strokeDasharray: \"4\"}),\n    Plot.ruleY([0])\n  ]\n})\n\n\n\n\n\n\n\n\n\n\n\n\nNota\n\n\n\nLa línea gris punteada es sin(x) calculada en Python; la azul se recalcula en JavaScript cada vez que mueves un control.",
+    "crumbs": [
+      "Ejemplos",
+      "08 · HTML y JavaScript en Quarto"
+    ]
+  },
+  {
+    "objectID": "ejemplos/08_html_js.html#incluir-un-archivo-htmljs-externo",
+    "href": "ejemplos/08_html_js.html#incluir-un-archivo-htmljs-externo",
+    "title": "08 · HTML y JavaScript en Quarto",
+    "section": "4. Incluir un archivo HTML/JS externo",
+    "text": "4. Incluir un archivo HTML/JS externo\nPara código largo conviene tenerlo en un archivo aparte e incluirlo desde el YAML:\nformat:\n  html:\n    include-in-header: mis_estilos.html     # dentro de &lt;head&gt;\n    include-after-body: mi_script.html      # al final de &lt;body&gt;",
+    "crumbs": [
+      "Ejemplos",
+      "08 · HTML y JavaScript en Quarto"
+    ]
+  }
+]
