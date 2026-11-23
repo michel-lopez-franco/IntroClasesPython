@@ -1,0 +1,188 @@
+---
+title: "El constructor y `self`"
+subtitle: "Tema 3 · Programación Orientada a Objetos en Python"
+jupyter: python3
+---
+
+## El problema
+
+```python
+p = Persona()
+p.nombre = "Ana"
+p.edad = 25
+# ¿y si olvidamos p.ciudad?
+```
+
+- Propenso a errores · muchas líneas
+- Nada garantiza que el objeto quede **completo**
+
+::: {.notes}
+Analogía: comprar un coche y que te lo entreguen sin motor ni ruedas para que tú lo armes.
+:::
+
+## La solución: `__init__`
+
+```{python}
+class Perro:
+    def __init__(self, nombre, edad):
+        self.nombre = nombre
+        self.edad = edad
+
+p = Perro("Max", 3)
+print(p.nombre, p.edad)
+```
+
+El objeto nace **completo** desde el primer momento.
+
+::: {.notes}
+`__init__` se llama solo al crear el objeto. Los argumentos de Perro(...) llegan a __init__ después de self.
+:::
+
+## ¿Qué hace Python?
+
+```{mermaid}
+%%| echo: false
+sequenceDiagram
+    participant U as Tu código
+    participant C as Clase Perro
+    participant O as Objeto nuevo (self)
+    U->>C: Perro("Max", 3)
+    C->>O: crea un objeto vacío
+    C->>O: __init__(self, "Max", 3)
+    C-->>U: devuelve el objeto
+```
+
+::: {.notes}
+Primero se crea un objeto vacío y después __init__ lo "llena". Por eso __init__ no lleva return.
+:::
+
+## `self` en profundidad
+
+```{python}
+class Ejemplo:
+    def __init__(self, valor):
+        self.valor = valor
+        print("self es", id(self))
+
+obj = Ejemplo(10)
+print("obj es ", id(obj))
+```
+
+`self` **es** el objeto que se está creando.
+
+::: {.notes}
+Mismo id: self y obj son el mismo objeto. Mostrar la visualización de Python Tutor del capítulo 3.
+:::
+
+## Valores por defecto
+
+```{python}
+class Cuenta:
+    def __init__(self, titular, saldo=0, tipo="Ahorro"):
+        self.titular, self.saldo, self.tipo = titular, saldo, tipo
+
+for c in [Cuenta("Ana"), Cuenta("Luis", 1000, "Corriente")]:
+    print(c.titular, c.saldo, c.tipo)
+```
+
+::: {.notes}
+Los parámetros con valor por defecto van al final.
+:::
+
+## Validar al construir
+
+```{python}
+class Persona:
+    def __init__(self, nombre, edad):
+        if not 0 <= edad <= 150:
+            raise ValueError("La edad debe estar entre 0 y 150")
+        self.nombre, self.edad = nombre, edad
+
+try:
+    Persona("Ana", 200)
+except ValueError as e:
+    print("ValueError:", e)
+```
+
+::: {.notes}
+Si los datos son inválidos, el objeto ni siquiera llega a existir. Mejor fallar pronto.
+:::
+
+## Atributo de clase como contador
+
+```{python}
+class Producto:
+    total = 0
+    def __init__(self, nombre):
+        Producto.total += 1
+        self.id = Producto.total
+        self.nombre = nombre
+
+a, b = Producto("Laptop"), Producto("Mouse")
+print(a.id, b.id, Producto.total)
+```
+
+::: {.notes}
+Se usa `Producto.total` (no self.total) para modificar el valor compartido por la clase.
+:::
+
+## ⚠️ La trampa del valor mutable
+
+```{python}
+class Incorrecta:
+    def __init__(self, lista=[]):
+        self.lista = lista
+
+a, b = Incorrecta(), Incorrecta()
+a.lista.append(1)
+print(b.lista)        # ¡b también "tiene" el 1!
+```
+
+El `[]` por defecto se crea **una sola vez** y se comparte.
+
+::: {.notes}
+Uno de los errores más famosos de Python. La visualización de Python Tutor del capítulo 3 lo muestra muy claro.
+:::
+
+## La solución: `None`
+
+```{python}
+class Correcta:
+    def __init__(self, lista=None):
+        self.lista = lista if lista is not None else []
+
+a, b = Correcta(), Correcta()
+a.lista.append(1)
+print(a.lista, b.lista)
+```
+
+::: {.notes}
+Regla: nunca listas, diccionarios ni conjuntos como valores por defecto.
+:::
+
+## Puntos clave de `__init__`
+
+::: {.incremental}
+- Nombre especial con doble guion bajo
+- Se ejecuta **automáticamente** al crear el objeto
+- El primer parámetro es `self`
+- Inicializa todos los atributos
+- **No** usa `return`
+:::
+
+::: {.notes}
+Repasar uno por uno. Si devuelven algo distinto de None desde __init__, Python lanza TypeError.
+:::
+
+## Resumen
+
+- `__init__` garantiza objetos completos y válidos
+- `self` es el objeto recién creado
+- Valores por defecto + validación en el constructor
+- Mutables por defecto → usa `None`
+
+**Siguiente tema:** herencia.
+
+::: {.notes}
+Pedir a dos o tres estudiantes que expliquen con sus palabras un punto del resumen. Recordar los ejercicios del capítulo correspondiente en el sitio del curso.
+:::

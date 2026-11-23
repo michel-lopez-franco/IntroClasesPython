@@ -52,6 +52,13 @@ Las variables definidas en una celda interactiva están disponibles en las demá
 interactivas de la misma página.
 :::
 
+::: {.callout-note}
+## Para la clase presencial
+Cada tema tiene una **presentación** (Reveal.js) con notas del presentador; el enlace está al
+inicio de cada capítulo. También puedes verlas todas en el
+[índice de diapositivas](slides/_site/index.html).
+:::
+
 ::: {.callout-tip}
 ## Consejo
 La mejor forma de aprender POO es escribiendo código: modifica los ejemplos, rómpelos y

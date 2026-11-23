@@ -1,0 +1,21 @@
+---
+title: "Diapositivas del curso"
+subtitle: "Programación Orientada a Objetos en Python"
+format: html
+---
+
+Presentaciones para la clase presencial. Durante la presentación: **F** pantalla completa,
+**S** notas del presentador, **Esc** vista general de todas las diapositivas.
+
+| # | Tema |
+|---|---|
+| 1 | [Clases y objetos](01_clases_objetos.html) |
+| 2 | [Atributos y métodos](02_atributos_metodos.html) |
+| 3 | [El constructor y `self`](03_constructor_self.html) |
+| 4 | [Herencia](04_herencia.html) |
+| 5 | [Encapsulamiento y propiedades](05_encapsulamiento.html) |
+| 6 | [Polimorfismo](06_polimorfismo.html) |
+| 7 | [Métodos especiales](07_metodos_especiales.html) |
+| 8 | [Composición y agregación](08_composicion_agregacion.html) |
+| 9 | [Clases abstractas e interfaces](09_clases_abstractas.html) |
+| 10 | [Proyecto integrador](10_proyecto_integrador.html) |

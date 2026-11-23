@@ -13,6 +13,10 @@ Al terminar este capítulo podrás:
 - Escribir código que dependa de la abstracción y no de la implementación concreta.
 :::
 
+::: {.callout-tip title="Diapositivas de este tema"}
+[Abrir la presentación](slides/_site/09_clases_abstractas.html){target="_blank"} para la clase. Pulsa **F** para pantalla completa, **S** para ver las notas del presentador y **Esc** para ver todas las diapositivas.
+:::
+
 ## ¿Qué son las Clases Abstractas?
 
 Una clase abstracta es una clase que:

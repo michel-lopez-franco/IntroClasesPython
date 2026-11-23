@@ -1,0 +1,190 @@
+---
+title: "Herencia"
+subtitle: "Tema 4 · Programación Orientada a Objetos en Python"
+jupyter: python3
+---
+
+## La relación "es-un"
+
+- Un **Perro** *es un* **Animal**
+- Un **Gerente** *es un* **Empleado**
+- Un **Cuadrado** *es un* **Rectángulo**
+
+La herencia crea clases nuevas **reutilizando y extendiendo** otras.
+
+::: {.notes}
+Analogía: clasificación biológica. Los mamíferos heredan lo de los animales y agregan lo suyo.
+:::
+
+## Sintaxis
+
+```{python}
+class Animal:
+    def __init__(self, nombre):
+        self.nombre = nombre
+    def comer(self):
+        print(f"{self.nombre} está comiendo")
+
+class Perro(Animal):            # Perro hereda de Animal
+    def ladrar(self):
+        print(f"{self.nombre}: ¡Guau!")
+
+p = Perro("Max")
+p.comer(); p.ladrar()
+```
+
+::: {.notes}
+Perro no define __init__ ni comer: los hereda. Sólo agrega ladrar.
+:::
+
+## En un diagrama
+
+```{mermaid}
+%%| echo: false
+classDiagram
+    Animal <|-- Perro
+    Animal <|-- Gato
+    class Animal {
+        +nombre
+        +comer()
+        +hacer_sonido()
+    }
+    class Perro {
+        +hacer_sonido()
+    }
+    class Gato {
+        +hacer_sonido()
+    }
+```
+
+La flecha de punta hueca va **de la hija al padre**.
+
+::: {.notes}
+Las hijas sólo muestran lo que agregan o sobrescriben; todo lo demás lo heredan sin escribirlo.
+:::
+
+## Sobrescribir métodos
+
+```{python}
+class Animal:
+    def __init__(self, nombre):
+        self.nombre = nombre
+    def hacer_sonido(self):
+        return "..."
+
+class Gato(Animal):
+    def hacer_sonido(self):          # override
+        return "¡Miau!"
+
+print(Animal("x").hacer_sonido(), Gato("Tom").hacer_sonido())
+```
+
+::: {.notes}
+La hija redefine el método con el mismo nombre; gana la versión más específica.
+:::
+
+## `super()`: reutilizar al padre
+
+```{python}
+class Vehiculo:
+    def __init__(self, marca):
+        self.marca = marca
+
+class Coche(Vehiculo):
+    def __init__(self, marca, puertas):
+        super().__init__(marca)      # el padre inicializa lo suyo
+        self.puertas = puertas
+
+c = Coche("Toyota", 4)
+print(c.marca, c.puertas)
+```
+
+::: {.notes}
+Sin super() tendríamos que repetir self.marca = marca en cada hija (y mantenerlo en varios sitios).
+:::
+
+## `super()` en otros métodos
+
+```{python}
+class Empleado:
+    def __init__(self, salario):
+        self.salario = salario
+    def pago(self):
+        return self.salario
+
+class Gerente(Empleado):
+    def pago(self):
+        return super().pago() + 5000   # extiende, no reemplaza
+
+print(Gerente(15000).pago())
+```
+
+::: {.notes}
+super() no sólo sirve en __init__: permite extender cualquier método del padre en lugar de reemplazarlo por completo.
+:::
+
+## Herencia multinivel
+
+```{python}
+class SerVivo:
+    def respirar(self): print("respirando")
+class Animal(SerVivo):
+    def moverse(self): print("moviéndose")
+class Perro(Animal):
+    def ladrar(self): print("¡Guau!")
+
+p = Perro()
+p.respirar(); p.moverse(); p.ladrar()
+```
+
+::: {.notes}
+Perro tiene acceso a los métodos de todos los niveles superiores.
+:::
+
+## ¿Dónde busca Python? El MRO
+
+```{python}
+print([c.__name__ for c in Perro.__mro__])
+```
+
+Python busca el método en ese orden y usa **el primero** que encuentra.
+
+::: {.notes}
+Demostrar con la animación del capítulo 4: buscar respirar() sube hasta SerVivo; volar() termina en AttributeError.
+:::
+
+## `isinstance()` e `issubclass()`
+
+```{python}
+print(isinstance(p, Animal))     # ¿p es un Animal?
+print(issubclass(Perro, SerVivo))
+print(issubclass(SerVivo, Perro))
+```
+
+::: {.notes}
+isinstance respeta la herencia: un Perro también es Animal y SerVivo.
+:::
+
+## ¿Cuándo NO usar herencia?
+
+- Un Coche **no es** un Motor → *tiene* un motor
+- Si la relación es **"tiene-un"**, usa **composición** (tema 8)
+- Herencia sólo cuando "es-un" se cumple siempre
+
+::: {.notes}
+Pregunta para el grupo: ¿Estudiante hereda de Persona? ¿Biblioteca hereda de Libro?
+:::
+
+## Resumen
+
+- `class Hija(Padre):` hereda atributos y métodos
+- Sobrescribir = redefinir un método en la hija
+- `super()` reutiliza el código del padre
+- MRO: orden en que Python busca los métodos
+- Herencia ⇔ relación **es-un**
+
+**Siguiente tema:** encapsulamiento.
+
+::: {.notes}
+Pedir a dos o tres estudiantes que expliquen con sus palabras un punto del resumen. Recordar los ejercicios del capítulo correspondiente en el sitio del curso.
+:::

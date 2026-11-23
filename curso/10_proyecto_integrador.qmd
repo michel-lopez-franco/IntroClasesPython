@@ -12,6 +12,10 @@ Al terminar este capítulo podrás:
 - Extender un sistema existente sin modificar el código que ya funciona.
 :::
 
+::: {.callout-tip title="Diapositivas de este tema"}
+[Abrir la presentación](slides/_site/10_proyecto_integrador.html){target="_blank"} para la clase. Pulsa **F** para pantalla completa, **S** para ver las notas del presentador y **Esc** para ver todas las diapositivas.
+:::
+
 ## Objetivo del Proyecto
 
 Crear un **sistema completo de tienda en línea** que integre TODOS los conceptos aprendidos:

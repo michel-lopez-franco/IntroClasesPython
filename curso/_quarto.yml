@@ -1,6 +1,9 @@
 project:
   type: book
   output-dir: _book
+  pre-render: quarto render slides   # primero las presentaciones (proyecto propio en slides/)
+  resources:
+    - "slides/_site/**"               # …y se copian a _book/slides/_site/
 
 book:
   title: "Programación Orientada a Objetos en Python"

@@ -12,6 +12,10 @@ Al terminar este capítulo podrás:
 - Reconocer por qué conviene organizar el código con clases.
 :::
 
+::: {.callout-tip title="Diapositivas de este tema"}
+[Abrir la presentación](slides/_site/01_clases_objetos.html){target="_blank"} para la clase. Pulsa **F** para pantalla completa, **S** para ver las notas del presentador y **Esc** para ver todas las diapositivas.
+:::
+
 ## ¿Qué es la Programación Orientada a Objetos (POO)?
 
 Imagina que estás construyendo con bloques de LEGO. Cada pieza tiene características (color, tamaño, forma) y puedes usarlas para construir cosas más complejas. La POO funciona de manera similar:

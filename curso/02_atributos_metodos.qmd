@@ -12,6 +12,10 @@ Al terminar este capítulo podrás:
 - Hacer que un método llame a otros métodos del mismo objeto.
 :::
 
+::: {.callout-tip title="Diapositivas de este tema"}
+[Abrir la presentación](slides/_site/02_atributos_metodos.html){target="_blank"} para la clase. Pulsa **F** para pantalla completa, **S** para ver las notas del presentador y **Esc** para ver todas las diapositivas.
+:::
+
 ## ¿Qué son los Métodos?
 
 Si los **atributos** son las características de un objeto (lo que es), los **métodos** son las acciones que puede realizar (lo que hace).

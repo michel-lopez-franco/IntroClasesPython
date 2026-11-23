@@ -12,6 +12,10 @@ Al terminar este capítulo podrás:
 - Diseñar sistemas extensibles sin cadenas de `if` que pregunten por el tipo.
 :::
 
+::: {.callout-tip title="Diapositivas de este tema"}
+[Abrir la presentación](slides/_site/06_polimorfismo.html){target="_blank"} para la clase. Pulsa **F** para pantalla completa, **S** para ver las notas del presentador y **Esc** para ver todas las diapositivas.
+:::
+
 ## ¿Qué es el Polimorfismo?
 
 Polimorfismo significa "muchas formas". Es la capacidad de objetos de diferentes clases de responder al mismo método de manera diferente.

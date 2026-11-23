@@ -1,0 +1,204 @@
+---
+title: "Proyecto integrador"
+subtitle: "Tema 10 · Una tienda en línea con todo lo aprendido"
+jupyter: python3
+---
+
+## El objetivo
+
+Un **sistema de tienda en línea** que use **todos** los conceptos del curso:
+
+clases · constructor · herencia · encapsulamiento · polimorfismo ·
+métodos especiales · composición · agregación · clases abstractas
+
+::: {.notes}
+Explicar que el proyecto no introduce conceptos nuevos: junta todos los anteriores en un sistema realista.
+:::
+
+## Arquitectura
+
+```{mermaid}
+%%| echo: false
+classDiagram
+    direction LR
+    Producto <|-- ProductoElectronico
+    Producto <|-- ProductoRopa
+    Producto <|-- ProductoAlimento
+    MetodoPago <|-- TarjetaCredito
+    MetodoPago <|-- PayPal
+    Carrito *-- ItemCarrito
+    ItemCarrito o-- Producto
+    Orden o-- Usuario
+    Orden o-- MetodoPago
+    Tienda o-- Producto
+```
+
+::: {.notes}
+Recorrer el diagrama: herencia a la izquierda, composición en el carrito, agregación en la orden.
+:::
+
+## Producto: abstracto y encapsulado
+
+```python
+class Producto(ABC):
+    def __init__(self, nombre, precio, stock):
+        self.__nombre, self.__precio, self.__stock = nombre, precio, stock
+
+    @property
+    def precio(self):
+        return self.__precio
+
+    @abstractmethod
+    def calcular_precio_final(self): ...
+```
+
+::: {.notes}
+Abstracción (no existe un "producto genérico") + encapsulamiento (precio validado por propiedad).
+:::
+
+## Polimorfismo en el precio
+
+```python
+class ProductoElectronico(Producto):
+    def calcular_precio_final(self):
+        return self.precio * 1.16          # IVA
+
+class ProductoRopa(Producto):
+    def calcular_precio_final(self):
+        return self.precio * 0.90          # temporada
+
+class ProductoAlimento(Producto):
+    def calcular_precio_final(self):
+        return self.precio * (0.5 if self.dias_para_caducar() <= 3 else 1)
+```
+
+El carrito sólo llama `producto.calcular_precio_final()`.
+
+::: {.notes}
+Cada tipo de producto calcula su precio a su manera. El carrito y la orden no necesitan saber de qué tipo es cada producto.
+:::
+
+## Métodos de pago: una interfaz
+
+```python
+class MetodoPago(ABC):
+    @abstractmethod
+    def procesar_pago(self, monto): ...
+    @abstractmethod
+    def validar(self): ...
+
+class PayPal(MetodoPago):
+    def validar(self):
+        return "@" in self.email
+    def procesar_pago(self, monto):
+        ...
+```
+
+::: {.notes}
+La tienda depende de MetodoPago, no de PayPal ni de TarjetaCredito. Agregar un método nuevo no la modifica.
+:::
+
+## El carrito: composición
+
+```python
+class Carrito:
+    def __init__(self):
+        self.__items = []                      # el carrito posee sus items
+
+    def agregar_producto(self, producto, cantidad=1):
+        self.__items.append(ItemCarrito(producto, cantidad))
+
+    def calcular_total(self):
+        return sum(i.obtener_subtotal() for i in self.__items)
+
+    def __len__(self):                         # método especial
+        return len(self.__items)
+```
+
+::: {.notes}
+Los ItemCarrito los crea el carrito y no tienen sentido fuera de él. __len__ permite escribir len(carrito).
+:::
+
+## La orden: agregación
+
+```python
+class Orden:
+    def __init__(self, usuario, items, metodo_pago):
+        self.usuario = usuario          # existen fuera de la orden
+        self.items = items
+        self.metodo_pago = metodo_pago
+```
+
+La orden **usa** usuario, productos y método de pago; no los crea.
+
+::: {.notes}
+El usuario y los productos existen antes y después de la orden; ella sólo los referencia.
+:::
+
+## Flujo de una compra
+
+```{mermaid}
+%%| echo: false
+sequenceDiagram
+    participant U as Usuario
+    participant C as Carrito
+    participant T as Tienda
+    participant O as Orden
+    participant P as MetodoPago
+    U->>C: agregar_producto(laptop, 1)
+    U->>T: crear_orden(usuario, carrito, tarjeta)
+    T->>O: Orden(usuario, items, tarjeta)
+    O->>P: procesar_pago(total)
+    P-->>O: (True, "aprobado")
+    O->>O: reducir stock
+    T-->>U: orden completada
+```
+
+::: {.notes}
+Recorrer el diagrama de arriba abajo. Señalar dónde aparece el polimorfismo (procesar_pago) y dónde se protege el stock.
+:::
+
+## Concepto → dónde aparece
+
+| Concepto | En el proyecto |
+|---|---|
+| Herencia | tipos de `Producto`, métodos de pago |
+| Encapsulamiento | `__precio`, `__stock`, `__password_hash` |
+| Polimorfismo | `calcular_precio_final()`, `procesar_pago()` |
+| Abstracción | `Producto`, `MetodoPago` |
+| Composición | `Carrito` → `ItemCarrito` |
+| Agregación | `Orden` → `Usuario`, `Producto` |
+| Métodos especiales | `__str__`, `__lt__`, `__len__`, `__eq__` |
+
+::: {.notes}
+Pedir a los estudiantes que señalen cada concepto en el código del capítulo 10 antes de mostrar la tabla completa.
+:::
+
+## Reto: extiende el sistema
+
+::: {.incremental}
+- Cupones de descuento
+- Reseñas con calificación promedio
+- Métodos de envío (clase abstracta)
+- Carrito persistente
+- Búsqueda avanzada
+:::
+
+Soluciones propuestas en el capítulo 10 del sitio.
+
+::: {.notes}
+Sugerir trabajar en equipos: cada equipo elige una extensión y la presenta. Las soluciones propuestas están en el sitio.
+:::
+
+## Siguientes pasos
+
+- Pruebas unitarias (`unittest`, `pytest`)
+- Patrones de diseño: Factory, Observer, Strategy
+- Principios **SOLID**
+- Frameworks que usan POO a fondo: Django, FastAPI
+
+**¡Felicidades por terminar el curso!**
+
+::: {.notes}
+Cerrar el curso conectando la POO con lo que verán en la maestría: frameworks, pruebas y diseño de software.
+:::

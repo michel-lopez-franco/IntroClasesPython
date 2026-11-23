@@ -1,0 +1,194 @@
+---
+title: "Clases y objetos"
+subtitle: "Tema 1 · Programación Orientada a Objetos en Python"
+jupyter: python3
+---
+
+## ¿Qué es la POO?
+
+- Una forma de organizar programas alrededor de **objetos**
+- Cada objeto junta **datos** (atributos) y **comportamiento** (métodos)
+- **Clase** = el molde · **Objeto** = algo concreto hecho con ese molde
+
+::: {.notes}
+Analogía de LEGO: el diseño de una pieza es la clase; cada pieza física es un objeto.
+Insistir en que la POO no es "otro lenguaje": es una manera de organizar código.
+:::
+
+## Un molde, muchos objetos
+
+```{mermaid}
+%%| echo: false
+flowchart LR
+    C["Clase Coche<br/>(el plano de fábrica)"] --> O1["coche1<br/>Toyota rojo"]
+    C --> O2["coche2<br/>Honda azul"]
+    C --> O3["coche3<br/>Ford negro"]
+```
+
+::: {.notes}
+El plano se diseña una vez; con él se fabrican muchos coches.
+Cada coche tiene sus propios valores (marca, color) pero todos siguen el mismo diseño.
+:::
+
+## Tu primera clase
+
+```{python}
+class Perro:
+    pass          # clase vacía, por ahora
+
+mi_perro = Perro()     # crear un objeto (instancia)
+print(type(mi_perro))
+```
+
+- `class` define la clase; el nombre va en **CamelCase**
+- Los paréntesis `Perro()` **crean** el objeto
+
+::: {.notes}
+Hacer notar que `pass` sólo sirve para que la clase no quede vacía sintácticamente.
+Preguntar: ¿qué pasa si olvidamos los paréntesis? (`mi_perro = Perro` guarda la clase, no un objeto).
+:::
+
+## Atributos de clase
+
+```{python}
+class Perro:
+    especie = "Canis familiaris"   # compartido por todos
+
+a, b = Perro(), Perro()
+print(a.especie, "|", b.especie)
+```
+
+Se definen **dentro** de la clase y los comparten **todas** las instancias.
+
+::: {.notes}
+Buen uso: constantes o datos comunes a todos los objetos (especie, número de ruedas…).
+:::
+
+## Atributos de instancia
+
+```{python}
+perro1 = Perro()
+perro1.nombre = "Max"
+perro1.edad = 3
+
+perro2 = Perro()
+perro2.nombre = "Luna"
+print(perro1.nombre, perro2.nombre)
+```
+
+Cada objeto guarda **sus propios** valores.
+
+::: {.notes}
+Aclarar que asignar atributos "desde fuera" funciona, pero no es la forma recomendada:
+en el tema 3 lo haremos con el constructor `__init__`.
+:::
+
+## Clase vs. objeto
+
+:::: {.columns}
+::: {.column width="50%"}
+**Clase**
+
+- Plantilla / molde
+- Define qué atributos y métodos habrá
+- Se escribe **una vez**
+:::
+::: {.column width="50%"}
+**Objeto**
+
+- Instancia concreta
+- Tiene valores específicos
+- Puede haber **muchos**
+:::
+::::
+
+::: {.notes}
+Pedir ejemplos al grupo: Alumno / "Ana", Materia / "POO", Cuenta / "cuenta de Luis".
+:::
+
+## Cada objeto es distinto
+
+```{python}
+p1 = Perro()
+p2 = Perro()
+print(p1 is p2)        # ¿son el mismo objeto?
+print(id(p1) != id(p2))
+```
+
+Dos llamadas a `Perro()` producen **dos objetos** diferentes.
+
+::: {.notes}
+`is` compara identidad (¿es el mismo objeto en memoria?), no igualdad de contenido.
+:::
+
+## Variables = referencias
+
+```{python}
+otro = perro1          # NO crea un objeto nuevo
+otro.nombre = "Rex"
+print(perro1.nombre)
+```
+
+`otro` y `perro1` apuntan al **mismo** objeto.
+
+::: {.notes}
+Es el punto que más confunde. Mostrar la visualización de Python Tutor del capítulo 1:
+las variables son flechas hacia objetos.
+:::
+
+## Sin clases vs. con clases
+
+:::: {.columns}
+::: {.column width="50%"}
+```python
+# Diccionarios sueltos
+ana = {"nombre": "Ana",
+       "edad": 20}
+
+def presentar(e):
+    return f"Soy {e['nombre']}"
+```
+:::
+::: {.column width="50%"}
+```python
+# Una clase
+class Estudiante:
+    pass
+
+ana = Estudiante()
+ana.nombre = "Ana"
+ana.edad = 20
+```
+:::
+::::
+
+::: {.notes}
+Con diccionarios, nada garantiza que todos tengan las mismas claves ni dónde vive la lógica.
+La clase será el lugar natural para datos + funciones (temas 2 y 3).
+:::
+
+## ¿Por qué usar clases?
+
+::: {.incremental}
+- **Organización**: datos y funciones relacionados, juntos
+- **Reutilización**: muchos objetos con la misma estructura
+- **Abstracción**: se oculta la complejidad interna
+- **Mantenimiento**: cambios en un solo lugar
+:::
+
+::: {.notes}
+Relacionar cada ventaja con un ejemplo de software que usen a diario (apps, juegos).
+:::
+
+## Resumen
+
+- **Clase**: molde · **Objeto**: instancia concreta
+- `class Nombre:` define; `Nombre()` crea
+- Atributos **de clase** (compartidos) vs. **de instancia** (propios)
+- Las variables son **referencias** a objetos
+
+**Siguiente tema:** métodos — cómo hacer que los objetos "hagan cosas".
+
+::: {.notes}
+Dejar como reto los ejercicios del capítulo 1 del sitio del curso.
+:::

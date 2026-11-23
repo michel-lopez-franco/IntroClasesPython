@@ -12,6 +12,10 @@ Al terminar este capítulo podrás:
 - Hacer que tus objetos se comporten como contenedores, como funciones (`__call__`) o como *context managers*.
 :::
 
+::: {.callout-tip title="Diapositivas de este tema"}
+[Abrir la presentación](slides/_site/07_metodos_especiales.html){target="_blank"} para la clase. Pulsa **F** para pantalla completa, **S** para ver las notas del presentador y **Esc** para ver todas las diapositivas.
+:::
+
 ## ¿Qué son los Métodos Especiales?
 
 Los métodos especiales (también llamados "dunder methods" por el doble guión bajo) son métodos con nombres especiales que Python llama automáticamente en ciertas situaciones.

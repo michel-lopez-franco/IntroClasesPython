@@ -12,6 +12,10 @@ Al terminar este capítulo podrás:
 - Crear propiedades de solo lectura y propiedades calculadas con validación.
 :::
 
+::: {.callout-tip title="Diapositivas de este tema"}
+[Abrir la presentación](slides/_site/05_encapsulamiento.html){target="_blank"} para la clase. Pulsa **F** para pantalla completa, **S** para ver las notas del presentador y **Esc** para ver todas las diapositivas.
+:::
+
 ## ¿Qué es el Encapsulamiento?
 
 El encapsulamiento es el principio de ocultar los detalles internos de una clase y controlar el acceso a sus atributos y métodos.
