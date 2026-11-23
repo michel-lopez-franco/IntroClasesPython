@@ -1,0 +1,100 @@
+---
+title: "04 · Tablas, ecuaciones y callouts"
+lang: es
+format: html
+jupyter: python3
+---
+
+## Tabla escrita en Markdown
+
+| Tipo    | Ejemplo        | Mutable |
+|---------|----------------|:-------:|
+| `int`   | `42`           | No      |
+| `str`   | `"hola"`       | No      |
+| `list`  | `[1, 2, 3]`    | Sí      |
+| `dict`  | `{"a": 1}`     | Sí      |
+
+: Tipos básicos de Python {#tbl-tipos}
+
+La @tbl-tipos resume algunos tipos de datos.
+
+## Tabla generada desde Python
+
+Con `output: asis` lo que imprime Python se interpreta como Markdown (@tbl-productos).
+
+```{python}
+#| label: tbl-productos
+#| tbl-cap: "Inventario generado con Python"
+#| output: asis
+productos = [
+    ("Laptop", 15999.00, 5),
+    ("Mouse", 249.50, 40),
+    ("Teclado", 899.00, 12),
+]
+
+print("| Producto | Precio | Existencias | Total |")
+print("|---|---:|---:|---:|")
+for nombre, precio, cant in productos:
+    print(f"| {nombre} | ${precio:,.2f} | {cant} | ${precio * cant:,.2f} |")
+```
+
+::: {.callout-tip}
+Si tienes `pandas` instalado, basta con dejar un `DataFrame` como última expresión
+de la celda y Quarto lo muestra como tabla.
+:::
+
+## Ecuaciones (LaTeX)
+
+En línea: el área de un círculo es $A = \pi r^2$.
+
+En bloque, numerada con `{#eq-...}`:
+
+$$
+\bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i
+$$ {#eq-promedio}
+
+Calculemos la @eq-promedio con Python:
+
+```{python}
+datos = [9.5, 8.0, 9.0, 7.5]
+promedio = sum(datos) / len(datos)
+print(f"Promedio = {promedio:.3f}")
+```
+
+## Callouts
+
+::: {.callout-note}
+## Nota
+Información adicional para el lector.
+:::
+
+::: {.callout-warning}
+## Advertencia
+En Python la indentación forma parte de la sintaxis.
+:::
+
+::: {.callout-important collapse="true"}
+## Plegable (clic para abrir)
+Los callouts pueden colapsarse con `collapse="true"`.
+:::
+
+## Columnas
+
+:::: {.columns}
+::: {.column width="50%"}
+**Lista**
+
+```python
+x = [1, 2, 3]
+x.append(4)
+```
+:::
+::: {.column width="50%"}
+**Tupla**
+
+```python
+t = (1, 2, 3)
+# t.append(4) -> error
+```
+:::
+::::

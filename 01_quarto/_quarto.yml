@@ -1,0 +1,32 @@
+project:
+  type: website
+  output-dir: _site          # aquí se guardan todos los HTML generados
+  render:                    # archivos que forman parte del proyecto
+    - index.qmd
+    - guia_rapida.qmd
+    - ejemplos/*.qmd
+
+website:
+  title: "Quarto + Python"
+  sidebar:
+    style: docked
+    contents:
+      - index.qmd
+      - guia_rapida.qmd
+      - section: "Ejemplos"
+        contents:
+          - ejemplos/01_hola_quarto.qmd
+          - ejemplos/02_opciones_celdas.qmd
+          - ejemplos/03_graficas.qmd
+          - ejemplos/04_tablas_ecuaciones.qmd
+          - ejemplos/05_clases_python.qmd
+          - ejemplos/06_presentacion.qmd
+          - ejemplos/07_animaciones_plotly.qmd
+          - ejemplos/08_html_js.qmd
+
+lang: es
+
+format:
+  html:
+    theme: cosmo
+    toc: true

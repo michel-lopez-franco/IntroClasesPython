@@ -1,0 +1,23 @@
+---
+title: "Quarto + Python"
+subtitle: "Propedéutico — Introducción a Clases en Python"
+---
+
+Este mini sitio reúne una **guía rápida** y **ejemplos básicos** para trabajar con
+Quarto y Python. Usa el menú lateral para navegar.
+
+1. Empieza por la [Guía rápida](guia_rapida.qmd).
+2. Revisa los ejemplos en orden:
+   - [01 · Hola Quarto](ejemplos/01_hola_quarto.qmd)
+   - [02 · Opciones de celdas](ejemplos/02_opciones_celdas.qmd)
+   - [03 · Gráficas](ejemplos/03_graficas.qmd)
+   - [04 · Tablas, ecuaciones y callouts](ejemplos/04_tablas_ecuaciones.qmd)
+   - [05 · Documentar clases](ejemplos/05_clases_python.qmd)
+   - [06 · Presentación](ejemplos/06_presentacion.qmd)
+   - [07 · Animaciones con Plotly](ejemplos/07_animaciones_plotly.qmd)
+   - [08 · HTML y JavaScript](ejemplos/08_html_js.qmd)
+
+::: {.callout-tip}
+## Para ver todo el sitio
+Desde la raíz del repositorio: `uv run quarto preview 01_quarto`
+:::

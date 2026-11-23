@@ -1,0 +1,10 @@
+# Salidas generadas por `quarto render`
+*.html
+*_files/
+*.pdf
+*.docx
+.quarto/
+_site/
+
+/.quarto/
+**/*.quarto_ipynb

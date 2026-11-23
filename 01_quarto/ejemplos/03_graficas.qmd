@@ -1,0 +1,84 @@
+---
+title: "03 · Gráficas"
+lang: es
+format:
+  html:
+    code-fold: true
+jupyter: python3
+---
+
+Quarto incrusta automáticamente las gráficas generadas por Python. Con una `label`
+que empiece con `fig-` se numeran y se pueden citar: ver @fig-lineas y @fig-barras.
+
+## Matplotlib
+
+```{python}
+#| label: fig-lineas
+#| fig-cap: "Funciones seno y coseno"
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(0, 2 * np.pi, 200)
+
+fig, ax = plt.subplots(figsize=(7, 3.5))
+ax.plot(x, np.sin(x), label="sen(x)")
+ax.plot(x, np.cos(x), label="cos(x)")
+ax.set_xlabel("x")
+ax.set_ylabel("y")
+ax.legend()
+ax.grid(alpha=0.3)
+plt.show()
+```
+
+```{python}
+#| label: fig-barras
+#| fig-cap: "Calificaciones por alumno"
+alumnos = ["Ana", "Luis", "Sofía", "Pedro"]
+calificaciones = [9.5, 8.0, 9.0, 7.5]
+
+fig, ax = plt.subplots(figsize=(6, 3.5))
+ax.bar(alumnos, calificaciones, color="steelblue")
+ax.axhline(8, color="gray", linestyle="--", label="Mínimo aprobatorio")
+ax.set_ylim(0, 10)
+ax.set_ylabel("Calificación")
+ax.legend()
+plt.show()
+```
+
+## Varias figuras lado a lado
+
+Con `layout-ncol` las subfiguras se acomodan en columnas (@fig-panel).
+
+```{python}
+#| label: fig-panel
+#| fig-cap: "Distribuciones aleatorias"
+#| fig-subcap:
+#|   - "Normal"
+#|   - "Uniforme"
+#| layout-ncol: 2
+rng = np.random.default_rng(42)
+
+plt.figure(figsize=(4, 3))
+plt.hist(rng.normal(size=1000), bins=30, color="tab:blue")
+plt.show()
+
+plt.figure(figsize=(4, 3))
+plt.hist(rng.uniform(size=1000), bins=30, color="tab:orange")
+plt.show()
+```
+
+## Plotly (gráfica interactiva)
+
+En formato HTML, las gráficas de Plotly son interactivas (zoom, *hover*). Ver @fig-plotly.
+
+```{python}
+#| label: fig-plotly
+#| fig-cap: "Gráfica interactiva con Plotly"
+import plotly.graph_objects as go
+
+t = np.linspace(0, 10, 100)
+fig = go.Figure(go.Scatter(x=t, y=np.exp(-0.3 * t) * np.cos(2 * t), mode="lines"))
+fig.update_layout(title="Oscilación amortiguada",
+                  xaxis_title="tiempo", yaxis_title="amplitud")
+fig.show()
+```

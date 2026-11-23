@@ -1,0 +1,159 @@
+---
+title: "07 · Animaciones con Plotly"
+format:
+  html:
+    code-fold: true
+jupyter: python3
+---
+
+Plotly genera gráficas **interactivas en JavaScript**. Al renderizar a HTML, Quarto las
+incrusta tal cual, así que las animaciones (botón *Play* y barra deslizante) funcionan
+en el navegador sin necesidad de un servidor.
+
+::: {.callout-important}
+Las animaciones sólo funcionan en formatos **HTML** (`html`, `revealjs`, `website`).
+En PDF o Word no se pueden reproducir.
+:::
+
+## Idea básica: *frames*
+
+Una animación en Plotly es una figura con una lista de **cuadros** (`frames`).
+Cada cuadro contiene los datos de un instante; Plotly interpola entre ellos.
+
+```python
+fig = go.Figure(
+    data=[...],            # lo que se ve al inicio
+    frames=[go.Frame(data=[...], name="0"), ...],   # cada instante
+    layout=go.Layout(updatemenus=[...]),            # botones Play / Pausa
+)
+```
+
+## Ejemplo 1: onda que se desplaza
+
+```{python}
+#| label: fig-onda
+#| fig-cap: "Onda senoidal animada (presiona ▶)"
+import numpy as np
+import plotly.graph_objects as go
+
+x = np.linspace(0, 4 * np.pi, 200)
+fases = np.linspace(0, 2 * np.pi, 40)
+
+frames = [
+    go.Frame(data=[go.Scatter(x=x, y=np.sin(x - f))], name=f"{i}")
+    for i, f in enumerate(fases)
+]
+
+botones = dict(
+    type="buttons",
+    showactive=False,
+    x=0, y=1.15, xanchor="left",
+    buttons=[
+        dict(label="▶ Play", method="animate",
+             args=[None, {"frame": {"duration": 50, "redraw": False},
+                          "fromcurrent": True, "transition": {"duration": 0}}]),
+        dict(label="⏸ Pausa", method="animate",
+             args=[[None], {"frame": {"duration": 0}, "mode": "immediate"}]),
+    ],
+)
+
+fig = go.Figure(
+    data=[go.Scatter(x=x, y=np.sin(x), mode="lines", line=dict(width=3))],
+    frames=frames,
+    layout=go.Layout(
+        xaxis=dict(range=[0, 4 * np.pi], title="x"),
+        yaxis=dict(range=[-1.2, 1.2], title="sen(x − t)"),
+        updatemenus=[botones],
+        height=400,
+    ),
+)
+fig.show()
+```
+
+## Ejemplo 2: barra deslizante (*slider*)
+
+Con un `slider` el usuario puede moverse a cualquier cuadro. Aquí, un proyectil lanzado
+con distintos ángulos:
+
+```{python}
+#| label: fig-proyectil
+#| fig-cap: "Trayectoria de un proyectil según el ángulo de lanzamiento"
+g, v0 = 9.81, 20
+angulos = list(range(10, 85, 5))
+
+def trayectoria(angulo):
+    th = np.radians(angulo)
+    t_vuelo = 2 * v0 * np.sin(th) / g
+    t = np.linspace(0, t_vuelo, 60)
+    return v0 * np.cos(th) * t, v0 * np.sin(th) * t - 0.5 * g * t**2
+
+frames = []
+for a in angulos:
+    xs, ys = trayectoria(a)
+    frames.append(go.Frame(data=[go.Scatter(x=xs, y=ys)], name=str(a)))
+
+slider = dict(
+    active=0,
+    currentvalue={"prefix": "Ángulo: ", "suffix": "°"},
+    pad={"t": 40},
+    steps=[
+        dict(label=str(a), method="animate",
+             args=[[str(a)], {"frame": {"duration": 0, "redraw": False}, "mode": "immediate"}])
+        for a in angulos
+    ],
+)
+
+x0, y0 = trayectoria(angulos[0])
+fig = go.Figure(
+    data=[go.Scatter(x=x0, y=y0, mode="lines", fill="tozeroy")],
+    frames=frames,
+    layout=go.Layout(
+        xaxis=dict(range=[0, 45], title="distancia (m)"),
+        yaxis=dict(range=[0, 22], title="altura (m)"),
+        sliders=[slider],
+        updatemenus=[dict(type="buttons", x=0, y=1.15, xanchor="left", buttons=[
+            dict(label="▶ Play", method="animate",
+                 args=[None, {"frame": {"duration": 300}, "fromcurrent": True}])])],
+        height=450,
+    ),
+)
+fig.show()
+```
+
+## Ejemplo 3: puntos en movimiento (simulación)
+
+Cada cuadro muestra la posición de varias partículas en un paseo aleatorio:
+
+```{python}
+#| label: fig-particulas
+#| fig-cap: "Paseo aleatorio de 30 partículas"
+rng = np.random.default_rng(0)
+n, pasos = 30, 60
+pos = np.cumsum(rng.normal(0, 0.3, size=(pasos, n, 2)), axis=0)
+
+frames = [
+    go.Frame(data=[go.Scatter(x=pos[k, :, 0], y=pos[k, :, 1])], name=str(k))
+    for k in range(pasos)
+]
+
+fig = go.Figure(
+    data=[go.Scatter(x=pos[0, :, 0], y=pos[0, :, 1], mode="markers",
+                     marker=dict(size=10, color=np.arange(n), colorscale="Viridis"))],
+    frames=frames,
+    layout=go.Layout(
+        xaxis=dict(range=[-6, 6]), yaxis=dict(range=[-6, 6], scaleanchor="x"),
+        updatemenus=[dict(type="buttons", x=0, y=1.15, xanchor="left", buttons=[
+            dict(label="▶ Play", method="animate",
+                 args=[None, {"frame": {"duration": 80}, "transition": {"duration": 60},
+                              "fromcurrent": True}])])],
+        height=500,
+    ),
+)
+fig.show()
+```
+
+::: {.callout-tip}
+## Más fácil con pandas
+Si instalas `pandas` (`uv add pandas`), `plotly.express` crea animaciones en una línea:
+`px.scatter(df, x="x", y="y", animation_frame="tiempo")`.
+:::

@@ -1,0 +1,263 @@
+---
+title: "Guía rápida: Quarto + Python"
+subtitle: "Propedéutico — Introducción a Clases en Python"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    code-copy: true
+jupyter: python3
+---
+
+## ¿Qué es Quarto?
+
+[Quarto](https://quarto.org) es un sistema de publicación científica y técnica. Permite
+escribir **texto (Markdown) + código (Python)** en un mismo archivo `.qmd` y convertirlo en:
+
+- Páginas web (HTML)
+- PDF (vía LaTeX o Typst)
+- Documentos Word (`.docx`)
+- Presentaciones (Reveal.js, PowerPoint)
+- Sitios web, libros y blogs
+
+El código se ejecuta al renderizar y sus resultados (texto, tablas, gráficas) quedan
+incrustados en el documento final.
+
+## Instalación y verificación
+
+1. Descargar Quarto desde <https://quarto.org/docs/get-started/> e instalarlo.
+2. Verificar en la terminal:
+
+```bash
+quarto --version
+quarto check          # revisa Python, Jupyter, LaTeX, etc.
+```
+
+3. Quarto necesita **Jupyter** en el entorno de Python. En este proyecto usamos `uv`:
+
+```bash
+uv sync               # instala dependencias de pyproject.toml (incluye jupyter)
+uv add jupyter        # sólo si no estuviera instalado
+```
+
+::: {.callout-tip}
+## Extensión para el editor
+En VS Code / Positron instala la extensión **Quarto**. Da resaltado de sintaxis,
+autocompletado y el botón **Preview**.
+:::
+
+## Anatomía de un archivo `.qmd`
+
+Un archivo Quarto tiene tres partes:
+
+````markdown
+---
+title: "Mi primer documento"      # (1) encabezado YAML
+author: "Nombre"
+format: html
+jupyter: python3
+---
+
+## Introducción                    <!-- (2) texto en Markdown -->
+
+Este es un párrafo con **negritas** y *cursivas*.
+
+```{python}                        <!-- (3) celda de código -->
+x = 2 + 3
+print(x)
+```
+````
+
+1. **Encabezado YAML** (entre `---`): metadatos y opciones del documento.
+2. **Texto en Markdown**: títulos, listas, enlaces, imágenes, ecuaciones.
+3. **Celdas de código** delimitadas con ```` ```{python} ````.
+
+## Comandos esenciales
+
+| Comando | ¿Qué hace? |
+|---|---|
+| `quarto render archivo.qmd` | Genera la salida (HTML por defecto) |
+| `quarto render archivo.qmd --to pdf` | Genera PDF |
+| `quarto render archivo.qmd --to docx` | Genera Word |
+| `quarto preview archivo.qmd` | Vista previa en vivo (se recarga al guardar) |
+| `quarto convert cuaderno.ipynb` | Convierte notebook → `.qmd` |
+| `quarto convert archivo.qmd` | Convierte `.qmd` → notebook |
+| `quarto check` | Diagnostica la instalación |
+
+Con `uv`, para asegurar que use el Python del proyecto:
+
+```bash
+uv run quarto render 01_quarto/guia_rapida.qmd
+uv run quarto preview 01_quarto/ejemplos/01_hola_quarto.qmd
+```
+
+::: {.callout-note}
+Quarto también renderiza directamente archivos `.ipynb`:
+`quarto render src/01_Introduccion_Clases_Objetos.ipynb`
+:::
+
+## `render` vs `preview`
+
+|   | `quarto render` | `quarto preview` |
+|---|---|---|
+| **¿Qué hace?** | Ejecuta el código y **genera los archivos** de salida (HTML, PDF, ...) una vez | Renderiza, **abre el navegador** y se queda vigilando los cambios |
+| **¿Termina?** | Sí, al acabar regresa a la terminal | No, se queda corriendo hasta que presionas `Ctrl + C` |
+| **Al guardar cambios** | Nada; hay que volver a ejecutarlo | Vuelve a renderizar y **recarga la página sola** |
+| **Archivos generados** | Los deja listos para entregar o publicar | Sirven para ver el resultado mientras escribes; antes de entregar, haz un `render` final |
+| **¿Cuándo usarlo?** | Para producir la **versión final** | **Mientras escribes** o editas |
+
+Flujo de trabajo típico:
+
+1. `quarto preview archivo.qmd` → editas, guardas y ves el cambio al instante.
+2. `Ctrl + C` para detener la vista previa.
+3. `quarto render archivo.qmd` → generas la versión final.
+
+## Renderizar varios archivos a la vez (proyectos) {#sec-proyecto}
+
+No hace falta ir archivo por archivo. Si una carpeta contiene un archivo
+**`_quarto.yml`**, Quarto la trata como un **proyecto** y puede procesar todo junto.
+Esta carpeta `01_quarto/` ya es un proyecto de tipo *website*:
+
+```yaml
+# 01_quarto/_quarto.yml
+project:
+  type: website
+  output-dir: _site        # todos los HTML terminan aquí
+  render:
+    - index.qmd
+    - guia_rapida.qmd
+    - ejemplos/*.qmd       # todos los ejemplos con un patrón
+website:
+  sidebar:                 # menú lateral para navegar entre páginas
+    contents: ...
+```
+
+Comandos (desde la raíz del repositorio):
+
+```bash
+uv run quarto render 01_quarto     # renderiza TODO el proyecto → 01_quarto/_site/
+uv run quarto preview 01_quarto    # abre el sitio completo con menú y recarga en vivo
+```
+
+- Con `preview` sobre el proyecto, al guardar un archivo **sólo se vuelve a renderizar
+  ese archivo**, no todo.
+- Las opciones del `_quarto.yml` (tema, idioma, `toc`) se aplican a todas las páginas;
+  cada `.qmd` puede sobrescribirlas en su propio YAML.
+- Renderizar un solo archivo sigue funcionando (`quarto render 01_quarto/ejemplos/03_graficas.qmd`);
+  su salida también va a `_site/`.
+
+::: {.callout-tip}
+## Tipos de proyecto
+`default` (documentos sueltos), `website` (sitio con navegación), `book` (libro con
+capítulos) y `manuscript` (artículo científico). Se crean con `quarto create project`.
+:::
+
+## Markdown en 1 minuto
+
+| Escribes | Obtienes |
+|---|---|
+| `# Título`, `## Subtítulo` | Encabezados |
+| `**negrita**`, `*cursiva*` | **negrita**, *cursiva* |
+| `` `codigo` `` | `codigo` |
+| `- elemento` | Lista con viñetas |
+| `1. elemento` | Lista numerada |
+| `[texto](https://url)` | Enlace |
+| `![pie](imagen.png)` | Imagen |
+| `$x^2$` | Ecuación en línea: $x^2$ |
+| `$$ E = mc^2 $$` | Ecuación en bloque |
+
+## Opciones de celda (`#|`)
+
+Las opciones se escriben al inicio de la celda con el prefijo `#|`:
+
+```{python}
+#| echo: true
+#| label: ejemplo-opciones
+nombres = ["Ana", "Luis", "Sofía"]
+for n in nombres:
+    print(f"Hola, {n}")
+```
+
+Opciones más usadas:
+
+| Opción | Valores | Efecto |
+|---|---|---|
+| `echo` | `true` / `false` | Mostrar u ocultar el código |
+| `eval` | `true` / `false` | Ejecutar o no el código |
+| `output` | `true` / `false` / `asis` | Mostrar u ocultar la salida |
+| `warning` | `true` / `false` | Mostrar advertencias |
+| `error` | `true` / `false` | Continuar aunque haya error |
+| `include` | `true` / `false` | `false` = ejecuta pero no muestra nada |
+| `code-fold` | `true` / `false` | Código plegable |
+| `label` | `fig-xxx`, `tbl-xxx` | Identificador para referencias cruzadas |
+| `fig-cap` | texto | Pie de figura |
+
+También pueden fijarse **para todo el documento** en el YAML:
+
+```yaml
+execute:
+  echo: false
+  warning: false
+```
+
+## Opciones útiles del YAML
+
+```yaml
+---
+title: "Título"
+author: "Nombre"
+date: today
+lang: es                # textos automáticos en español ("Figura", "Tabla"...)
+format:
+  html:
+    toc: true           # tabla de contenidos
+    number-sections: true
+    code-fold: true     # código plegable
+    theme: cosmo        # temas: cosmo, flatly, darkly, journal, ...
+  pdf: default          # permite --to pdf
+jupyter: python3
+execute:
+  echo: true
+---
+```
+
+## Referencias cruzadas
+
+Etiqueta una figura con `#| label: fig-nombre` y cítala en el texto con `@fig-nombre`.
+Lo mismo para tablas (`tbl-`), ecuaciones (`eq-`) y secciones (`sec-`).
+Ver el ejemplo [`03_graficas.qmd`](ejemplos/03_graficas.qmd).
+
+## Callouts (cajas de aviso)
+
+```markdown
+::: {.callout-warning}
+## Cuidado
+Texto de la advertencia.
+:::
+```
+
+Tipos: `callout-note`, `callout-tip`, `callout-warning`, `callout-important`, `callout-caution`.
+
+## Ejemplos de esta carpeta
+
+| Archivo | Tema |
+|---|---|
+| [`ejemplos/01_hola_quarto.qmd`](ejemplos/01_hola_quarto.qmd) | Primer documento: Markdown + código |
+| [`ejemplos/02_opciones_celdas.qmd`](ejemplos/02_opciones_celdas.qmd) | `echo`, `eval`, `include`, código en línea |
+| [`ejemplos/03_graficas.qmd`](ejemplos/03_graficas.qmd) | Matplotlib, Plotly y referencias a figuras |
+| [`ejemplos/04_tablas_ecuaciones.qmd`](ejemplos/04_tablas_ecuaciones.qmd) | Tablas, ecuaciones LaTeX y callouts |
+| [`ejemplos/05_clases_python.qmd`](ejemplos/05_clases_python.qmd) | Documentar clases (POO) con Quarto |
+| [`ejemplos/06_presentacion.qmd`](ejemplos/06_presentacion.qmd) | Presentación con Reveal.js |
+| [`ejemplos/07_animaciones_plotly.qmd`](ejemplos/07_animaciones_plotly.qmd) | Animaciones con Plotly (frames, Play, slider) |
+| [`ejemplos/08_html_js.qmd`](ejemplos/08_html_js.qmd) | HTML/CSS/JS crudo, HTML desde Python y Observable JS |
+
+## Problemas comunes
+
+| Síntoma | Solución |
+|---|---|
+| `Jupyter is not available` | `uv add jupyter` o `pip install jupyter`; luego `quarto check` |
+| `ModuleNotFoundError` al renderizar | Quarto usa otro Python: renderiza con `uv run quarto render ...` |
+| No genera PDF | Instala LaTeX: `quarto install tinytex` |
+| Los cambios no aparecen | Usa `quarto preview` o vuelve a ejecutar `quarto render` |
+| La celda no se ejecuta | Revisa que sea ```` ```{python} ```` (con llaves), no ```` ```python ```` |

@@ -1,0 +1,100 @@
+---
+title: "05 · Documentar clases con Quarto"
+lang: es
+format:
+  html:
+    toc: true
+jupyter: python3
+---
+
+Quarto es ideal para **explicar código paso a paso**: el texto describe la idea y la
+celda la demuestra. Aquí un ejemplo con Programación Orientada a Objetos.
+
+## 1. Definir la clase
+
+Una `CuentaBancaria` guarda un titular y un saldo, y permite depositar y retirar.
+
+```{python}
+class CuentaBancaria:
+    """Cuenta bancaria sencilla."""
+
+    def __init__(self, titular: str, saldo: float = 0.0):
+        self.titular = titular
+        self._saldo = saldo
+
+    @property
+    def saldo(self) -> float:
+        return self._saldo
+
+    def depositar(self, monto: float) -> None:
+        if monto <= 0:
+            raise ValueError("El monto debe ser positivo")
+        self._saldo += monto
+
+    def retirar(self, monto: float) -> None:
+        if monto > self._saldo:
+            raise ValueError("Fondos insuficientes")
+        self._saldo -= monto
+
+    def __repr__(self) -> str:
+        return f"CuentaBancaria({self.titular!r}, saldo={self._saldo:.2f})"
+```
+
+## 2. Crear objetos
+
+```{python}
+cuenta = CuentaBancaria("Ana", 1000)
+cuenta
+```
+
+## 3. Usar los métodos
+
+```{python}
+cuenta.depositar(500)
+cuenta.retirar(200)
+print(f"Saldo de {cuenta.titular}: ${cuenta.saldo:,.2f}")
+```
+
+## 4. Manejo de errores
+
+Con `error: true` mostramos la excepción sin detener el documento:
+
+```{python}
+#| error: true
+cuenta.retirar(10_000)
+```
+
+## 5. Herencia
+
+```{python}
+class CuentaAhorro(CuentaBancaria):
+    def __init__(self, titular, saldo=0.0, tasa=0.05):
+        super().__init__(titular, saldo)
+        self.tasa = tasa
+
+    def aplicar_interes(self):
+        self._saldo *= 1 + self.tasa
+
+ahorro = CuentaAhorro("Luis", 2000, tasa=0.10)
+ahorro.aplicar_interes()
+ahorro
+```
+
+## 6. Diagrama de clases (Mermaid)
+
+Quarto dibuja diagramas Mermaid directamente:
+
+```{mermaid}
+classDiagram
+    class CuentaBancaria {
+        +titular: str
+        -_saldo: float
+        +depositar(monto)
+        +retirar(monto)
+    }
+    class CuentaAhorro {
+        +tasa: float
+        +aplicar_interes()
+    }
+    CuentaBancaria <|-- CuentaAhorro
+```

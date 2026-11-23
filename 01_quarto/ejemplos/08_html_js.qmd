@@ -1,0 +1,185 @@
+---
+title: "08 · HTML y JavaScript en Quarto"
+format: html
+jupyter: python3
+---
+
+En la salida HTML puedes agregar tu propio HTML, CSS y JavaScript. Hay tres formas:
+
+| Forma | ¿Cómo? | ¿Cuándo usarla? |
+|---|---|---|
+| **Bloque crudo** | ```` ```{=html} ```` | HTML/CSS/JS fijo escrito a mano |
+| **Desde Python** | `IPython.display.HTML(...)` | HTML **generado** con datos de Python |
+| **Observable JS** | ```` ```{ojs} ```` | Interactividad reactiva (controles que actualizan gráficas) |
+
+::: {.callout-important}
+Todo esto sólo funciona en salidas **HTML**. En PDF o Word estos bloques se ignoran.
+:::
+
+## 1. Bloque HTML crudo (`{=html}`)
+
+Lo que va dentro se copia **tal cual** al HTML final, incluidas etiquetas `<style>` y `<script>`.
+
+```{=html}
+<style>
+  .tarjeta {
+    border: 2px solid #2780e3; border-radius: 12px;
+    padding: 1rem 1.5rem; max-width: 420px; text-align: center;
+  }
+  .tarjeta button {
+    background: #2780e3; color: white; border: none;
+    padding: .5rem 1.2rem; border-radius: 8px; font-size: 1rem; cursor: pointer;
+  }
+  .contador { font-size: 2.5rem; font-weight: bold; margin: .5rem 0; }
+</style>
+
+<div class="tarjeta">
+  <p>Contador hecho con HTML + JavaScript</p>
+  <div class="contador" id="valor">0</div>
+  <button id="menos">−</button>
+  <button id="mas">+</button>
+  <button id="reset">Reiniciar</button>
+</div>
+
+<script>
+  let cuenta = 0;
+  const valor = document.getElementById("valor");
+  const pintar = () => { valor.textContent = cuenta; };
+  document.getElementById("mas").onclick   = () => { cuenta++; pintar(); };
+  document.getElementById("menos").onclick = () => { cuenta--; pintar(); };
+  document.getElementById("reset").onclick = () => { cuenta = 0; pintar(); };
+</script>
+```
+
+El código fuente de ese bloque:
+
+````markdown
+```{=html}
+<div id="valor">0</div>
+<button id="mas">+</button>
+<script>
+  let cuenta = 0;
+  document.getElementById("mas").onclick = () => {
+    cuenta++;
+    document.getElementById("valor").textContent = cuenta;
+  };
+</script>
+```
+````
+
+::: {.callout-warning}
+## Ojo con los `id`
+Si repites un mismo `id` en dos bloques de la página, el JavaScript sólo encontrará el
+primero. Usa nombres únicos.
+:::
+
+### Otro ejemplo: un canvas animado
+
+```{=html}
+<canvas id="lienzo" width="500" height="200"
+        style="border:1px solid #ccc; border-radius:8px; max-width:100%"></canvas>
+<script>
+  const cv = document.getElementById("lienzo");
+  const ctx = cv.getContext("2d");
+  let x = 30, y = 60, vx = 3, vy = 2.2, r = 20;
+  function paso() {
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    ctx.beginPath(); ctx.arc(x, y, r, 0, 2 * Math.PI);
+    ctx.fillStyle = "#ff7518"; ctx.fill();
+    x += vx; y += vy;
+    if (x < r || x > cv.width - r) vx = -vx;
+    if (y < r || y > cv.height - r) vy = -vy;
+    requestAnimationFrame(paso);
+  }
+  paso();
+</script>
+```
+
+## 2. HTML generado desde Python
+
+`IPython.display.HTML` inserta el texto como HTML. Útil cuando el contenido depende de datos:
+
+```{python}
+from IPython.display import HTML
+
+alumnos = {"Ana": 9.5, "Luis": 8.0, "Sofía": 9.0, "Pedro": 7.5}
+
+filas = ""
+for nombre, cal in alumnos.items():
+    color = "#3fb618" if cal >= 8 else "#ff0039"
+    ancho = cal * 10
+    filas += f"""
+    <tr>
+      <td>{nombre}</td>
+      <td style="width:60%">
+        <div style="background:{color}; width:{ancho}%; color:white;
+                    padding:2px 6px; border-radius:4px">{cal}</div>
+      </td>
+    </tr>"""
+
+HTML(f"<table class='table'><tr><th>Alumno</th><th>Calificación</th></tr>{filas}</table>")
+```
+
+## 3. Observable JS (`{ojs}`) — JavaScript reactivo
+
+Quarto incluye [Observable JS](https://quarto.org/docs/interactive/ojs/): celdas de
+JavaScript **reactivas**. Si un control cambia, todo lo que depende de él se actualiza solo.
+
+### Controles y texto reactivo
+
+```{ojs}
+viewof nombre = Inputs.text({label: "Tu nombre", value: "Ana"})
+viewof veces  = Inputs.range([1, 10], {label: "Repeticiones", step: 1, value: 3})
+```
+
+```{ojs}
+md`${Array(veces).fill(`¡Hola, **${nombre}**!`).join(" ")}`
+```
+
+### Pasar datos de Python a JavaScript
+
+La función `ojs_define()` envía variables de Python a las celdas `{ojs}`:
+
+```{python}
+import numpy as np
+
+x = np.linspace(0, 10, 200)
+ojs_define(datos=[{"x": float(xi), "y": float(np.sin(xi))} for xi in x])
+```
+
+Ahora graficamos esos datos con JavaScript, con un control que cambia la amplitud
+y la frecuencia **en el navegador**, sin volver a ejecutar Python:
+
+```{ojs}
+viewof amplitud   = Inputs.range([0.1, 3], {label: "Amplitud", step: 0.1, value: 1})
+viewof frecuencia = Inputs.range([0.5, 4], {label: "Frecuencia", step: 0.1, value: 1})
+```
+
+```{ojs}
+Plot.plot({
+  height: 300,
+  y: {domain: [-3, 3], grid: true},
+  marks: [
+    Plot.line(datos, {x: "x", y: d => amplitud * Math.sin(frecuencia * d.x),
+                      stroke: "#2780e3", strokeWidth: 2}),
+    Plot.line(datos, {x: "x", y: "y", stroke: "#aaa", strokeDasharray: "4"}),
+    Plot.ruleY([0])
+  ]
+})
+```
+
+::: {.callout-note}
+La línea gris punteada es `sin(x)` calculada en Python; la azul se recalcula en
+JavaScript cada vez que mueves un control.
+:::
+
+## 4. Incluir un archivo HTML/JS externo
+
+Para código largo conviene tenerlo en un archivo aparte e incluirlo desde el YAML:
+
+```yaml
+format:
+  html:
+    include-in-header: mis_estilos.html     # dentro de <head>
+    include-after-body: mi_script.html      # al final de <body>
+```
