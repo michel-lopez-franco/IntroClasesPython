@@ -18,7 +18,9 @@ que mezclan texto y código Python usando [Quarto](https://quarto.org).
     ├── 05_clases_python.qmd        # Documentar clases (POO) + diagrama Mermaid
     ├── 06_presentacion.qmd         # Presentación Reveal.js
     ├── 07_animaciones_plotly.qmd   # Animaciones Plotly: frames, Play/Pausa, slider
-    └── 08_html_js.qmd              # HTML+CSS+JS crudo, HTML desde Python, Observable JS
+    ├── 08_html_js.qmd              # HTML+CSS+JS crudo, HTML desde Python, Observable JS
+    ├── 09_convertir_ipynb_py.qmd   # .ipynb ↔ .qmd, renderizar .ipynb y .py, embed
+    └── 09_conversion/              # archivos de práctica: notebook, script percent, módulo
 ```
 
 ## Requisitos

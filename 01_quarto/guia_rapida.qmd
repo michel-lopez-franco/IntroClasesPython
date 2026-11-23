@@ -251,6 +251,7 @@ Tipos: `callout-note`, `callout-tip`, `callout-warning`, `callout-important`, `c
 | [`ejemplos/06_presentacion.qmd`](ejemplos/06_presentacion.qmd) | Presentación con Reveal.js |
 | [`ejemplos/07_animaciones_plotly.qmd`](ejemplos/07_animaciones_plotly.qmd) | Animaciones con Plotly (frames, Play, slider) |
 | [`ejemplos/08_html_js.qmd`](ejemplos/08_html_js.qmd) | HTML/CSS/JS crudo, HTML desde Python y Observable JS |
+| [`ejemplos/09_convertir_ipynb_py.qmd`](ejemplos/09_convertir_ipynb_py.qmd) | Convertir `.ipynb` ↔ `.qmd`, renderizar `.ipynb` y `.py`, `embed` |
 
 ## Problemas comunes
 
