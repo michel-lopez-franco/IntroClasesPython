@@ -592,7 +592,7 @@ eyJhdHRyIjp7ImF1dG9ydW4iOnRydWUsImNhcHRpb24iOiJFamVtcGxvIGludGVyYWN0aXZvOiBtb2Rp
 </section>
 <section id="comparación-con-y-sin-constructor" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="comparación-con-y-sin-constructor"><span class="header-section-number">3.3</span> Comparación: Con y Sin Constructor</h2>
-<div id="a565468c" class="cell" data-execution_count="1">
+<div id="afef614d" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># SIN CONSTRUCTOR (forma antigua, no recomendada)</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> PersonaSin:</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span>
@@ -607,7 +607,7 @@ eyJhdHRyIjp7ImF1dG9ydW4iOnRydWUsImNhcHRpb24iOiJFamVtcGxvIGludGVyYWN0aXZvOiBtb2Rp
 <pre><code>Sin constructor: Ana, 25, Guadalajara</code></pre>
 </div>
 </div>
-<div id="a644c747" class="cell" data-execution_count="2">
+<div id="688bc0cf" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># CON CONSTRUCTOR (forma correcta, recomendada)</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> PersonaCon:</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, edad, ciudad):</span>
@@ -658,7 +658,7 @@ Figura&nbsp;3.1: Qué hace Python al crear un objeto: primero lo crea vacío y l
 </div>
 <section id="visualización-de-self" class="level3" data-number="3.4.1">
 <h3 data-number="3.4.1" class="anchored" data-anchor-id="visualización-de-self"><span class="header-section-number">3.4.1</span> Visualización de self</h3>
-<div id="29545786" class="cell" data-execution_count="3">
+<div id="13a7cbd8" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Ejemplo:</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, valor):</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"self es: </span><span class="sc">{</span><span class="va">self</span><span class="sc">}</span><span class="ss">"</span>)</span>
@@ -680,21 +680,21 @@ Figura&nbsp;3.1: Qué hace Python al crear un objeto: primero lo crea vacío y l
 <span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>obj1.mostrar_self()</span>
 <span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>obj2.mostrar_self()</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>self es: &lt;__main__.Ejemplo object at 0x10c127230&gt;
-obj1 es: &lt;__main__.Ejemplo object at 0x10c127230&gt;
+<pre><code>self es: &lt;__main__.Ejemplo object at 0x107a1b230&gt;
+obj1 es: &lt;__main__.Ejemplo object at 0x107a1b230&gt;
 
-self es: &lt;__main__.Ejemplo object at 0x118099310&gt;
-obj2 es: &lt;__main__.Ejemplo object at 0x118099310&gt;
+self es: &lt;__main__.Ejemplo object at 0x113a35310&gt;
+obj2 es: &lt;__main__.Ejemplo object at 0x113a35310&gt;
 
-En el método, self es: &lt;__main__.Ejemplo object at 0x10c127230&gt;
-En el método, self es: &lt;__main__.Ejemplo object at 0x118099310&gt;</code></pre>
+En el método, self es: &lt;__main__.Ejemplo object at 0x107a1b230&gt;
+En el método, self es: &lt;__main__.Ejemplo object at 0x113a35310&gt;</code></pre>
 </div>
 </div>
 </section>
 <section id="visualízalo-paso-a-paso" class="level3" data-number="3.4.2">
 <h3 data-number="3.4.2" class="anchored" data-anchor-id="visualízalo-paso-a-paso"><span class="header-section-number">3.4.2</span> Visualízalo paso a paso</h3>
 <p>Observa cómo, al llamar a <code>Perro("Max", 3)</code>, Python crea un objeto vacío, abre el marco de <code>__init__</code> con <code>self</code> apuntando a ese objeto y, línea por línea, le va agregando atributos.</p>
-<div id="f5d85210" class="cell" data-execution_count="4">
+<div id="06d847d7" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-display" data-execution_count="4">
 <div class="pytutor"><iframe src="https://pythontutor.com/iframe-embed.html#code=class%20Perro%3A%0A%20%20%20%20def%20__init__%28self%2C%20nombre%2C%20edad%29%3A%0A%20%20%20%20%20%20%20%20self.nombre%20%3D%20nombre%0A%20%20%20%20%20%20%20%20self.edad%20%3D%20edad%0A%0Aperro1%20%3D%20Perro%28%22Max%22%2C%203%29%0Aperro2%20%3D%20Perro%28%22Luna%22%2C%205%29%0A&amp;cumulative=false&amp;curInstr=0&amp;heapPrimitives=nevernest&amp;mode=display&amp;origin=opt-frontend.js&amp;py=311&amp;rawInputLstJSON=%5B%5D&amp;textReferences=false" width="100%" height="720" loading="lazy" style="border:1px solid rgba(128,128,128,.35); border-radius:8px; background:white; resize:vertical; overflow:auto" title="Visualización paso a paso en Python Tutor"></iframe><p class="small text-muted mb-0">Usa <b>Next &gt;</b> y <b>&lt; Prev</b> para avanzar paso a paso (puedes estirar el recuadro desde su esquina inferior). <a href="https://pythontutor.com/visualize.html#code=class%20Perro%3A%0A%20%20%20%20def%20__init__%28self%2C%20nombre%2C%20edad%29%3A%0A%20%20%20%20%20%20%20%20self.nombre%20%3D%20nombre%0A%20%20%20%20%20%20%20%20self.edad%20%3D%20edad%0A%0Aperro1%20%3D%20Perro%28%22Max%22%2C%203%29%0Aperro2%20%3D%20Perro%28%22Luna%22%2C%205%29%0A&amp;cumulative=false&amp;curInstr=0&amp;heapPrimitives=nevernest&amp;mode=display&amp;origin=opt-frontend.js&amp;py=311&amp;rawInputLstJSON=%5B%5D&amp;textReferences=false" target="_blank" rel="noopener">Abrir en Python Tutor ↗</a></p></div>
 </div>
@@ -704,7 +704,7 @@ En el método, self es: &lt;__main__.Ejemplo object at 0x118099310&gt;</code></p
 <section id="parámetros-por-defecto-en-el-constructor" class="level2" data-number="3.5">
 <h2 data-number="3.5" class="anchored" data-anchor-id="parámetros-por-defecto-en-el-constructor"><span class="header-section-number">3.5</span> Parámetros por Defecto en el Constructor</h2>
 <p>Puedes asignar valores por defecto a los parámetros:</p>
-<div id="62c618f7" class="cell" data-execution_count="5">
+<div id="34e30270" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> CuentaBancaria:</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, titular, saldo<span class="op">=</span><span class="dv">0</span>, tipo<span class="op">=</span><span class="st">"Ahorro"</span>):</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.titular <span class="op">=</span> titular</span>
@@ -744,7 +744,7 @@ Saldo: $5000
 <section id="validación-en-el-constructor" class="level2" data-number="3.6">
 <h2 data-number="3.6" class="anchored" data-anchor-id="validación-en-el-constructor"><span class="header-section-number">3.6</span> Validación en el Constructor</h2>
 <p>Puedes validar los datos antes de asignarlos:</p>
-<div id="6e7ded40" class="cell" data-execution_count="6">
+<div id="d57c883e" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Persona:</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, edad):</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Validar nombre</span></span>
@@ -773,7 +773,7 @@ Saldo: $5000
 </div>
 </div>
 <p>Si quitas el comentario a una de las líneas inválidas, el constructor detiene la creación del objeto con un <code>ValueError</code>:</p>
-<div id="30029f49" class="cell" data-execution_count="7">
+<div id="1ffc787a" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>persona_invalida <span class="op">=</span> Persona(<span class="st">"Ana"</span>, <span class="dv">200</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-error">
 <div class="ansi-escaped-output">
@@ -799,7 +799,7 @@ Saldo: $5000
 </section>
 <section id="constructor-con-lógica-compleja" class="level2" data-number="3.7">
 <h2 data-number="3.7" class="anchored" data-anchor-id="constructor-con-lógica-compleja"><span class="header-section-number">3.7</span> Constructor con Lógica Compleja</h2>
-<div id="9565ed52" class="cell" data-execution_count="8">
+<div id="73f014bc" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Producto:</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Contador de productos creados (atributo de clase)</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    total_productos <span class="op">=</span> <span class="dv">0</span></span>
@@ -869,7 +869,7 @@ Total de productos creados: 3</code></pre>
 eyJhdHRyIjp7ImF1dG9ydW4iOnRydWUsImNhcHRpb24iOiJFamVtcGxvIGludGVyYWN0aXZvOiBtb2RpZsOtY2FsbyB5IHZ1ZWx2ZSBhIGVqZWN1dGFybG8iLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlfSwiY29kZSI6IiMgSU5DT1JSRUNUTyAtIMKhTm8gaGFnYXMgZXN0byFcbmNsYXNzIENsYXNlSW5jb3JyZWN0YTpcbiAgICBkZWYgX19pbml0X18oc2VsZiwgbm9tYnJlLCBsaXN0YT1bXSk6ICAjIMKhTUFMIVxuICAgICAgICBzZWxmLm5vbWJyZSA9IG5vbWJyZVxuICAgICAgICBzZWxmLmxpc3RhID0gbGlzdGFcblxub2JqMSA9IENsYXNlSW5jb3JyZWN0YShcIkFcIilcbm9iajEubGlzdGEuYXBwZW5kKDEpXG5cbm9iajIgPSBDbGFzZUluY29ycmVjdGEoXCJCXCIpXG5vYmoyLmxpc3RhLmFwcGVuZCgyKVxuXG4jIMKhQW1ib3Mgb2JqZXRvcyBjb21wYXJ0ZW4gbGEgbWlzbWEgbGlzdGEhXG5wcmludChmXCJvYmoxLmxpc3RhOiB7b2JqMS5saXN0YX1cIikgICMgWzEsIDJdIC0gwqFObyBlc3BlcsOhYmFtb3MgZXN0byFcbnByaW50KGZcIm9iajIubGlzdGE6IHtvYmoyLmxpc3RhfVwiKSAgIyBbMSwgMl0gLSDCoU5vIGVzcGVyw6FiYW1vcyBlc3RvISJ9
 </script>
 </div>
-<div id="696c0c95" class="cell" data-execution_count="9">
+<div id="1b97cf79" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># CORRECTO - Usa None y crea la lista dentro del constructor</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ClaseCorrecta:</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, lista<span class="op">=</span><span class="va">None</span>):</span>
@@ -894,7 +894,7 @@ obj2.lista: [2]</code></pre>
 <section id="por-qué-falla-la-lista-por-defecto" class="level3" data-number="3.8.1">
 <h3 data-number="3.8.1" class="anchored" data-anchor-id="por-qué-falla-la-lista-por-defecto"><span class="header-section-number">3.8.1</span> ¿Por qué falla la lista por defecto?</h3>
 <p>La visualización lo deja claro: el valor por defecto <code>[]</code> se crea <strong>una sola vez</strong>, cuando se define la función, así que <code>obj1.lista</code> y <code>obj2.lista</code> terminan apuntando a la <strong>misma</strong> lista.</p>
-<div id="29984d8b" class="cell" data-execution_count="10">
+<div id="632926b9" class="cell" data-execution_count="10">
 <div class="cell-output cell-output-display" data-execution_count="10">
 <div class="pytutor"><iframe src="https://pythontutor.com/iframe-embed.html#code=class%20ClaseIncorrecta%3A%0A%20%20%20%20def%20__init__%28self%2C%20nombre%2C%20lista%3D%5B%5D%29%3A%0A%20%20%20%20%20%20%20%20self.nombre%20%3D%20nombre%0A%20%20%20%20%20%20%20%20self.lista%20%3D%20lista%0A%0Aobj1%20%3D%20ClaseIncorrecta%28%22A%22%29%0Aobj1.lista.append%281%29%0Aobj2%20%3D%20ClaseIncorrecta%28%22B%22%29%0Aobj2.lista.append%282%29%0Aprint%28obj1.lista%20is%20obj2.lista%29%0A&amp;cumulative=false&amp;curInstr=0&amp;heapPrimitives=nevernest&amp;mode=display&amp;origin=opt-frontend.js&amp;py=311&amp;rawInputLstJSON=%5B%5D&amp;textReferences=false" width="100%" height="800" loading="lazy" style="border:1px solid rgba(128,128,128,.35); border-radius:8px; background:white; resize:vertical; overflow:auto" title="Visualización paso a paso en Python Tutor"></iframe><p class="small text-muted mb-0">Usa <b>Next &gt;</b> y <b>&lt; Prev</b> para avanzar paso a paso (puedes estirar el recuadro desde su esquina inferior). <a href="https://pythontutor.com/visualize.html#code=class%20ClaseIncorrecta%3A%0A%20%20%20%20def%20__init__%28self%2C%20nombre%2C%20lista%3D%5B%5D%29%3A%0A%20%20%20%20%20%20%20%20self.nombre%20%3D%20nombre%0A%20%20%20%20%20%20%20%20self.lista%20%3D%20lista%0A%0Aobj1%20%3D%20ClaseIncorrecta%28%22A%22%29%0Aobj1.lista.append%281%29%0Aobj2%20%3D%20ClaseIncorrecta%28%22B%22%29%0Aobj2.lista.append%282%29%0Aprint%28obj1.lista%20is%20obj2.lista%29%0A&amp;cumulative=false&amp;curInstr=0&amp;heapPrimitives=nevernest&amp;mode=display&amp;origin=opt-frontend.js&amp;py=311&amp;rawInputLstJSON=%5B%5D&amp;textReferences=false" target="_blank" rel="noopener">Abrir en Python Tutor ↗</a></p></div>
 </div>
@@ -903,7 +903,7 @@ obj2.lista: [2]</code></pre>
 </section>
 <section id="ejemplo-completo-sistema-de-estudiantes" class="level2" data-number="3.9">
 <h2 data-number="3.9" class="anchored" data-anchor-id="ejemplo-completo-sistema-de-estudiantes"><span class="header-section-number">3.9</span> Ejemplo Completo: Sistema de Estudiantes</h2>
-<div id="735ca048" class="cell" data-execution_count="11">
+<div id="da76d6bc" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Estudiante:</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, matricula, carrera):</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.nombre <span class="op">=</span> nombre</span>
@@ -1021,7 +1021,7 @@ eyJhdHRyIjp7ImNhcHRpb24iOiJQcnVlYmEgdMO6OiBlamVyY2ljaW8gMSIsImVkaXQiOnRydWUsImV2
 </div>
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="15706d55" class="cell" data-execution_count="12">
+<div id="a53e8e48" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Rectangulo:</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, ancho, alto):</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> ancho <span class="op">&lt;=</span> <span class="dv">0</span> <span class="kw">or</span> alto <span class="op">&lt;=</span> <span class="dv">0</span>:</span>
@@ -1083,7 +1083,7 @@ eyJhdHRyIjp7ImNhcHRpb24iOiJQcnVlYmEgdMO6OiBlamVyY2ljaW8gMiIsImVkaXQiOnRydWUsImV2
 </div>
 <div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="b63c95f0" class="cell" data-execution_count="13">
+<div id="e20867e4" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> date</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Vehiculo:</span>
@@ -1153,7 +1153,7 @@ eyJhdHRyIjp7ImNhcHRpb24iOiJQcnVlYmEgdMO6OiBlamVyY2ljaW8gMyIsImVkaXQiOnRydWUsImV2
 </div>
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="1afe88dd" class="cell" data-execution_count="14">
+<div id="414be1cb" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Empleado:</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    PAGO_HORA_EXTRA <span class="op">=</span> <span class="dv">150</span></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1220,7 +1220,7 @@ eyJhdHRyIjp7ImNhcHRpb24iOiJQcnVlYmEgdMO6OiBlamVyY2ljaW8gNCIsImVkaXQiOnRydWUsImV2
 </div>
 <div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="a07c8bf2" class="cell" data-execution_count="15">
+<div id="60d177e9" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Contacto:</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    total_contactos <span class="op">=</span> <span class="dv">0</span></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>

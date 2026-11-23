@@ -601,7 +601,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="atributos-públicos-protegidos-y-privados" class="level2" data-number="5.3">
 <h2 data-number="5.3" class="anchored" data-anchor-id="atributos-públicos-protegidos-y-privados"><span class="header-section-number">5.3</span> Atributos Públicos, Protegidos y Privados</h2>
-<div id="6bf4c5ea" class="cell" data-execution_count="1">
+<div id="9ceeb377" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Persona:</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, edad, saldo):</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.nombre <span class="op">=</span> nombre          <span class="co"># Público</span></span>
@@ -669,7 +669,7 @@ Figura&nbsp;5.1: La clase Persona con sus tres niveles de acceso en notación UM
 <section id="name-mangling" class="level3" data-number="5.3.1">
 <h3 data-number="5.3.1" class="anchored" data-anchor-id="name-mangling"><span class="header-section-number">5.3.1</span> Name Mangling</h3>
 <p>Python internamente renombra los atributos privados para hacerlos más difíciles de acceder:</p>
-<div id="e2b433da" class="cell" data-execution_count="2">
+<div id="00a2b775" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Técnicamente aún puedes acceder, pero no es recomendado</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Accediendo con name mangling: </span><span class="sc">{</span>persona<span class="sc">.</span>_Persona__saldo<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -688,7 +688,7 @@ Todos los atributos:
 </section>
 <section id="por-qué-usar-encapsulamiento" class="level2" data-number="5.4">
 <h2 data-number="5.4" class="anchored" data-anchor-id="por-qué-usar-encapsulamiento"><span class="header-section-number">5.4</span> ¿Por qué Usar Encapsulamiento?</h2>
-<div id="893379a9" class="cell" data-execution_count="3">
+<div id="78e3b67e" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># SIN ENCAPSULAMIENTO - Propenso a errores</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> CuentaBancariaMala:</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, saldo):</span>
@@ -715,7 +715,7 @@ eyJhdHRyIjp7ImF1dG9ydW4iOnRydWUsImNhcHRpb24iOiJFamVtcGxvIGludGVyYWN0aXZvOiBtb2Rp
 <section id="getters-y-setters-tradicionales" class="level2" data-number="5.5">
 <h2 data-number="5.5" class="anchored" data-anchor-id="getters-y-setters-tradicionales"><span class="header-section-number">5.5</span> Getters y Setters Tradicionales</h2>
 <p>Los getters y setters son métodos para acceder y modificar atributos privados:</p>
-<div id="7d3ab54c" class="cell" data-execution_count="4">
+<div id="b60f717e" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Persona:</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, edad):</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.__nombre <span class="op">=</span> nombre</span>
@@ -766,7 +766,7 @@ Error: Edad debe estar entre 0 y 150</code></pre>
 <section id="propiedades-con-property-forma-pythonica" class="level2" data-number="5.6">
 <h2 data-number="5.6" class="anchored" data-anchor-id="propiedades-con-property-forma-pythonica"><span class="header-section-number">5.6</span> Propiedades con <span class="citation" data-cites="property">@property</span> (Forma Pythonica)</h2>
 <p>Python tiene una forma más elegante: el decorador <code>@property</code></p>
-<div id="e6d245ef" class="cell" data-execution_count="5">
+<div id="f71b52cb" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Persona:</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, edad):</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.__nombre <span class="op">=</span> nombre</span>
@@ -832,7 +832,7 @@ Error: Edad debe estar entre 0 y 150</code></pre>
 </section>
 <section id="propiedades-de-solo-lectura" class="level2" data-number="5.7">
 <h2 data-number="5.7" class="anchored" data-anchor-id="propiedades-de-solo-lectura"><span class="header-section-number">5.7</span> Propiedades de Solo Lectura</h2>
-<div id="85d73155" class="cell" data-execution_count="6">
+<div id="95890f36" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Rectangulo:</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, ancho, alto):</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.__ancho <span class="op">=</span> ancho</span>
@@ -911,7 +911,7 @@ eyJhdHRyIjp7ImF1dG9ydW4iOnRydWUsImNhcHRpb24iOiJFamVtcGxvIGludGVyYWN0aXZvOiBtb2Rp
 </section>
 <section id="ejemplo-sistema-de-validación-de-email" class="level2" data-number="5.9">
 <h2 data-number="5.9" class="anchored" data-anchor-id="ejemplo-sistema-de-validación-de-email"><span class="header-section-number">5.9</span> Ejemplo: Sistema de Validación de Email</h2>
-<div id="e4658f7a" class="cell" data-execution_count="7">
+<div id="529b0b3a" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Usuario:</span>
@@ -1035,7 +1035,7 @@ eyJhdHRyIjp7ImNhcHRpb24iOiJQcnVlYmEgdMO6OiBlamVyY2ljaW8gMSIsImVkaXQiOnRydWUsImV2
 </div>
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="4ac2d45d" class="cell" data-execution_count="8">
+<div id="42b71666" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> CuentaBancaria:</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    _siguiente_numero <span class="op">=</span> <span class="dv">1</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1131,7 +1131,7 @@ eyJhdHRyIjp7ImNhcHRpb24iOiJQcnVlYmEgdMO6OiBlamVyY2ljaW8gMiIsImVkaXQiOnRydWUsImV2
 </div>
 <div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="244a23cd" class="cell" data-execution_count="9">
+<div id="b7388f6e" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Producto:</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, precio, descuento_porcentaje<span class="op">=</span><span class="dv">0</span>):</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.nombre <span class="op">=</span> nombre</span>
@@ -1229,7 +1229,7 @@ eyJhdHRyIjp7ImNhcHRpb24iOiJQcnVlYmEgdMO6OiBlamVyY2ljaW8gMyIsImVkaXQiOnRydWUsImV2
 </div>
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="391dd3f0" class="cell" data-execution_count="10">
+<div id="8fc28b07" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Estudiante:</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, matricula):</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.nombre <span class="op">=</span> nombre</span>
@@ -1342,7 +1342,7 @@ eyJhdHRyIjp7ImNhcHRpb24iOiJQcnVlYmEgdMO6OiBlamVyY2ljaW8gNCIsImVkaXQiOnRydWUsImV2
 </div>
 <div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="c0ad3032" class="cell" data-execution_count="11">
+<div id="77c2e9fe" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> datetime</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>

@@ -234,7 +234,7 @@
 </section>
 <section id="la-solución-__init__" class="slide level2">
 <h2>La solución: <code>__init__</code></h2>
-<div id="0be8c484" class="cell" data-execution_count="1">
+<div id="f44ab45f" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Perro:</span>
 <span id="cb2-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, edad):</span>
 <span id="cb2-3"><a aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.nombre <span class="op">=</span> nombre</span>
@@ -299,7 +299,7 @@
 </section>
 <section id="self-en-profundidad" class="slide level2">
 <h2><code>self</code> en profundidad</h2>
-<div id="51a72928" class="cell" data-execution_count="2">
+<div id="7ccea35d" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Ejemplo:</span>
 <span id="cb4-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, valor):</span>
 <span id="cb4-3"><a aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.valor <span class="op">=</span> valor</span>
@@ -308,8 +308,8 @@
 <span id="cb4-6"><a aria-hidden="true" tabindex="-1"></a>obj <span class="op">=</span> Ejemplo(<span class="dv">10</span>)</span>
 <span id="cb4-7"><a aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"obj es "</span>, <span class="bu">id</span>(obj))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>self es 4495520304
-obj es  4495520304</code></pre>
+<pre><code>self es 4457558576
+obj es  4457558576</code></pre>
 </div>
 </div>
 <p><code>self</code> <strong>es</strong> el objeto que se está creando.</p>
@@ -329,7 +329,7 @@ obj es  4495520304</code></pre>
 </section>
 <section id="valores-por-defecto" class="slide level2">
 <h2>Valores por defecto</h2>
-<div id="97ce4013" class="cell" data-execution_count="3">
+<div id="eb5d7af1" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Cuenta:</span>
 <span id="cb6-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, titular, saldo<span class="op">=</span><span class="dv">0</span>, tipo<span class="op">=</span><span class="st">"Ahorro"</span>):</span>
 <span id="cb6-3"><a aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.titular, <span class="va">self</span>.saldo, <span class="va">self</span>.tipo <span class="op">=</span> titular, saldo, tipo</span>
@@ -357,7 +357,7 @@ Luis 1000 Corriente</code></pre>
 </section>
 <section id="validar-al-construir" class="slide level2">
 <h2>Validar al construir</h2>
-<div id="04eabc5f" class="cell" data-execution_count="4">
+<div id="69cabe49" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Persona:</span>
 <span id="cb8-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, edad):</span>
 <span id="cb8-3"><a aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> <span class="dv">0</span> <span class="op">&lt;=</span> edad <span class="op">&lt;=</span> <span class="dv">150</span>:</span>
@@ -388,7 +388,7 @@ Luis 1000 Corriente</code></pre>
 </section>
 <section id="atributo-de-clase-como-contador" class="slide level2">
 <h2>Atributo de clase como contador</h2>
-<div id="9d449769" class="cell" data-execution_count="5">
+<div id="027b7af6" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Producto:</span>
 <span id="cb10-2"><a aria-hidden="true" tabindex="-1"></a>    total <span class="op">=</span> <span class="dv">0</span></span>
 <span id="cb10-3"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre):</span>
@@ -418,7 +418,7 @@ Luis 1000 Corriente</code></pre>
 </section>
 <section id="la-trampa-del-valor-mutable" class="slide level2">
 <h2>⚠️ La trampa del valor mutable</h2>
-<div id="6f61c8e1" class="cell" data-execution_count="6">
+<div id="9d11c883" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Incorrecta:</span>
 <span id="cb12-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, lista<span class="op">=</span>[]):</span>
 <span id="cb12-3"><a aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.lista <span class="op">=</span> lista</span>
@@ -447,7 +447,7 @@ Luis 1000 Corriente</code></pre>
 </section>
 <section id="la-solución-none" class="slide level2">
 <h2>La solución: <code>None</code></h2>
-<div id="ef04cf15" class="cell" data-execution_count="7">
+<div id="07e310d9" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Correcta:</span>
 <span id="cb14-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, lista<span class="op">=</span><span class="va">None</span>):</span>
 <span id="cb14-3"><a aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.lista <span class="op">=</span> lista <span class="cf">if</span> lista <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> <span class="cf">else</span> []</span>

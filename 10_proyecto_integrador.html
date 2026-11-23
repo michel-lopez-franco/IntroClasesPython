@@ -648,7 +648,7 @@ Figura&nbsp;10.1: Arquitectura de la tienda en línea: herencia, interfaces, com
 </section>
 <section id="paso-1-clase-abstracta-para-productos" class="level2" data-number="10.3">
 <h2 data-number="10.3" class="anchored" data-anchor-id="paso-1-clase-abstracta-para-productos"><span class="header-section-number">10.3</span> Paso 1: Clase Abstracta para Productos</h2>
-<div id="a1b75767" class="cell" data-execution_count="1">
+<div id="90674a41" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> abc <span class="im">import</span> ABC, abstractmethod</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> datetime, timedelta</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
@@ -725,7 +725,7 @@ Figura&nbsp;10.1: Arquitectura de la tienda en línea: herencia, interfaces, com
 </section>
 <section id="paso-2-productos-específicos-herencia-y-polimorfismo" class="level2" data-number="10.4">
 <h2 data-number="10.4" class="anchored" data-anchor-id="paso-2-productos-específicos-herencia-y-polimorfismo"><span class="header-section-number">10.4</span> Paso 2: Productos Específicos (Herencia y Polimorfismo)</h2>
-<div id="cf2e193d" class="cell" data-execution_count="2">
+<div id="8018fdab" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ProductoElectronico(Producto):</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Productos electrónicos con garantía"""</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    </span>
@@ -783,7 +783,7 @@ Figura&nbsp;10.1: Arquitectura de la tienda en línea: herencia, interfaces, com
 </section>
 <section id="paso-3-interfaz-de-métodos-de-pago" class="level2" data-number="10.5">
 <h2 data-number="10.5" class="anchored" data-anchor-id="paso-3-interfaz-de-métodos-de-pago"><span class="header-section-number">10.5</span> Paso 3: Interfaz de Métodos de Pago</h2>
-<div id="5e762ab0" class="cell" data-execution_count="3">
+<div id="6d90e9a4" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MetodoPago(ABC):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Interfaz para métodos de pago"""</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    </span>
@@ -832,7 +832,7 @@ Figura&nbsp;10.1: Arquitectura de la tienda en línea: herencia, interfaces, com
 </section>
 <section id="paso-4-usuario-y-sistema-de-autenticación" class="level2" data-number="10.6">
 <h2 data-number="10.6" class="anchored" data-anchor-id="paso-4-usuario-y-sistema-de-autenticación"><span class="header-section-number">10.6</span> Paso 4: Usuario y Sistema de Autenticación</h2>
-<div id="2d9e7375" class="cell" data-execution_count="4">
+<div id="561a836c" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Usuario:</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Usuario de la tienda con encapsulamiento"""</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    </span>
@@ -865,7 +865,7 @@ Figura&nbsp;10.1: Arquitectura de la tienda en línea: herencia, interfaces, com
 </section>
 <section id="paso-5-carrito-de-compras-composición" class="level2" data-number="10.7">
 <h2 data-number="10.7" class="anchored" data-anchor-id="paso-5-carrito-de-compras-composición"><span class="header-section-number">10.7</span> Paso 5: Carrito de Compras (Composición)</h2>
-<div id="58c8ecd1" class="cell" data-execution_count="5">
+<div id="09e6b7bd" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ItemCarrito:</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Item individual en el carrito (composición)"""</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    </span>
@@ -938,7 +938,7 @@ Figura&nbsp;10.1: Arquitectura de la tienda en línea: herencia, interfaces, com
 </section>
 <section id="paso-6-orden-de-compra-agregación" class="level2" data-number="10.8">
 <h2 data-number="10.8" class="anchored" data-anchor-id="paso-6-orden-de-compra-agregación"><span class="header-section-number">10.8</span> Paso 6: Orden de Compra (Agregación)</h2>
-<div id="7e987332" class="cell" data-execution_count="6">
+<div id="70b6c402" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Orden:</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Orden de compra (agrega productos pero no los posee)"""</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    </span>
@@ -998,7 +998,7 @@ Figura&nbsp;10.1: Arquitectura de la tienda en línea: herencia, interfaces, com
 </section>
 <section id="paso-7-tienda-coordinador-principal" class="level2" data-number="10.9">
 <h2 data-number="10.9" class="anchored" data-anchor-id="paso-7-tienda-coordinador-principal"><span class="header-section-number">10.9</span> Paso 7: Tienda (Coordinador Principal)</h2>
-<div id="04f40a0a" class="cell" data-execution_count="7">
+<div id="2b49d9b3" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Tienda:</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Clase principal que coordina todo el sistema"""</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    </span>
@@ -1085,7 +1085,7 @@ Figura&nbsp;10.1: Arquitectura de la tienda en línea: herencia, interfaces, com
 </section>
 <section id="paso-8-demostración-del-sistema-completo" class="level2" data-number="10.10">
 <h2 data-number="10.10" class="anchored" data-anchor-id="paso-8-demostración-del-sistema-completo"><span class="header-section-number">10.10</span> Paso 8: Demostración del Sistema Completo</h2>
-<div id="549b1cf3" class="cell" data-execution_count="9">
+<div id="e5ac5d23" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear la tienda</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>tienda <span class="op">=</span> Tienda(<span class="st">"TechShop Online"</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1251,7 +1251,7 @@ Orden #5001 procesada exitosamente
 ORDEN #5001
 ============================================================
 Usuario: Ana García
-Fecha: 2026-11-23 01:57:26
+Fecha: 2026-11-23 02:03:48
 Estado: Completada
 
 Productos:
@@ -1405,7 +1405,7 @@ ID: 1001
 </div>
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="1e2fa616" class="cell" data-execution_count="10">
+<div id="3ffe5469" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Cupon:</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, codigo, porcentaje, fecha_expiracion):</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> <span class="dv">0</span> <span class="op">&lt;</span> porcentaje <span class="op">&lt;=</span> <span class="dv">100</span>:</span>
@@ -1467,7 +1467,7 @@ TOTAL: $688.50</code></pre>
 </div>
 <div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="e847345e" class="cell" data-execution_count="11">
+<div id="d6fdef5c" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Resena:</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, usuario, calificacion, comentario<span class="op">=</span><span class="st">""</span>):</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> calificacion <span class="kw">not</span> <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">6</span>):</span>
@@ -1529,7 +1529,7 @@ TOTAL: $688.50</code></pre>
 </div>
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="cae98719" class="cell" data-execution_count="12">
+<div id="d76a5a90" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MetodoEnvio(ABC):</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">@abstractmethod</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> calcular_costo(<span class="va">self</span>, peso_kg): ...</span>
@@ -1600,7 +1600,7 @@ Envío: $236.50 | Total cobrado: $1628.50</code></pre>
 </div>
 <div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="0675375f" class="cell" data-execution_count="13">
+<div id="3d10f7e2" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> GestorCarritos:</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Guarda el contenido del carrito de cada usuario (en memoria).</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co">    En una aplicación real se guardaría en un archivo JSON o en una base de datos."""</span></span>
@@ -1650,7 +1650,7 @@ TOTAL: $860.00</code></pre>
 </div>
 <div id="callout-7" class="callout-7-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="78905d4c" class="cell" data-execution_count="14">
+<div id="4c3fbfdf" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> buscar_productos(productos, texto<span class="op">=</span><span class="va">None</span>, precio_min<span class="op">=</span><span class="dv">0</span>, precio_max<span class="op">=</span><span class="bu">float</span>(<span class="st">"inf"</span>),</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>                     categoria<span class="op">=</span><span class="va">None</span>, ordenar_por<span class="op">=</span><span class="st">"precio"</span>, descendente<span class="op">=</span><span class="va">False</span>):</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    resultado <span class="op">=</span> [</span>

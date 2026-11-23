@@ -242,7 +242,7 @@
 </section>
 <section id="tu-primer-método" class="slide level2">
 <h2>Tu primer método</h2>
-<div id="6f44a624" class="cell" data-execution_count="1">
+<div id="539a35ed" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Perro:</span>
 <span id="cb1-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> ladrar(<span class="va">self</span>):</span>
 <span id="cb1-3"><a aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"¡Guau guau!"</span>)</span>
@@ -270,7 +270,7 @@
 </section>
 <section id="qué-es-self" class="slide level2">
 <h2>¿Qué es <code>self</code>?</h2>
-<div id="9096ea0a" class="cell" data-execution_count="2">
+<div id="5081a620" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a aria-hidden="true" tabindex="-1"></a>mi_perro.ladrar()       <span class="co"># lo que escribimos</span></span>
 <span id="cb3-2"><a aria-hidden="true" tabindex="-1"></a>Perro.ladrar(mi_perro)  <span class="co"># lo que Python hace</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -298,7 +298,7 @@
 </section>
 <section id="métodos-que-usan-atributos" class="slide level2">
 <h2>Métodos que usan atributos</h2>
-<div id="7f9c7503" class="cell" data-execution_count="3">
+<div id="1bfcac62" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Perro:</span>
 <span id="cb5-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> presentarse(<span class="va">self</span>):</span>
 <span id="cb5-3"><a aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Soy </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>nombre<span class="sc">}</span><span class="ss"> y tengo </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>edad<span class="sc">}</span><span class="ss"> años"</span>)</span>
@@ -327,7 +327,7 @@
 </section>
 <section id="parámetros-y-valor-de-retorno" class="slide level2">
 <h2>Parámetros y valor de retorno</h2>
-<div id="ac64ff84" class="cell" data-execution_count="4">
+<div id="6f9dda3c" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Calculadora:</span>
 <span id="cb7-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> sumar(<span class="va">self</span>, a, b):</span>
 <span id="cb7-3"><a aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> a <span class="op">+</span> b</span>
@@ -355,7 +355,7 @@
 </section>
 <section id="métodos-que-cambian-el-estado" class="slide level2">
 <h2>Métodos que cambian el estado</h2>
-<div id="b7953690" class="cell" data-execution_count="5">
+<div id="999c5684" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Cuenta:</span>
 <span id="cb9-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> depositar(<span class="va">self</span>, cantidad):</span>
 <span id="cb9-3"><a aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.saldo <span class="op">+=</span> cantidad</span>
@@ -384,7 +384,7 @@
 </section>
 <section id="los-métodos-protegen-las-reglas" class="slide level2">
 <h2>Los métodos protegen las reglas</h2>
-<div id="55a0f754" class="cell" data-execution_count="6">
+<div id="0a610060" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Cuenta:</span>
 <span id="cb11-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> retirar(<span class="va">self</span>, cantidad):</span>
 <span id="cb11-3"><a aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> cantidad <span class="op">&gt;</span> <span class="va">self</span>.saldo:</span>
@@ -414,7 +414,7 @@
 </section>
 <section id="métodos-que-llaman-a-otros-métodos" class="slide level2">
 <h2>Métodos que llaman a otros métodos</h2>
-<div id="f4654726" class="cell" data-execution_count="7">
+<div id="b9d3c5a2" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Robot:</span>
 <span id="cb13-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> adelante(<span class="va">self</span>):</span>
 <span id="cb13-3"><a aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"→ adelante"</span>)</span>
@@ -530,7 +530,7 @@
 </section>
 <section id="error-común-olvidar-self" class="slide level2">
 <h2>Error común: olvidar <code>self</code></h2>
-<div id="72148fcf" class="cell" data-execution_count="8">
+<div id="b1758808" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Perro:</span>
 <span id="cb15-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> ladrar():          <span class="co"># falta self</span></span>
 <span id="cb15-3"><a aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"¡Guau!"</span>)</span>

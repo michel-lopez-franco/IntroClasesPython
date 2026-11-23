@@ -271,7 +271,7 @@
 </section>
 <section id="privado-en-acción" class="slide level2">
 <h2>Privado en acción</h2>
-<div id="0e5703ed" class="cell" data-execution_count="1">
+<div id="2d1ea7d9" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Persona:</span>
 <span id="cb1-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, saldo):</span>
 <span id="cb1-3"><a aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.nombre <span class="op">=</span> nombre</span>
@@ -302,7 +302,7 @@
 </section>
 <section id="name-mangling" class="slide level2">
 <h2><em>Name mangling</em></h2>
-<div id="eb0e3d7d" class="cell" data-execution_count="2">
+<div id="18e9f0cd" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ana._Persona__saldo)    <span class="co"># posible… pero no lo hagas</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>10000</code></pre>
@@ -325,7 +325,7 @@
 </section>
 <section id="por-qué-importa" class="slide level2">
 <h2>¿Por qué importa?</h2>
-<div id="2b172f5f" class="cell" data-execution_count="3">
+<div id="54fe3094" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> CuentaMala:</span>
 <span id="cb5-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, saldo):</span>
 <span id="cb5-3"><a aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.saldo <span class="op">=</span> saldo</span>
@@ -353,7 +353,7 @@
 </section>
 <section id="acceso-controlado-con-métodos" class="slide level2">
 <h2>Acceso controlado con métodos</h2>
-<div id="1406ba54" class="cell" data-execution_count="4">
+<div id="f0bc2d5a" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Cuenta:</span>
 <span id="cb7-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, saldo):</span>
 <span id="cb7-3"><a aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.__saldo <span class="op">=</span> saldo</span>
@@ -406,7 +406,7 @@
 </section>
 <section id="property" class="slide level2">
 <h2><code>@property</code></h2>
-<div id="2b6626f2" class="cell" data-execution_count="5">
+<div id="db038b89" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Persona:</span>
 <span id="cb10-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, edad):</span>
 <span id="cb10-3"><a aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.__edad <span class="op">=</span> edad</span>
@@ -437,7 +437,7 @@
 </section>
 <section id="x.setter-con-validación" class="slide level2">
 <h2><code>@x.setter</code> con validación</h2>
-<div id="682fe76e" class="cell" data-execution_count="6">
+<div id="31b3c3c7" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Persona:</span>
 <span id="cb12-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, edad):</span>
 <span id="cb12-3"><a aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.edad <span class="op">=</span> edad              <span class="co"># pasa por el setter</span></span>
@@ -466,7 +466,7 @@
 </section>
 <section id="probando-el-setter" class="slide level2">
 <h2>Probando el setter</h2>
-<div id="6869d4da" class="cell" data-execution_count="7">
+<div id="5b8c23ec" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> Persona(<span class="dv">30</span>)</span>
 <span id="cb13-2"><a aria-hidden="true" tabindex="-1"></a>p.edad <span class="op">=</span> <span class="dv">31</span>                    <span class="co"># válido</span></span>
 <span id="cb13-3"><a aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(p.edad)</span>
@@ -495,7 +495,7 @@ ValueError: Edad inválida</code></pre>
 </section>
 <section id="solo-lectura-y-propiedades-calculadas" class="slide level2">
 <h2>Solo lectura y propiedades calculadas</h2>
-<div id="8c542a32" class="cell" data-execution_count="8">
+<div id="7bf64916" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Rectangulo:</span>
 <span id="cb15-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, ancho, alto):</span>
 <span id="cb15-3"><a aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.ancho, <span class="va">self</span>.alto <span class="op">=</span> ancho, alto</span>

@@ -232,7 +232,7 @@
 </section>
 <section id="abc-y-abstractmethod" class="slide level2">
 <h2><code>ABC</code> y <code>@abstractmethod</code></h2>
-<div id="57f95688" class="cell" data-execution_count="1">
+<div id="4eae1465" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a aria-hidden="true" tabindex="-1"></a><span class="im">from</span> abc <span class="im">import</span> ABC, abstractmethod</span>
 <span id="cb1-2"><a aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Forma(ABC):</span>
@@ -258,7 +258,7 @@
 </section>
 <section id="no-se-puede-instanciar" class="slide level2">
 <h2>No se puede instanciar</h2>
-<div id="d18b66e5" class="cell" data-execution_count="2">
+<div id="efc16b53" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a aria-hidden="true" tabindex="-1"></a>Forma()</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-error">
 <div class="ansi-escaped-output">
@@ -287,7 +287,7 @@
 </section>
 <section id="clase-concreta" class="slide level2">
 <h2>Clase concreta</h2>
-<div id="b8e8a6e2" class="cell" data-execution_count="3">
+<div id="ac4003d8" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
 <span id="cb3-2"><a aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Circulo(Forma):</span>
@@ -316,7 +316,7 @@
 </section>
 <section id="si-falta-algo-python-avisa" class="slide level2">
 <h2>Si falta algo, Python avisa</h2>
-<div id="c8945878" class="cell" data-execution_count="4">
+<div id="5e405354" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Cuadrado(Forma):</span>
 <span id="cb5-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, lado): <span class="va">self</span>.lado <span class="op">=</span> lado</span>
 <span id="cb5-3"><a aria-hidden="true" tabindex="-1"></a>    <span class="co"># olvidamos area()</span></span>
@@ -354,7 +354,7 @@
 <section id="interfaces" class="slide level2">
 <h2>Interfaces</h2>
 <p>Clase abstracta <strong>sólo</strong> con métodos abstractos: define <em>qué</em> hacer, no <em>cómo</em>.</p>
-<div id="95dd51ca" class="cell" data-execution_count="5">
+<div id="f6c90ab5" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Volador(ABC):</span>
 <span id="cb6-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="at">@abstractmethod</span></span>
 <span id="cb6-3"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> volar(<span class="va">self</span>): ...</span>
@@ -379,7 +379,7 @@
 </section>
 <section id="varias-interfaces-a-la-vez" class="slide level2">
 <h2>Varias interfaces a la vez</h2>
-<div id="c61089d0" class="cell" data-execution_count="6">
+<div id="873a6df8" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Pato(Volador, Nadador):</span>
 <span id="cb7-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> volar(<span class="va">self</span>): <span class="cf">return</span> <span class="st">"volando bajo"</span></span>
 <span id="cb7-3"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> nadar(<span class="va">self</span>): <span class="cf">return</span> <span class="st">"nadando en el lago"</span></span>

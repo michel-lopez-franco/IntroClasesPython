@@ -264,7 +264,7 @@
 </section>
 <section id="str__-y-__repr__" class="slide level2">
 <h2><code>__str__</code> y <code>__repr__</code></h2>
-<div id="8c1ff94d" class="cell" data-execution_count="1">
+<div id="47819eec" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Persona:</span>
 <span id="cb1-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, edad):</span>
 <span id="cb1-3"><a aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.nombre, <span class="va">self</span>.edad <span class="op">=</span> nombre, edad</span>
@@ -296,7 +296,7 @@ Persona('Ana', 25)</code></pre>
 </section>
 <section id="operadores-aritméticos" class="slide level2">
 <h2>Operadores aritméticos</h2>
-<div id="d73229b9" class="cell" data-execution_count="2">
+<div id="e28d32a7" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Punto:</span>
 <span id="cb3-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, x, y): <span class="va">self</span>.x, <span class="va">self</span>.y <span class="op">=</span> x, y</span>
 <span id="cb3-3"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__add__</span>(<span class="va">self</span>, otro): <span class="cf">return</span> Punto(<span class="va">self</span>.x <span class="op">+</span> otro.x, <span class="va">self</span>.y <span class="op">+</span> otro.y)</span>
@@ -326,7 +326,7 @@ Persona('Ana', 25)</code></pre>
 </section>
 <section id="comparaciones" class="slide level2">
 <h2>Comparaciones</h2>
-<div id="56c9ef23" class="cell" data-execution_count="3">
+<div id="a92cd711" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Producto:</span>
 <span id="cb5-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, precio): <span class="va">self</span>.nombre, <span class="va">self</span>.precio <span class="op">=</span> nombre, precio</span>
 <span id="cb5-3"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__lt__</span>(<span class="va">self</span>, otro): <span class="cf">return</span> <span class="va">self</span>.precio <span class="op">&lt;</span> otro.precio</span>
@@ -354,7 +354,7 @@ Persona('Ana', 25)</code></pre>
 </section>
 <section id="objetos-como-contenedores" class="slide level2">
 <h2>Objetos como contenedores</h2>
-<div id="9f167052" class="cell" data-execution_count="4">
+<div id="ee675162" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Playlist:</span>
 <span id="cb7-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, <span class="op">*</span>canciones): <span class="va">self</span>.canciones <span class="op">=</span> <span class="bu">list</span>(canciones)</span>
 <span id="cb7-3"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__len__</span>(<span class="va">self</span>): <span class="cf">return</span> <span class="bu">len</span>(<span class="va">self</span>.canciones)</span>
@@ -387,7 +387,7 @@ Persona('Ana', 25)</code></pre>
 </section>
 <section id="call__-objetos-como-funciones" class="slide level2">
 <h2><code>__call__</code>: objetos como funciones</h2>
-<div id="dceb28e9" class="cell" data-execution_count="5">
+<div id="81d14b01" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Contador:</span>
 <span id="cb9-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>): <span class="va">self</span>.cuenta <span class="op">=</span> <span class="dv">0</span></span>
 <span id="cb9-3"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__call__</span>(<span class="va">self</span>, paso<span class="op">=</span><span class="dv">1</span>):</span>
@@ -416,7 +416,7 @@ Persona('Ana', 25)</code></pre>
 </section>
 <section id="enter__-__exit__-with" class="slide level2">
 <h2><code>__enter__</code> / <code>__exit__</code>: <code>with</code></h2>
-<div id="be127683" class="cell" data-execution_count="6">
+<div id="ebb8db27" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Recurso:</span>
 <span id="cb11-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__enter__</span>(<span class="va">self</span>):</span>
 <span id="cb11-3"><a aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"abrir"</span>)<span class="op">;</span> <span class="cf">return</span> <span class="va">self</span></span>
@@ -447,7 +447,7 @@ cerrar (siempre, incluso con errores)</code></pre>
 </section>
 <section id="bool__-y-__abs__" class="slide level2">
 <h2><code>__bool__</code> y <code>__abs__</code></h2>
-<div id="67b49691" class="cell" data-execution_count="7">
+<div id="c583a9c1" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Vector:</span>
 <span id="cb13-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, x, y): <span class="va">self</span>.x, <span class="va">self</span>.y <span class="op">=</span> x, y</span>
 <span id="cb13-3"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__bool__</span>(<span class="va">self</span>): <span class="cf">return</span> <span class="va">self</span>.x <span class="op">!=</span> <span class="dv">0</span> <span class="kw">or</span> <span class="va">self</span>.y <span class="op">!=</span> <span class="dv">0</span></span>

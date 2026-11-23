@@ -654,7 +654,7 @@ Figura&nbsp;8.1: Composición (Coche–Motor, rombo relleno) y agregación (Univ
 <section id="composición-y-agregación-en-memoria" class="level3" data-number="8.4.1">
 <h3 data-number="8.4.1" class="anchored" data-anchor-id="composición-y-agregación-en-memoria"><span class="header-section-number">8.4.1</span> Composición y agregación en memoria</h3>
 <p>Compara las flechas: el <code>Motor</code> sólo es alcanzable a través del coche (composición), mientras que <code>ana</code> sigue existiendo como variable propia aunque la universidad también la referencie (agregación). Al final, <code>del uni</code> elimina la universidad, pero <code>ana</code> permanece.</p>
-<div id="dfc56278" class="cell" data-execution_count="1">
+<div id="e05ab0de" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div class="pytutor"><iframe src="https://pythontutor.com/iframe-embed.html#code=class%20Motor%3A%0A%20%20%20%20def%20__init__%28self%2C%20hp%29%3A%0A%20%20%20%20%20%20%20%20self.hp%20%3D%20hp%0A%0Aclass%20Coche%3A%0A%20%20%20%20def%20__init__%28self%2C%20modelo%2C%20hp%29%3A%0A%20%20%20%20%20%20%20%20self.modelo%20%3D%20modelo%0A%20%20%20%20%20%20%20%20self.motor%20%3D%20Motor%28hp%29%20%20%20%20%20%20%23%20Composici%C3%B3n%3A%20el%20coche%20crea%20su%20motor%0A%0Aclass%20Estudiante%3A%0A%20%20%20%20def%20__init__%28self%2C%20nombre%29%3A%0A%20%20%20%20%20%20%20%20self.nombre%20%3D%20nombre%0A%0Aclass%20Universidad%3A%0A%20%20%20%20def%20__init__%28self%2C%20nombre%29%3A%0A%20%20%20%20%20%20%20%20self.nombre%20%3D%20nombre%0A%20%20%20%20%20%20%20%20self.estudiantes%20%3D%20%5B%5D%20%20%20%20%20%20%20%23%20Agregaci%C3%B3n%3A%20recibe%20estudiantes%20existentes%0A%0Acoche%20%3D%20Coche%28%22Corolla%22%2C%20140%29%0Aana%20%3D%20Estudiante%28%22Ana%22%29%0Auni%20%3D%20Universidad%28%22UdeG%22%29%0Auni.estudiantes.append%28ana%29%0Adel%20uni%0Aprint%28ana.nombre%29%0A&amp;cumulative=false&amp;curInstr=0&amp;heapPrimitives=nevernest&amp;mode=display&amp;origin=opt-frontend.js&amp;py=311&amp;rawInputLstJSON=%5B%5D&amp;textReferences=false" width="100%" height="1250" loading="lazy" style="border:1px solid rgba(128,128,128,.35); border-radius:8px; background:white; resize:vertical; overflow:auto" title="Visualización paso a paso en Python Tutor"></iframe><p class="small text-muted mb-0">Usa <b>Next &gt;</b> y <b>&lt; Prev</b> para avanzar paso a paso (puedes estirar el recuadro desde su esquina inferior). <a href="https://pythontutor.com/visualize.html#code=class%20Motor%3A%0A%20%20%20%20def%20__init__%28self%2C%20hp%29%3A%0A%20%20%20%20%20%20%20%20self.hp%20%3D%20hp%0A%0Aclass%20Coche%3A%0A%20%20%20%20def%20__init__%28self%2C%20modelo%2C%20hp%29%3A%0A%20%20%20%20%20%20%20%20self.modelo%20%3D%20modelo%0A%20%20%20%20%20%20%20%20self.motor%20%3D%20Motor%28hp%29%20%20%20%20%20%20%23%20Composici%C3%B3n%3A%20el%20coche%20crea%20su%20motor%0A%0Aclass%20Estudiante%3A%0A%20%20%20%20def%20__init__%28self%2C%20nombre%29%3A%0A%20%20%20%20%20%20%20%20self.nombre%20%3D%20nombre%0A%0Aclass%20Universidad%3A%0A%20%20%20%20def%20__init__%28self%2C%20nombre%29%3A%0A%20%20%20%20%20%20%20%20self.nombre%20%3D%20nombre%0A%20%20%20%20%20%20%20%20self.estudiantes%20%3D%20%5B%5D%20%20%20%20%20%20%20%23%20Agregaci%C3%B3n%3A%20recibe%20estudiantes%20existentes%0A%0Acoche%20%3D%20Coche%28%22Corolla%22%2C%20140%29%0Aana%20%3D%20Estudiante%28%22Ana%22%29%0Auni%20%3D%20Universidad%28%22UdeG%22%29%0Auni.estudiantes.append%28ana%29%0Adel%20uni%0Aprint%28ana.nombre%29%0A&amp;cumulative=false&amp;curInstr=0&amp;heapPrimitives=nevernest&amp;mode=display&amp;origin=opt-frontend.js&amp;py=311&amp;rawInputLstJSON=%5B%5D&amp;textReferences=false" target="_blank" rel="noopener">Abrir en Python Tutor ↗</a></p></div>
 </div>
@@ -681,7 +681,7 @@ Figura&nbsp;8.1: Composición (Coche–Motor, rombo relleno) y agregación (Univ
 </section>
 <section id="comparación-práctica" class="level3" data-number="8.5.3">
 <h3 data-number="8.5.3" class="anchored" data-anchor-id="comparación-práctica"><span class="header-section-number">8.5.3</span> Comparación práctica</h3>
-<div id="72c2671a" class="cell" data-execution_count="2">
+<div id="0cde2201" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># MAL: Usando herencia incorrectamente</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Motor:</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> encender(<span class="va">self</span>):</span>
@@ -706,7 +706,7 @@ Figura&nbsp;8.1: Composición (Coche–Motor, rombo relleno) y agregación (Univ
 </section>
 <section id="ejemplo-completo-sistema-de-biblioteca" class="level2" data-number="8.6">
 <h2 data-number="8.6" class="anchored" data-anchor-id="ejemplo-completo-sistema-de-biblioteca"><span class="header-section-number">8.6</span> Ejemplo Completo: Sistema de Biblioteca</h2>
-<div id="59814344" class="cell" data-execution_count="3">
+<div id="47a8968d" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Autor:</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Clase independiente para autores"""</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, nacionalidad):</span>
@@ -935,7 +935,7 @@ Figura&nbsp;8.2: Sistema de biblioteca: una composición (Libro–Pagina) y vari
 </section>
 <section id="ejemplo-sistema-de-computadora-composición-profunda" class="level2" data-number="8.7">
 <h2 data-number="8.7" class="anchored" data-anchor-id="ejemplo-sistema-de-computadora-composición-profunda"><span class="header-section-number">8.7</span> Ejemplo: Sistema de Computadora (Composición Profunda)</h2>
-<div id="cb080737" class="cell" data-execution_count="4">
+<div id="a9497c7d" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> CPU:</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, marca, nucleos, velocidad):</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.marca <span class="op">=</span> marca</span>
@@ -1143,7 +1143,7 @@ eyJhdHRyIjp7ImNhcHRpb24iOiJQcnVlYmEgdMO6OiBlamVyY2ljaW8gMSIsImVkaXQiOnRydWUsImV2
 </div>
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="f604ba82" class="cell" data-execution_count="5">
+<div id="f641f18f" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Ingrediente:</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, cantidad, unidad):</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.nombre, <span class="va">self</span>.cantidad, <span class="va">self</span>.unidad <span class="op">=</span> nombre, cantidad, unidad</span>
@@ -1254,7 +1254,7 @@ eyJhdHRyIjp7ImNhcHRpb24iOiJQcnVlYmEgdMO6OiBlamVyY2ljaW8gMiIsImVkaXQiOnRydWUsImV2
 </div>
 <div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="c07253b9" class="cell" data-execution_count="6">
+<div id="8f090e10" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Direccion:</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, calle, ciudad, codigo_postal):</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.calle, <span class="va">self</span>.ciudad, <span class="va">self</span>.codigo_postal <span class="op">=</span> calle, ciudad, codigo_postal</span>
@@ -1387,7 +1387,7 @@ eyJhdHRyIjp7ImNhcHRpb24iOiJQcnVlYmEgdMO6OiBlamVyY2ljaW8gMyIsImVkaXQiOnRydWUsImV2
 </div>
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="489eb8b0" class="cell" data-execution_count="7">
+<div id="bbd62d8a" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Item:</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, tipo, valor):</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.nombre, <span class="va">self</span>.tipo, <span class="va">self</span>.valor <span class="op">=</span> nombre, tipo, valor</span>

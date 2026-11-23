@@ -263,7 +263,7 @@
 </section>
 <section id="tu-primera-clase" class="slide level2">
 <h2>Tu primera clase</h2>
-<div id="5d790a06" class="cell" data-execution_count="1">
+<div id="ec1c78d5" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Perro:</span>
 <span id="cb1-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span>          <span class="co"># clase vacía, por ahora</span></span>
 <span id="cb1-3"><a aria-hidden="true" tabindex="-1"></a></span>
@@ -293,7 +293,7 @@
 </section>
 <section id="atributos-de-clase" class="slide level2">
 <h2>Atributos de clase</h2>
-<div id="ed6747c8" class="cell" data-execution_count="2">
+<div id="afc6c8cf" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Perro:</span>
 <span id="cb3-2"><a aria-hidden="true" tabindex="-1"></a>    especie <span class="op">=</span> <span class="st">"Canis familiaris"</span>   <span class="co"># compartido por todos</span></span>
 <span id="cb3-3"><a aria-hidden="true" tabindex="-1"></a></span>
@@ -320,7 +320,7 @@
 </section>
 <section id="atributos-de-instancia" class="slide level2">
 <h2>Atributos de instancia</h2>
-<div id="cf19a304" class="cell" data-execution_count="3">
+<div id="e260f390" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a aria-hidden="true" tabindex="-1"></a>perro1 <span class="op">=</span> Perro()</span>
 <span id="cb5-2"><a aria-hidden="true" tabindex="-1"></a>perro1.nombre <span class="op">=</span> <span class="st">"Max"</span></span>
 <span id="cb5-3"><a aria-hidden="true" tabindex="-1"></a>perro1.edad <span class="op">=</span> <span class="dv">3</span></span>
@@ -381,7 +381,7 @@
 </section>
 <section id="cada-objeto-es-distinto" class="slide level2">
 <h2>Cada objeto es distinto</h2>
-<div id="752f8697" class="cell" data-execution_count="4">
+<div id="30a9ce36" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a aria-hidden="true" tabindex="-1"></a>p1 <span class="op">=</span> Perro()</span>
 <span id="cb7-2"><a aria-hidden="true" tabindex="-1"></a>p2 <span class="op">=</span> Perro()</span>
 <span id="cb7-3"><a aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(p1 <span class="kw">is</span> p2)        <span class="co"># ¿son el mismo objeto?</span></span>
@@ -408,7 +408,7 @@ True</code></pre>
 </section>
 <section id="variables-referencias" class="slide level2">
 <h2>Variables = referencias</h2>
-<div id="467c517e" class="cell" data-execution_count="5">
+<div id="b5edee68" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a aria-hidden="true" tabindex="-1"></a>otro <span class="op">=</span> perro1          <span class="co"># NO crea un objeto nuevo</span></span>
 <span id="cb9-2"><a aria-hidden="true" tabindex="-1"></a>otro.nombre <span class="op">=</span> <span class="st">"Rex"</span></span>
 <span id="cb9-3"><a aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(perro1.nombre)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>

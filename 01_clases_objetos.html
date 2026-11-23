@@ -592,7 +592,7 @@ eyJhdHRyIjp7ImF1dG9ydW4iOnRydWUsImNhcHRpb24iOiJFamVtcGxvIGludGVyYWN0aXZvOiBtb2Rp
 <section id="añadiendo-atributos-a-una-clase" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="añadiendo-atributos-a-una-clase"><span class="header-section-number">1.3</span> Añadiendo Atributos a una Clase</h2>
 <p>Los atributos son las características o propiedades de un objeto. Vamos a darle características a nuestro perro:</p>
-<div id="553914a0" class="cell" data-execution_count="1">
+<div id="22a2722e" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Perro:</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Atributos de clase (compartidos por todas las instancias)</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    especie <span class="op">=</span> <span class="st">"Canis familiaris"</span></span>
@@ -612,7 +612,7 @@ Perro 2 es de la especie: Canis familiaris</code></pre>
 <section id="atributos-de-instancia" class="level3" data-number="1.3.1">
 <h3 data-number="1.3.1" class="anchored" data-anchor-id="atributos-de-instancia"><span class="header-section-number">1.3.1</span> Atributos de Instancia</h3>
 <p>Cada perro debería tener su propio nombre y edad. Estos son <strong>atributos de instancia</strong>:</p>
-<div id="806bf042" class="cell" data-execution_count="2">
+<div id="38481acf" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear objetos</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>perro1 <span class="op">=</span> Perro()</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>perro2 <span class="op">=</span> Perro()</span>
@@ -635,7 +635,7 @@ Luna tiene 5 años</code></pre>
 <section id="visualízalo-paso-a-paso" class="level3" data-number="1.3.2">
 <h3 data-number="1.3.2" class="anchored" data-anchor-id="visualízalo-paso-a-paso"><span class="header-section-number">1.3.2</span> Visualízalo paso a paso</h3>
 <p>Python Tutor dibuja cada objeto como una caja y cada variable como una flecha hacia su objeto. Observa que <code>perro1</code> y <code>perro2</code> son objetos <strong>distintos</strong>, que el atributo de clase vive en la clase, y que <code>otro = perro1</code> <strong>no crea un objeto nuevo</strong>: sólo agrega otra flecha al mismo.</p>
-<div id="010b1c83" class="cell" data-execution_count="3">
+<div id="9d6533ab" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display" data-execution_count="3">
 <div class="pytutor"><iframe src="https://pythontutor.com/iframe-embed.html#code=class%20Perro%3A%0A%20%20%20%20especie%20%3D%20%22Canis%20familiaris%22%20%20%20%23%20Atributo%20de%20clase%0A%0Aperro1%20%3D%20Perro%28%29%0Aperro2%20%3D%20Perro%28%29%0Aperro1.nombre%20%3D%20%22Max%22%20%20%20%20%20%20%20%20%20%20%20%20%20%20%23%20Atributos%20de%20instancia%0Aperro2.nombre%20%3D%20%22Luna%22%0A%0Aotro%20%3D%20perro1%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%23%20%C2%A1Misma%20flecha%2C%20mismo%20objeto%21%0Aotro.nombre%20%3D%20%22Rex%22%0Aprint%28perro1.nombre%29%0A&amp;cumulative=false&amp;curInstr=0&amp;heapPrimitives=nevernest&amp;mode=display&amp;origin=opt-frontend.js&amp;py=311&amp;rawInputLstJSON=%5B%5D&amp;textReferences=false" width="100%" height="820" loading="lazy" style="border:1px solid rgba(128,128,128,.35); border-radius:8px; background:white; resize:vertical; overflow:auto" title="Visualización paso a paso en Python Tutor"></iframe><p class="small text-muted mb-0">Usa <b>Next &gt;</b> y <b>&lt; Prev</b> para avanzar paso a paso (puedes estirar el recuadro desde su esquina inferior). <a href="https://pythontutor.com/visualize.html#code=class%20Perro%3A%0A%20%20%20%20especie%20%3D%20%22Canis%20familiaris%22%20%20%20%23%20Atributo%20de%20clase%0A%0Aperro1%20%3D%20Perro%28%29%0Aperro2%20%3D%20Perro%28%29%0Aperro1.nombre%20%3D%20%22Max%22%20%20%20%20%20%20%20%20%20%20%20%20%20%20%23%20Atributos%20de%20instancia%0Aperro2.nombre%20%3D%20%22Luna%22%0A%0Aotro%20%3D%20perro1%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%23%20%C2%A1Misma%20flecha%2C%20mismo%20objeto%21%0Aotro.nombre%20%3D%20%22Rex%22%0Aprint%28perro1.nombre%29%0A&amp;cumulative=false&amp;curInstr=0&amp;heapPrimitives=nevernest&amp;mode=display&amp;origin=opt-frontend.js&amp;py=311&amp;rawInputLstJSON=%5B%5D&amp;textReferences=false" target="_blank" rel="noopener">Abrir en Python Tutor ↗</a></p></div>
 </div>
@@ -708,7 +708,7 @@ Figura&nbsp;1.1: Una clase (el molde) y tres objetos creados a partir de ella.
 </section>
 <section id="comparación-sin-clases-vs.-con-clases" class="level3" data-number="1.5.2">
 <h3 data-number="1.5.2" class="anchored" data-anchor-id="comparación-sin-clases-vs.-con-clases"><span class="header-section-number">1.5.2</span> Comparación: Sin clases vs.&nbsp;Con clases</h3>
-<div id="75cb90a3" class="cell" data-execution_count="4">
+<div id="8a3acc72" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># SIN CLASES - Usando diccionarios y funciones</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>estudiante1 <span class="op">=</span> {<span class="st">"nombre"</span>: <span class="st">"Ana"</span>, <span class="st">"edad"</span>: <span class="dv">20</span>, <span class="st">"carrera"</span>: <span class="st">"Informática"</span>}</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>estudiante2 <span class="op">=</span> {<span class="st">"nombre"</span>: <span class="st">"Carlos"</span>, <span class="st">"edad"</span>: <span class="dv">22</span>, <span class="st">"carrera"</span>: <span class="st">"Matemáticas"</span>}</span>
@@ -723,7 +723,7 @@ Figura&nbsp;1.1: Una clase (el molde) y tres objetos creados a partir de ella.
 Hola, soy Carlos, tengo 22 años</code></pre>
 </div>
 </div>
-<div id="6fd96370" class="cell" data-execution_count="5">
+<div id="28cf7c83" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># CON CLASES - Más organizado</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Estudiante:</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span>  <span class="co"># Lo mejoraremos en los siguientes cuadernos</span></span>
@@ -778,7 +778,7 @@ eyJhdHRyIjp7ImNhcHRpb24iOiJQcnVlYmEgdMO6OiBlamVyY2ljaW8gMSIsImVkaXQiOnRydWUsImV2
 </div>
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="f88cef60" class="cell" data-execution_count="6">
+<div id="0e32364a" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Libro:</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -824,7 +824,7 @@ eyJhdHRyIjp7ImNhcHRpb24iOiJQcnVlYmEgdMO6OiBlamVyY2ljaW8gMiIsImVkaXQiOnRydWUsImV2
 </div>
 <div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="348dd4ff" class="cell" data-execution_count="7">
+<div id="586cf84d" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> CuentaBancaria:</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    banco <span class="op">=</span> <span class="st">"Banco Nacional"</span>  <span class="co"># Atributo de clase: compartido por todas las cuentas</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -881,7 +881,7 @@ eyJhdHRyIjp7ImNhcHRpb24iOiJQcnVlYmEgdMO6OiBlamVyY2ljaW8gMyIsImVkaXQiOnRydWUsImV2
 </div>
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="452afc9f" class="cell" data-execution_count="8">
+<div id="0dee4fb8" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Producto:</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>

@@ -263,7 +263,7 @@
     "href": "03_constructor_self.html#self-en-profundidad",
     "title": "El constructor y self",
     "section": "self en profundidad",
-    "text": "self en profundidad\n\nclass Ejemplo:\n    def __init__(self, valor):\n        self.valor = valor\n        print(\"self es\", id(self))\n\nobj = Ejemplo(10)\nprint(\"obj es \", id(obj))\n\nself es 4495520304\nobj es  4495520304\n\n\nself es el objeto que se está creando.\n\nMismo id: self y obj son el mismo objeto. Mostrar la visualización de Python Tutor del capítulo 3."
+    "text": "self en profundidad\n\nclass Ejemplo:\n    def __init__(self, valor):\n        self.valor = valor\n        print(\"self es\", id(self))\n\nobj = Ejemplo(10)\nprint(\"obj es \", id(obj))\n\nself es 4457558576\nobj es  4457558576\n\n\nself es el objeto que se está creando.\n\nMismo id: self y obj son el mismo objeto. Mostrar la visualización de Python Tutor del capítulo 3."
   },
   {
     "objectID": "03_constructor_self.html#valores-por-defecto",

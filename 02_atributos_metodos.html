@@ -563,7 +563,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="tu-primer-método" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="tu-primer-método"><span class="header-section-number">2.2</span> Tu Primer Método</h2>
 <p>Vamos a crear una clase con métodos:</p>
-<div id="eef53d16" class="cell" data-execution_count="1">
+<div id="430dc6f4" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Perro:</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Atributo de clase</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    especie <span class="op">=</span> <span class="st">"Canis familiaris"</span></span>
@@ -599,7 +599,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="self-en-acción" class="level3" data-number="2.2.2">
 <h3 data-number="2.2.2" class="anchored" data-anchor-id="self-en-acción"><span class="header-section-number">2.2.2</span> <code>self</code> en acción</h3>
 <p>Avanza paso a paso y fíjate en el marco de <code>incrementar</code>: en la primera llamada <code>self</code> apunta a <code>a</code> y en la segunda apunta a <code>b</code>. El método es el mismo; cambia el objeto al que se aplica.</p>
-<div id="668a66a1" class="cell" data-execution_count="2">
+<div id="e9e335eb" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display" data-execution_count="2">
 <div class="pytutor"><iframe src="https://pythontutor.com/iframe-embed.html#code=class%20Contador%3A%0A%20%20%20%20def%20incrementar%28self%29%3A%0A%20%20%20%20%20%20%20%20self.valor%20%2B%3D%201%0A%0Aa%20%3D%20Contador%28%29%0Aa.valor%20%3D%200%0Ab%20%3D%20Contador%28%29%0Ab.valor%20%3D%2010%0A%0Aa.incrementar%28%29%20%20%20%23%20Python%20hace%3A%20Contador.incrementar%28a%29%0Ab.incrementar%28%29%20%20%20%23%20Python%20hace%3A%20Contador.incrementar%28b%29%0Aprint%28a.valor%2C%20b.valor%29%0A&amp;cumulative=false&amp;curInstr=0&amp;heapPrimitives=nevernest&amp;mode=display&amp;origin=opt-frontend.js&amp;py=311&amp;rawInputLstJSON=%5B%5D&amp;textReferences=false" width="100%" height="800" loading="lazy" style="border:1px solid rgba(128,128,128,.35); border-radius:8px; background:white; resize:vertical; overflow:auto" title="Visualización paso a paso en Python Tutor"></iframe><p class="small text-muted mb-0">Usa <b>Next &gt;</b> y <b>&lt; Prev</b> para avanzar paso a paso (puedes estirar el recuadro desde su esquina inferior). <a href="https://pythontutor.com/visualize.html#code=class%20Contador%3A%0A%20%20%20%20def%20incrementar%28self%29%3A%0A%20%20%20%20%20%20%20%20self.valor%20%2B%3D%201%0A%0Aa%20%3D%20Contador%28%29%0Aa.valor%20%3D%200%0Ab%20%3D%20Contador%28%29%0Ab.valor%20%3D%2010%0A%0Aa.incrementar%28%29%20%20%20%23%20Python%20hace%3A%20Contador.incrementar%28a%29%0Ab.incrementar%28%29%20%20%20%23%20Python%20hace%3A%20Contador.incrementar%28b%29%0Aprint%28a.valor%2C%20b.valor%29%0A&amp;cumulative=false&amp;curInstr=0&amp;heapPrimitives=nevernest&amp;mode=display&amp;origin=opt-frontend.js&amp;py=311&amp;rawInputLstJSON=%5B%5D&amp;textReferences=false" target="_blank" rel="noopener">Abrir en Python Tutor ↗</a></p></div>
 </div>
@@ -608,7 +608,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="métodos-que-usan-atributos" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="métodos-que-usan-atributos"><span class="header-section-number">2.3</span> Métodos que Usan Atributos</h2>
-<div id="f3d1ee65" class="cell" data-execution_count="3">
+<div id="78058d7a" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Perro:</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> ladrar(<span class="va">self</span>):</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"¡Guau guau!"</span>)</span>
@@ -646,7 +646,7 @@ eyJhdHRyIjp7ImF1dG9ydW4iOnRydWUsImNhcHRpb24iOiJFamVtcGxvIGludGVyYWN0aXZvOiBtb2Rp
 <section id="métodos-que-modifican-atributos" class="level2" data-number="2.5">
 <h2 data-number="2.5" class="anchored" data-anchor-id="métodos-que-modifican-atributos"><span class="header-section-number">2.5</span> Métodos que Modifican Atributos</h2>
 <p>Los métodos pueden cambiar los atributos del objeto:</p>
-<div id="404fb860" class="cell" data-execution_count="4">
+<div id="cee62c0c" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> CuentaBancaria:</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> depositar(<span class="va">self</span>, cantidad):</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.saldo <span class="op">+=</span> cantidad</span>
@@ -747,7 +747,7 @@ Figura&nbsp;2.1: Diagrama de clases de CuentaBancaria: atributos arriba, método
 </div>
 <section id="ejemplo-comparativo" class="level3" data-number="2.6.1">
 <h3 data-number="2.6.1" class="anchored" data-anchor-id="ejemplo-comparativo"><span class="header-section-number">2.6.1</span> Ejemplo comparativo</h3>
-<div id="4b483453" class="cell" data-execution_count="5">
+<div id="ff6413c8" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Estudiante:</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> estudiar(<span class="va">self</span>, materia):</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>nombre<span class="sc">}</span><span class="ss"> está estudiando </span><span class="sc">{</span>materia<span class="sc">}</span><span class="ss">"</span>)</span>
@@ -777,7 +777,7 @@ Carlos aprobó Python con 8.5
 </section>
 <section id="ejemplo-completo-sistema-de-biblioteca" class="level2" data-number="2.7">
 <h2 data-number="2.7" class="anchored" data-anchor-id="ejemplo-completo-sistema-de-biblioteca"><span class="header-section-number">2.7</span> Ejemplo Completo: Sistema de Biblioteca</h2>
-<div id="faddf4b5" class="cell" data-execution_count="6">
+<div id="1ecc690f" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Libro:</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> prestar(<span class="va">self</span>):</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="va">self</span>.disponible:</span>
@@ -892,7 +892,7 @@ eyJhdHRyIjp7ImNhcHRpb24iOiJQcnVlYmEgdMO6OiBlamVyY2ljaW8gMSIsImVkaXQiOnRydWUsImV2
 </div>
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="382703b3" class="cell" data-execution_count="7">
+<div id="e50613bc" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Rectangulo:</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> calcular_area(<span class="va">self</span>):</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.ancho <span class="op">*</span> <span class="va">self</span>.alto</span>
@@ -952,7 +952,7 @@ eyJhdHRyIjp7ImNhcHRpb24iOiJQcnVlYmEgdMO6OiBlamVyY2ljaW8gMiIsImVkaXQiOnRydWUsImV2
 </div>
 <div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="3c81de67" class="cell" data-execution_count="8">
+<div id="b2320211" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Termometro:</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> a_fahrenheit(<span class="va">self</span>):</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.temperatura_celsius <span class="op">*</span> <span class="dv">9</span> <span class="op">/</span> <span class="dv">5</span> <span class="op">+</span> <span class="dv">32</span></span>
@@ -1015,7 +1015,7 @@ eyJhdHRyIjp7ImNhcHRpb24iOiJQcnVlYmEgdMO6OiBlamVyY2ljaW8gMyIsImVkaXQiOnRydWUsImV2
 </div>
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="0a64dc62" class="cell" data-execution_count="9">
+<div id="2a8fea5c" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> CarritoCompras:</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    total <span class="op">=</span> <span class="dv">0</span>  <span class="co"># Valor inicial; el primer `self.total += ...` crea el atributo de instancia</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1095,7 +1095,7 @@ eyJhdHRyIjp7ImNhcHRpb24iOiJQcnVlYmEgdMO6OiBlamVyY2ljaW8gNCIsImVkaXQiOnRydWUsImV2
 </div>
 <div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="0a6bc3b6" class="cell" data-execution_count="10">
+<div id="4674f004" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Mascota:</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> _limitar(<span class="va">self</span>, valor):</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Mantiene un valor entre 0 y 100."""</span></span>

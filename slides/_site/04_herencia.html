@@ -232,7 +232,7 @@
 </section>
 <section id="sintaxis" class="slide level2">
 <h2>Sintaxis</h2>
-<div id="d88eccd7" class="cell" data-execution_count="1">
+<div id="590012a9" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Animal:</span>
 <span id="cb1-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre):</span>
 <span id="cb1-3"><a aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.nombre <span class="op">=</span> nombre</span>
@@ -309,7 +309,7 @@ Max: ¡Guau!</code></pre>
 </section>
 <section id="sobrescribir-métodos" class="slide level2">
 <h2>Sobrescribir métodos</h2>
-<div id="5ebc2cf9" class="cell" data-execution_count="2">
+<div id="d3ca1672" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Animal:</span>
 <span id="cb3-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre):</span>
 <span id="cb3-3"><a aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.nombre <span class="op">=</span> nombre</span>
@@ -341,7 +341,7 @@ Max: ¡Guau!</code></pre>
 </section>
 <section id="super-reutilizar-al-padre" class="slide level2">
 <h2><code>super()</code>: reutilizar al padre</h2>
-<div id="17e5233d" class="cell" data-execution_count="3">
+<div id="e1c6e683" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Vehiculo:</span>
 <span id="cb5-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, marca):</span>
 <span id="cb5-3"><a aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.marca <span class="op">=</span> marca</span>
@@ -373,7 +373,7 @@ Max: ¡Guau!</code></pre>
 </section>
 <section id="super-en-otros-métodos" class="slide level2">
 <h2><code>super()</code> en otros métodos</h2>
-<div id="1dbea03a" class="cell" data-execution_count="4">
+<div id="b8634d30" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Empleado:</span>
 <span id="cb7-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, salario):</span>
 <span id="cb7-3"><a aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.salario <span class="op">=</span> salario</span>
@@ -405,7 +405,7 @@ Max: ¡Guau!</code></pre>
 </section>
 <section id="herencia-multinivel" class="slide level2">
 <h2>Herencia multinivel</h2>
-<div id="f767a3fb" class="cell" data-execution_count="5">
+<div id="39f15e31" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SerVivo:</span>
 <span id="cb9-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> respirar(<span class="va">self</span>): <span class="bu">print</span>(<span class="st">"respirando"</span>)</span>
 <span id="cb9-3"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Animal(SerVivo):</span>
@@ -437,7 +437,7 @@ moviéndose
 </section>
 <section id="dónde-busca-python-el-mro" class="slide level2">
 <h2>¿Dónde busca Python? El MRO</h2>
-<div id="10c134ca" class="cell" data-execution_count="6">
+<div id="260208a1" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>([c.<span class="va">__name__</span> <span class="cf">for</span> c <span class="kw">in</span> Perro.__mro__])</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>['Perro', 'Animal', 'SerVivo', 'object']</code></pre>
@@ -460,7 +460,7 @@ moviéndose
 </section>
 <section id="isinstance-e-issubclass" class="slide level2">
 <h2><code>isinstance()</code> e <code>issubclass()</code></h2>
-<div id="2b2715ec" class="cell" data-execution_count="7">
+<div id="133e6eff" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">isinstance</span>(p, Animal))     <span class="co"># ¿p es un Animal?</span></span>
 <span id="cb13-2"><a aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">issubclass</span>(Perro, SerVivo))</span>
 <span id="cb13-3"><a aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">issubclass</span>(SerVivo, Perro))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
