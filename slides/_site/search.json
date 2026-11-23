@@ -1,0 +1,807 @@
+[
+  {
+    "objectID": "06_polimorfismo.html#muchas-formas",
+    "href": "06_polimorfismo.html#muchas-formas",
+    "title": "Polimorfismo",
+    "section": "“Muchas formas”",
+    "text": "“Muchas formas”\nLa orden “¡habla!”:\n\nun perro → “¡Guau!”\nun gato → “¡Miau!”\nun pato → “¡Cuac!”\n\nMismo mensaje, distinto comportamiento.\n\nPoli = muchas, morfos = formas. Lo importante: quien envía el mensaje no necesita saber quién lo recibe."
+  },
+  {
+    "objectID": "06_polimorfismo.html#con-herencia",
+    "href": "06_polimorfismo.html#con-herencia",
+    "title": "Polimorfismo",
+    "section": "Con herencia",
+    "text": "Con herencia\n\nclass Animal:\n    def __init__(self, nombre): self.nombre = nombre\nclass Perro(Animal):\n    def hablar(self): return f\"{self.nombre}: ¡Guau!\"\nclass Gato(Animal):\n    def hablar(self): return f\"{self.nombre}: ¡Miau!\"\n\nfor animal in [Perro(\"Rex\"), Gato(\"Tom\"), Perro(\"Max\")]:\n    print(animal.hablar())\n\nRex: ¡Guau!\nTom: ¡Miau!\nMax: ¡Guau!\n\n\n\nEl ciclo no sabe ni le importa de qué tipo es cada animal. Mostrar la animación del capítulo 6."
+  },
+  {
+    "objectID": "06_polimorfismo.html#sin-polimorfismo",
+    "href": "06_polimorfismo.html#sin-polimorfismo",
+    "title": "Polimorfismo",
+    "section": "Sin polimorfismo…",
+    "text": "Sin polimorfismo…\nfor animal in animales:\n    if isinstance(animal, Perro):\n        print(\"¡Guau!\")\n    elif isinstance(animal, Gato):\n        print(\"¡Miau!\")\n    elif ...           # ¡crece con cada tipo nuevo!\n\nCada vez que agregas un tipo hay que tocar este código. Con polimorfismo, cada clase sabe responder."
+  },
+  {
+    "objectID": "06_polimorfismo.html#duck-typing",
+    "href": "06_polimorfismo.html#duck-typing",
+    "title": "Polimorfismo",
+    "section": "Duck typing",
+    "text": "Duck typing\n\n“Si camina como pato y grazna como pato, es un pato.”\n\n\nclass Pato:\n    def hablar(self): return \"¡Cuac!\"\nclass Robot:\n    def hablar(self): return \"Beep boop\"\n\nfor cosa in [Pato(), Robot()]:   # ¡sin herencia común!\n    print(cosa.hablar())\n\n¡Cuac!\nBeep boop\n\n\n\nEn Python basta con que el objeto tenga el método. No se pregunta por el tipo."
+  },
+  {
+    "objectID": "06_polimorfismo.html#ejemplo-formas-de-pago",
+    "href": "06_polimorfismo.html#ejemplo-formas-de-pago",
+    "title": "Polimorfismo",
+    "section": "Ejemplo: formas de pago",
+    "text": "Ejemplo: formas de pago\n\n\n\n\n\n\nclassDiagram\n    class Carrito {\n        +pagar(metodo_pago)\n    }\n    class TarjetaCredito {\n        +procesar_pago(monto)\n    }\n    class PayPal {\n        +procesar_pago(monto)\n    }\n    class Efectivo {\n        +procesar_pago(monto)\n    }\n    Carrito ..&gt; TarjetaCredito : usa\n    Carrito ..&gt; PayPal : usa\n    Carrito ..&gt; Efectivo : usa\n\n\n\n\n\n\n\nLas tres clases no tienen padre común. Lo único que comparten es el método procesar_pago(monto)."
+  },
+  {
+    "objectID": "06_polimorfismo.html#el-código-del-carrito",
+    "href": "06_polimorfismo.html#el-código-del-carrito",
+    "title": "Polimorfismo",
+    "section": "El código del carrito",
+    "text": "El código del carrito\n\nclass Efectivo:\n    def procesar_pago(self, monto): print(f\"Recibo ${monto} en efectivo\")\nclass PayPal:\n    def procesar_pago(self, monto): print(f\"Cobro ${monto} con PayPal\")\n\ndef pagar(total, metodo):\n    metodo.procesar_pago(total)     # no sabe qué método es\n\npagar(150, Efectivo())\npagar(80, PayPal())\n\nRecibo $150 en efectivo\nCobro $80 con PayPal\n\n\n\npagar() funciona con cualquier objeto que tenga procesar_pago. Preguntar: ¿qué pasa si mañana aceptamos pagos con vales?"
+  },
+  {
+    "objectID": "06_polimorfismo.html#extender-sin-modificar",
+    "href": "06_polimorfismo.html#extender-sin-modificar",
+    "title": "Polimorfismo",
+    "section": "Extender sin modificar",
+    "text": "Extender sin modificar\n\nclass Transferencia:                   # tipo NUEVO\n    def procesar_pago(self, monto): print(f\"Transfiero ${monto}\")\n\npagar(500, Transferencia())            # pagar() no cambió\n\nTransfiero $500\n\n\n\nPrincipio abierto/cerrado: abierto a extensión, cerrado a modificación."
+  },
+  {
+    "objectID": "06_polimorfismo.html#operadores-polimórficos",
+    "href": "06_polimorfismo.html#operadores-polimórficos",
+    "title": "Polimorfismo",
+    "section": "Operadores polimórficos",
+    "text": "Operadores polimórficos\n\nprint(5 + 3, \"|\", \"Hola\" + \"Mundo\", \"|\", [1, 2] + [3])\nprint(len(\"abc\"), len([1, 2, 3, 4]), len({\"a\": 1}))\n\n8 | HolaMundo | [1, 2, 3]\n3 4 1\n\n\n+ y len() funcionan con muchos tipos… y con los tuyos (tema 7).\n\nPython mismo es polimórfico: + concatena o suma según el tipo. En el tema 7 veremos cómo lograrlo con nuestras clases."
+  },
+  {
+    "objectID": "06_polimorfismo.html#cuando-el-pato-no-grazna",
+    "href": "06_polimorfismo.html#cuando-el-pato-no-grazna",
+    "title": "Polimorfismo",
+    "section": "Cuando el pato no grazna",
+    "text": "Cuando el pato no grazna\n\nclass Piedra:\n    pass\n\npagar(100, Piedra())\n\n\n---------------------------------------------------------------------------\nAttributeError                            Traceback (most recent call last)\nCell In[6], line 4\n      1 class Piedra:\n      2     pass\n      3 \n----&gt; 4 pagar(100, Piedra())\n\nCell In[3], line 7, in pagar(total, metodo)\n      6 def pagar(total, metodo):\n----&gt; 7     metodo.procesar_pago(total)     # no sabe qué método es\n\nAttributeError: 'Piedra' object has no attribute 'procesar_pago'\n\n\n\n\nDuck typing falla en tiempo de ejecución si el objeto no tiene el método. Las clases abstractas (tema 9) permiten detectarlo antes."
+  },
+  {
+    "objectID": "06_polimorfismo.html#los-4-pilares-de-la-poo",
+    "href": "06_polimorfismo.html#los-4-pilares-de-la-poo",
+    "title": "Polimorfismo",
+    "section": "Los 4 pilares de la POO",
+    "text": "Los 4 pilares de la POO\n\n\n\nPilar\nIdea\n\n\n\n\nEncapsulamiento\nocultar detalles internos\n\n\nAbstracción\nsimplificar la complejidad\n\n\nHerencia\nreutilizar código\n\n\nPolimorfismo\nmismo mensaje, muchas formas\n\n\n\n\nYa vimos los cuatro. La abstracción la formalizaremos en el tema 9 con clases abstractas."
+  },
+  {
+    "objectID": "06_polimorfismo.html#resumen",
+    "href": "06_polimorfismo.html#resumen",
+    "title": "Polimorfismo",
+    "section": "Resumen",
+    "text": "Resumen\n\nPolimorfismo = distintos objetos responden al mismo método\nCon herencia (sobrescritura) o con duck typing\nEvita cadenas de if isinstance(...)\nFacilita extender sin modificar\n\nSiguiente tema: métodos especiales.\n\nPedir a dos o tres estudiantes que expliquen con sus palabras un punto del resumen. Recordar los ejercicios del capítulo correspondiente en el sitio del curso."
+  },
+  {
+    "objectID": "02_atributos_metodos.html#lo-que-es-y-lo-que-hace",
+    "href": "02_atributos_metodos.html#lo-que-es-y-lo-que-hace",
+    "title": "Atributos y métodos",
+    "section": "Lo que es y lo que hace",
+    "text": "Lo que es y lo que hace\n\n\nAtributos — lo que es\n\nmarca, modelo\ncolor\nnivel de batería\n\n\nMétodos — lo que hace\n\nhacer_llamada()\nenviar_mensaje()\ntomar_foto()\n\n\n\nAnalogía del teléfono móvil. Atributos = sustantivos/adjetivos; métodos = verbos."
+  },
+  {
+    "objectID": "02_atributos_metodos.html#tu-primer-método",
+    "href": "02_atributos_metodos.html#tu-primer-método",
+    "title": "Atributos y métodos",
+    "section": "Tu primer método",
+    "text": "Tu primer método\n\nclass Perro:\n    def ladrar(self):\n        print(\"¡Guau guau!\")\n\nmi_perro = Perro()\nmi_perro.ladrar()\n\n¡Guau guau!\n\n\nUn método es una función definida dentro de una clase.\n\nSe llama con la sintaxis de punto: objeto.metodo(). Fíjense en que no pasamos ningún argumento, pero la definición tiene self… siguiente diapositiva."
+  },
+  {
+    "objectID": "02_atributos_metodos.html#qué-es-self",
+    "href": "02_atributos_metodos.html#qué-es-self",
+    "title": "Atributos y métodos",
+    "section": "¿Qué es self?",
+    "text": "¿Qué es self?\n\nmi_perro.ladrar()       # lo que escribimos\nPerro.ladrar(mi_perro)  # lo que Python hace\n\n¡Guau guau!\n¡Guau guau!\n\n\n\nself es el objeto sobre el que se llama el método\nPython lo pasa automáticamente como primer argumento\n\n\nEs la diapositiva clave del tema. Mostrar la visualización de Python Tutor del capítulo 2: el mismo método con self apuntando a objetos distintos."
+  },
+  {
+    "objectID": "02_atributos_metodos.html#métodos-que-usan-atributos",
+    "href": "02_atributos_metodos.html#métodos-que-usan-atributos",
+    "title": "Atributos y métodos",
+    "section": "Métodos que usan atributos",
+    "text": "Métodos que usan atributos\n\nclass Perro:\n    def presentarse(self):\n        print(f\"Soy {self.nombre} y tengo {self.edad} años\")\n\np = Perro()\np.nombre, p.edad = \"Max\", 3\np.presentarse()\n\nSoy Max y tengo 3 años\n\n\nDentro del método, los atributos se leen con self.atributo.\n\nSin self. Python buscaría una variable local nombre y fallaría."
+  },
+  {
+    "objectID": "02_atributos_metodos.html#parámetros-y-valor-de-retorno",
+    "href": "02_atributos_metodos.html#parámetros-y-valor-de-retorno",
+    "title": "Atributos y métodos",
+    "section": "Parámetros y valor de retorno",
+    "text": "Parámetros y valor de retorno\n\nclass Calculadora:\n    def sumar(self, a, b):\n        return a + b\n\ncalc = Calculadora()\nprint(calc.sumar(10, 5))\n\n15\n\n\nAdemás de self, un método puede recibir parámetros y devolver un resultado.\n\nDiferencia entre imprimir dentro del método y devolver con return: lo devuelto se puede reutilizar."
+  },
+  {
+    "objectID": "02_atributos_metodos.html#métodos-que-cambian-el-estado",
+    "href": "02_atributos_metodos.html#métodos-que-cambian-el-estado",
+    "title": "Atributos y métodos",
+    "section": "Métodos que cambian el estado",
+    "text": "Métodos que cambian el estado\n\nclass Cuenta:\n    def depositar(self, cantidad):\n        self.saldo += cantidad\n\nc = Cuenta()\nc.saldo = 1000\nc.depositar(500)\nprint(c.saldo)\n\n1500\n\n\n\nEl estado del objeto (sus atributos) cambia como efecto de llamar al método."
+  },
+  {
+    "objectID": "02_atributos_metodos.html#los-métodos-protegen-las-reglas",
+    "href": "02_atributos_metodos.html#los-métodos-protegen-las-reglas",
+    "title": "Atributos y métodos",
+    "section": "Los métodos protegen las reglas",
+    "text": "Los métodos protegen las reglas\n\nclass Cuenta:\n    def retirar(self, cantidad):\n        if cantidad &gt; self.saldo:\n            print(\"Fondos insuficientes\")\n        else:\n            self.saldo -= cantidad\n\nc = Cuenta(); c.saldo = 100\nc.retirar(500)\n\nFondos insuficientes\n\n\n\nPrimer vistazo al encapsulamiento (tema 5): la lógica de negocio vive en el método."
+  },
+  {
+    "objectID": "02_atributos_metodos.html#métodos-que-llaman-a-otros-métodos",
+    "href": "02_atributos_metodos.html#métodos-que-llaman-a-otros-métodos",
+    "title": "Atributos y métodos",
+    "section": "Métodos que llaman a otros métodos",
+    "text": "Métodos que llaman a otros métodos\n\nclass Robot:\n    def adelante(self):\n        print(\"→ adelante\")\n    def atras(self):\n        print(\"← atrás\")\n    def bailar(self):\n        self.adelante()\n        self.atras()\n\nRobot().bailar()\n\n→ adelante\n← atrás\n\n\n\nPara llamar a otro método del mismo objeto también se usa self."
+  },
+  {
+    "objectID": "02_atributos_metodos.html#atributos-vs.-métodos",
+    "href": "02_atributos_metodos.html#atributos-vs.-métodos",
+    "title": "Atributos y métodos",
+    "section": "Atributos vs. métodos",
+    "text": "Atributos vs. métodos\n\n\n\n\nAtributos\nMétodos\n\n\n\n\n¿Qué son?\nCaracterísticas\nAcciones\n\n\nSintaxis\nobj.atributo\nobj.metodo()\n\n\nSon…\nvariables\nfunciones\n\n\nEjemplo\nperro.nombre\nperro.ladrar()\n\n\n\n\nError típico: olvidar los paréntesis al llamar un método (obtienes el método, no su resultado)."
+  },
+  {
+    "objectID": "02_atributos_metodos.html#diagrama-de-clases-uml",
+    "href": "02_atributos_metodos.html#diagrama-de-clases-uml",
+    "title": "Atributos y métodos",
+    "section": "Diagrama de clases (UML)",
+    "text": "Diagrama de clases (UML)\n\n\n\n\n\n\nclassDiagram\n    class CuentaBancaria {\n        titular\n        saldo\n        depositar(cantidad)\n        retirar(cantidad)\n        consultar_saldo()\n    }\n\n\n\n\n\n\nNombre · atributos · métodos\n\nUsaremos esta notación durante todo el curso para mostrar el diseño sin escribir código."
+  },
+  {
+    "objectID": "02_atributos_metodos.html#error-común-olvidar-self",
+    "href": "02_atributos_metodos.html#error-común-olvidar-self",
+    "title": "Atributos y métodos",
+    "section": "Error común: olvidar self",
+    "text": "Error común: olvidar self\n\nclass Perro:\n    def ladrar():          # falta self\n        print(\"¡Guau!\")\n\nPerro().ladrar()\n\n\n---------------------------------------------------------------------------\nTypeError                                 Traceback (most recent call last)\nCell In[8], line 5\n      1 class Perro:\n      2     def ladrar():          # falta self\n      3         print(\"¡Guau!\")\n      4 \n----&gt; 5 Perro().ladrar()\n\nTypeError: Perro.ladrar() takes 0 positional arguments but 1 was given\n\n\n\n\nLeer el mensaje: “takes 0 positional arguments but 1 was given”. El argumento “extra” es el objeto."
+  },
+  {
+    "objectID": "02_atributos_metodos.html#resumen",
+    "href": "02_atributos_metodos.html#resumen",
+    "title": "Atributos y métodos",
+    "section": "Resumen",
+    "text": "Resumen\n\nMétodos = funciones dentro de la clase\nself = el objeto actual (Python lo pasa solo)\nLos métodos leen y modifican atributos con self.\nPueden recibir parámetros, devolver valores y llamar a otros métodos\n\nSiguiente tema: el constructor __init__.\n\nPedir a dos o tres estudiantes que expliquen con sus palabras un punto del resumen. Recordar los ejercicios del capítulo correspondiente en el sitio del curso."
+  },
+  {
+    "objectID": "09_clases_abstractas.html#un-contrato",
+    "href": "09_clases_abstractas.html#un-contrato",
+    "title": "Clases abstractas e interfaces",
+    "section": "Un contrato",
+    "text": "Un contrato\n\nUn contrato de trabajo define obligaciones\nNo se “contrata” un contrato genérico, sino un puesto concreto\nCada puesto debe cumplir lo que dice el contrato\n\nUna clase abstracta es ese contrato.\n\nLa clase abstracta dice QUÉ deben saber hacer las subclases, sin decir CÓMO."
+  },
+  {
+    "objectID": "09_clases_abstractas.html#abc-y-abstractmethod",
+    "href": "09_clases_abstractas.html#abc-y-abstractmethod",
+    "title": "Clases abstractas e interfaces",
+    "section": "ABC y @abstractmethod",
+    "text": "ABC y @abstractmethod\n\nfrom abc import ABC, abstractmethod\n\nclass Forma(ABC):\n    @abstractmethod\n    def area(self): ...\n\n    def describir(self):                  # método concreto\n        return f\"Área = {self.area():.2f}\"\n\n\nHeredar de ABC + marcar métodos con @abstractmethod. Los métodos concretos se heredan normalmente."
+  },
+  {
+    "objectID": "09_clases_abstractas.html#no-se-puede-instanciar",
+    "href": "09_clases_abstractas.html#no-se-puede-instanciar",
+    "title": "Clases abstractas e interfaces",
+    "section": "No se puede instanciar",
+    "text": "No se puede instanciar\n\nForma()\n\n\n---------------------------------------------------------------------------\nTypeError                                 Traceback (most recent call last)\nCell In[2], line 1\n----&gt; 1 Forma()\n\nTypeError: Can't instantiate abstract class Forma without an implementation for abstract method 'area'\n\n\n\n\nEs justo lo que queremos: una “forma” genérica no tiene área."
+  },
+  {
+    "objectID": "09_clases_abstractas.html#clase-concreta",
+    "href": "09_clases_abstractas.html#clase-concreta",
+    "title": "Clases abstractas e interfaces",
+    "section": "Clase concreta",
+    "text": "Clase concreta\n\nimport math\n\nclass Circulo(Forma):\n    def __init__(self, r): self.r = r\n    def area(self): return math.pi * self.r ** 2\n\nprint(Circulo(2).describir())\n\nÁrea = 12.57\n\n\nImplementa todos los métodos abstractos → ya se puede instanciar.\n\nCirculo hereda describir() sin escribirlo y sólo implementa area()."
+  },
+  {
+    "objectID": "09_clases_abstractas.html#si-falta-algo-python-avisa",
+    "href": "09_clases_abstractas.html#si-falta-algo-python-avisa",
+    "title": "Clases abstractas e interfaces",
+    "section": "Si falta algo, Python avisa",
+    "text": "Si falta algo, Python avisa\n\nclass Cuadrado(Forma):\n    def __init__(self, lado): self.lado = lado\n    # olvidamos area()\n\nCuadrado(3)\n\n\n---------------------------------------------------------------------------\nTypeError                                 Traceback (most recent call last)\nCell In[4], line 5\n      1 class Cuadrado(Forma):\n      2     def __init__(self, lado): self.lado = lado\n      3     # olvidamos area()\n      4 \n----&gt; 5 Cuadrado(3)\n\nTypeError: Can't instantiate abstract class Cuadrado without an implementation for abstract method 'area'\n\n\n\n\nEl error aparece al crear el objeto, no más tarde cuando se llame a area(). Comparar con el duck typing del tema 6, donde el fallo llega tarde."
+  },
+  {
+    "objectID": "09_clases_abstractas.html#interfaces",
+    "href": "09_clases_abstractas.html#interfaces",
+    "title": "Clases abstractas e interfaces",
+    "section": "Interfaces",
+    "text": "Interfaces\nClase abstracta sólo con métodos abstractos: define qué hacer, no cómo.\n\nclass Volador(ABC):\n    @abstractmethod\n    def volar(self): ...\n\nclass Nadador(ABC):\n    @abstractmethod\n    def nadar(self): ...\n\n\nPython no tiene la palabra interface como Java; se simula con una ABC que sólo tiene métodos abstractos."
+  },
+  {
+    "objectID": "09_clases_abstractas.html#varias-interfaces-a-la-vez",
+    "href": "09_clases_abstractas.html#varias-interfaces-a-la-vez",
+    "title": "Clases abstractas e interfaces",
+    "section": "Varias interfaces a la vez",
+    "text": "Varias interfaces a la vez\n\nclass Pato(Volador, Nadador):\n    def volar(self): return \"volando bajo\"\n    def nadar(self): return \"nadando en el lago\"\n\np = Pato()\nprint(p.volar(), \"|\", p.nadar(), \"|\", isinstance(p, Volador))\n\nvolando bajo | nadando en el lago | True\n\n\n\n\n\n\n\n\nclassDiagram\n    Volador &lt;|.. Pato\n    Nadador &lt;|.. Pato\n    class Volador { &lt;&lt;interface&gt;&gt; }\n    class Nadador { &lt;&lt;interface&gt;&gt; }\n\n\n\n\n\n\n\nLa herencia múltiple de interfaces es segura porque no traen implementación que pueda chocar."
+  },
+  {
+    "objectID": "09_clases_abstractas.html#programar-contra-la-abstracción",
+    "href": "09_clases_abstractas.html#programar-contra-la-abstracción",
+    "title": "Clases abstractas e interfaces",
+    "section": "Programar contra la abstracción",
+    "text": "Programar contra la abstracción\n\n\n\n\n\n\nclassDiagram\n    MetodoPago &lt;|-- TarjetaCredito\n    MetodoPago &lt;|-- PayPal\n    MetodoPago &lt;|-- Transferencia\n    ProcesadorPagos ..&gt; MetodoPago : usa\n    class MetodoPago {\n        &lt;&lt;abstract&gt;&gt;\n        +procesar_pago(monto)*\n        +validar()*\n    }\n\n\n\n\n\n\nProcesadorPagos no conoce las clases concretas: sólo el contrato.\n\nAgregar un nuevo método de pago no obliga a modificar ProcesadorPagos: sólo hay que cumplir el contrato."
+  },
+  {
+    "objectID": "09_clases_abstractas.html#clase-abstracta-vs.-interfaz",
+    "href": "09_clases_abstractas.html#clase-abstracta-vs.-interfaz",
+    "title": "Clases abstractas e interfaces",
+    "section": "Clase abstracta vs. interfaz",
+    "text": "Clase abstracta vs. interfaz\n\n\n\n\n\n\n\n\n\nClase abstracta\nInterfaz\n\n\n\n\nMétodos abstractos\nsí\nsí (sólo esos)\n\n\nMétodos concretos\nsí\nno\n\n\nUso típico\nfamilia de clases relacionadas\ncapacidad que comparten clases distintas\n\n\n\n\nEn la práctica, en Python ambas se escriben con ABC; la diferencia es de intención y de diseño."
+  },
+  {
+    "objectID": "09_clases_abstractas.html#abc-o-duck-typing",
+    "href": "09_clases_abstractas.html#abc-o-duck-typing",
+    "title": "Clases abstractas e interfaces",
+    "section": "¿ABC o duck typing?",
+    "text": "¿ABC o duck typing?\n\nDuck typing: flexible, sin ceremonias\nABC: contrato explícito, errores tempranos, documentación viva\nEn proyectos grandes o compartidos, el contrato explícito ayuda\n\n\nNo hay una respuesta única: discutir con el grupo en qué proyectos preferirían cada enfoque."
+  },
+  {
+    "objectID": "09_clases_abstractas.html#resumen",
+    "href": "09_clases_abstractas.html#resumen",
+    "title": "Clases abstractas e interfaces",
+    "section": "Resumen",
+    "text": "Resumen\n\nABC + @abstractmethod definen un contrato\nNo se instancian; las subclases deben implementarlo todo\nInterfaz = sólo métodos abstractos; una clase puede cumplir varias\nPrograma contra la abstracción, no la implementación\n\nSiguiente tema: proyecto integrador.\n\nPedir a dos o tres estudiantes que expliquen con sus palabras un punto del resumen. Recordar los ejercicios del capítulo correspondiente en el sitio del curso."
+  },
+  {
+    "objectID": "03_constructor_self.html#el-problema",
+    "href": "03_constructor_self.html#el-problema",
+    "title": "El constructor y self",
+    "section": "El problema",
+    "text": "El problema\np = Persona()\np.nombre = \"Ana\"\np.edad = 25\n# ¿y si olvidamos p.ciudad?\n\nPropenso a errores · muchas líneas\nNada garantiza que el objeto quede completo\n\n\nAnalogía: comprar un coche y que te lo entreguen sin motor ni ruedas para que tú lo armes."
+  },
+  {
+    "objectID": "03_constructor_self.html#la-solución-__init__",
+    "href": "03_constructor_self.html#la-solución-__init__",
+    "title": "El constructor y self",
+    "section": "La solución: __init__",
+    "text": "La solución: __init__\n\nclass Perro:\n    def __init__(self, nombre, edad):\n        self.nombre = nombre\n        self.edad = edad\n\np = Perro(\"Max\", 3)\nprint(p.nombre, p.edad)\n\nMax 3\n\n\nEl objeto nace completo desde el primer momento.\n\n__init__ se llama solo al crear el objeto. Los argumentos de Perro(…) llegan a init después de self."
+  },
+  {
+    "objectID": "03_constructor_self.html#qué-hace-python",
+    "href": "03_constructor_self.html#qué-hace-python",
+    "title": "El constructor y self",
+    "section": "¿Qué hace Python?",
+    "text": "¿Qué hace Python?\n\n\n\n\n\n\nsequenceDiagram\n    participant U as Tu código\n    participant C as Clase Perro\n    participant O as Objeto nuevo (self)\n    U-&gt;&gt;C: Perro(\"Max\", 3)\n    C-&gt;&gt;O: crea un objeto vacío\n    C-&gt;&gt;O: __init__(self, \"Max\", 3)\n    C--&gt;&gt;U: devuelve el objeto\n\n\n\n\n\n\n\nPrimero se crea un objeto vacío y después init lo “llena”. Por eso init no lleva return."
+  },
+  {
+    "objectID": "03_constructor_self.html#self-en-profundidad",
+    "href": "03_constructor_self.html#self-en-profundidad",
+    "title": "El constructor y self",
+    "section": "self en profundidad",
+    "text": "self en profundidad\n\nclass Ejemplo:\n    def __init__(self, valor):\n        self.valor = valor\n        print(\"self es\", id(self))\n\nobj = Ejemplo(10)\nprint(\"obj es \", id(obj))\n\nself es 4495520304\nobj es  4495520304\n\n\nself es el objeto que se está creando.\n\nMismo id: self y obj son el mismo objeto. Mostrar la visualización de Python Tutor del capítulo 3."
+  },
+  {
+    "objectID": "03_constructor_self.html#valores-por-defecto",
+    "href": "03_constructor_self.html#valores-por-defecto",
+    "title": "El constructor y self",
+    "section": "Valores por defecto",
+    "text": "Valores por defecto\n\nclass Cuenta:\n    def __init__(self, titular, saldo=0, tipo=\"Ahorro\"):\n        self.titular, self.saldo, self.tipo = titular, saldo, tipo\n\nfor c in [Cuenta(\"Ana\"), Cuenta(\"Luis\", 1000, \"Corriente\")]:\n    print(c.titular, c.saldo, c.tipo)\n\nAna 0 Ahorro\nLuis 1000 Corriente\n\n\n\nLos parámetros con valor por defecto van al final."
+  },
+  {
+    "objectID": "03_constructor_self.html#validar-al-construir",
+    "href": "03_constructor_self.html#validar-al-construir",
+    "title": "El constructor y self",
+    "section": "Validar al construir",
+    "text": "Validar al construir\n\nclass Persona:\n    def __init__(self, nombre, edad):\n        if not 0 &lt;= edad &lt;= 150:\n            raise ValueError(\"La edad debe estar entre 0 y 150\")\n        self.nombre, self.edad = nombre, edad\n\ntry:\n    Persona(\"Ana\", 200)\nexcept ValueError as e:\n    print(\"ValueError:\", e)\n\nValueError: La edad debe estar entre 0 y 150\n\n\n\nSi los datos son inválidos, el objeto ni siquiera llega a existir. Mejor fallar pronto."
+  },
+  {
+    "objectID": "03_constructor_self.html#atributo-de-clase-como-contador",
+    "href": "03_constructor_self.html#atributo-de-clase-como-contador",
+    "title": "El constructor y self",
+    "section": "Atributo de clase como contador",
+    "text": "Atributo de clase como contador\n\nclass Producto:\n    total = 0\n    def __init__(self, nombre):\n        Producto.total += 1\n        self.id = Producto.total\n        self.nombre = nombre\n\na, b = Producto(\"Laptop\"), Producto(\"Mouse\")\nprint(a.id, b.id, Producto.total)\n\n1 2 2\n\n\n\nSe usa Producto.total (no self.total) para modificar el valor compartido por la clase."
+  },
+  {
+    "objectID": "03_constructor_self.html#la-trampa-del-valor-mutable",
+    "href": "03_constructor_self.html#la-trampa-del-valor-mutable",
+    "title": "El constructor y self",
+    "section": "⚠️ La trampa del valor mutable",
+    "text": "⚠️ La trampa del valor mutable\n\nclass Incorrecta:\n    def __init__(self, lista=[]):\n        self.lista = lista\n\na, b = Incorrecta(), Incorrecta()\na.lista.append(1)\nprint(b.lista)        # ¡b también \"tiene\" el 1!\n\n[1]\n\n\nEl [] por defecto se crea una sola vez y se comparte.\n\nUno de los errores más famosos de Python. La visualización de Python Tutor del capítulo 3 lo muestra muy claro."
+  },
+  {
+    "objectID": "03_constructor_self.html#la-solución-none",
+    "href": "03_constructor_self.html#la-solución-none",
+    "title": "El constructor y self",
+    "section": "La solución: None",
+    "text": "La solución: None\n\nclass Correcta:\n    def __init__(self, lista=None):\n        self.lista = lista if lista is not None else []\n\na, b = Correcta(), Correcta()\na.lista.append(1)\nprint(a.lista, b.lista)\n\n[1] []\n\n\n\nRegla: nunca listas, diccionarios ni conjuntos como valores por defecto."
+  },
+  {
+    "objectID": "03_constructor_self.html#puntos-clave-de-__init__",
+    "href": "03_constructor_self.html#puntos-clave-de-__init__",
+    "title": "El constructor y self",
+    "section": "Puntos clave de __init__",
+    "text": "Puntos clave de __init__\n\nNombre especial con doble guion bajo\nSe ejecuta automáticamente al crear el objeto\nEl primer parámetro es self\nInicializa todos los atributos\nNo usa return\n\n\nRepasar uno por uno. Si devuelven algo distinto de None desde init, Python lanza TypeError."
+  },
+  {
+    "objectID": "03_constructor_self.html#resumen",
+    "href": "03_constructor_self.html#resumen",
+    "title": "El constructor y self",
+    "section": "Resumen",
+    "text": "Resumen\n\n__init__ garantiza objetos completos y válidos\nself es el objeto recién creado\nValores por defecto + validación en el constructor\nMutables por defecto → usa None\n\nSiguiente tema: herencia.\n\nPedir a dos o tres estudiantes que expliquen con sus palabras un punto del resumen. Recordar los ejercicios del capítulo correspondiente en el sitio del curso."
+  },
+  {
+    "objectID": "05_encapsulamiento.html#la-idea",
+    "href": "05_encapsulamiento.html#la-idea",
+    "title": "Encapsulamiento y propiedades",
+    "section": "La idea",
+    "text": "La idea\nUn cajero automático:\n\nPúblico: pantalla, ranura de la tarjeta, teclado\nOculto: la bóveda, el software interno\n\nExponer sólo lo necesario y proteger lo crítico.\n\nEl encapsulamiento no es esconder por esconder: es controlar cómo se usa el objeto."
+  },
+  {
+    "objectID": "05_encapsulamiento.html#tres-niveles-por-convención",
+    "href": "05_encapsulamiento.html#tres-niveles-por-convención",
+    "title": "Encapsulamiento y propiedades",
+    "section": "Tres niveles (por convención)",
+    "text": "Tres niveles (por convención)\n\n\n\nTipo\nSintaxis\nSignificado\n\n\n\n\nPúblico\nnombre\núsalo libremente\n\n\nProtegido\n_nombre\nuso interno; “no lo toques”\n\n\nPrivado\n__nombre\nPython le cambia el nombre\n\n\n\n\nEn Python nada es realmente privado: son convenciones + name mangling."
+  },
+  {
+    "objectID": "05_encapsulamiento.html#privado-en-acción",
+    "href": "05_encapsulamiento.html#privado-en-acción",
+    "title": "Encapsulamiento y propiedades",
+    "section": "Privado en acción",
+    "text": "Privado en acción\n\nclass Persona:\n    def __init__(self, nombre, saldo):\n        self.nombre = nombre\n        self.__saldo = saldo\n\nana = Persona(\"Ana\", 10000)\ntry:\n    print(ana.__saldo)\nexcept AttributeError as e:\n    print(\"Error:\", e)\n\nError: 'Persona' object has no attribute '__saldo'\n\n\n\nFuera de la clase, ana.__saldo no existe con ese nombre. Dentro de los métodos de la clase sí se puede usar normalmente."
+  },
+  {
+    "objectID": "05_encapsulamiento.html#name-mangling",
+    "href": "05_encapsulamiento.html#name-mangling",
+    "title": "Encapsulamiento y propiedades",
+    "section": "Name mangling",
+    "text": "Name mangling\n\nprint(ana._Persona__saldo)    # posible… pero no lo hagas\n\n10000\n\n\n__saldo se guarda como _Persona__saldo.\n\nEl objetivo es evitar choques de nombres y accesos accidentales, no impedir el acceso a toda costa."
+  },
+  {
+    "objectID": "05_encapsulamiento.html#por-qué-importa",
+    "href": "05_encapsulamiento.html#por-qué-importa",
+    "title": "Encapsulamiento y propiedades",
+    "section": "¿Por qué importa?",
+    "text": "¿Por qué importa?\n\nclass CuentaMala:\n    def __init__(self, saldo):\n        self.saldo = saldo\n\nc = CuentaMala(1000)\nc.saldo = -5000          # nadie lo impide\nprint(c.saldo)\n\n-5000\n\n\n\nCualquier parte del programa puede dejar el objeto en un estado sin sentido."
+  },
+  {
+    "objectID": "05_encapsulamiento.html#acceso-controlado-con-métodos",
+    "href": "05_encapsulamiento.html#acceso-controlado-con-métodos",
+    "title": "Encapsulamiento y propiedades",
+    "section": "Acceso controlado con métodos",
+    "text": "Acceso controlado con métodos\n\nclass Cuenta:\n    def __init__(self, saldo):\n        self.__saldo = saldo\n    def retirar(self, cantidad):\n        if 0 &lt; cantidad &lt;= self.__saldo:\n            self.__saldo -= cantidad\n        else:\n            print(\"Operación rechazada\")\n    def consultar(self):\n        return self.__saldo\n\nc = Cuenta(1000); c.retirar(5000); print(c.consultar())\n\nOperación rechazada\n1000\n\n\n\nEl saldo sólo cambia a través de retirar(), que verifica las reglas. Ya no es posible dejarlo negativo desde fuera."
+  },
+  {
+    "objectID": "05_encapsulamiento.html#getters-y-setters-clásicos",
+    "href": "05_encapsulamiento.html#getters-y-setters-clásicos",
+    "title": "Encapsulamiento y propiedades",
+    "section": "Getters y setters “clásicos”",
+    "text": "Getters y setters “clásicos”\npersona.get_edad()\npersona.set_edad(30)\nFuncionan, pero en Python hay algo más elegante…\n\nEs el estilo de Java/C#. En Python se prefiere @property."
+  },
+  {
+    "objectID": "05_encapsulamiento.html#property",
+    "href": "05_encapsulamiento.html#property",
+    "title": "Encapsulamiento y propiedades",
+    "section": "@property",
+    "text": "@property\n\nclass Persona:\n    def __init__(self, edad):\n        self.__edad = edad\n\n    @property\n    def edad(self):            # getter\n        return self.__edad\n\np = Persona(25)\nprint(p.edad)                  # ¡sin paréntesis!\n\n25\n\n\n\n@property convierte un método en algo que se lee como atributo. El código que usa la clase no nota la diferencia."
+  },
+  {
+    "objectID": "05_encapsulamiento.html#x.setter-con-validación",
+    "href": "05_encapsulamiento.html#x.setter-con-validación",
+    "title": "Encapsulamiento y propiedades",
+    "section": "@x.setter con validación",
+    "text": "@x.setter con validación\n\nclass Persona:\n    def __init__(self, edad):\n        self.edad = edad              # pasa por el setter\n    @property\n    def edad(self):\n        return self.__edad\n    @edad.setter\n    def edad(self, valor):\n        if not 0 &lt;= valor &lt;= 150:\n            raise ValueError(\"Edad inválida\")\n        self.__edad = valor\n\n\nSe usa como un atributo normal, pero cada asignación pasa por la validación."
+  },
+  {
+    "objectID": "05_encapsulamiento.html#probando-el-setter",
+    "href": "05_encapsulamiento.html#probando-el-setter",
+    "title": "Encapsulamiento y propiedades",
+    "section": "Probando el setter",
+    "text": "Probando el setter\n\np = Persona(30)\np.edad = 31                    # válido\nprint(p.edad)\ntry:\n    p.edad = 200               # inválido\nexcept ValueError as e:\n    print(\"ValueError:\", e)\n\n31\nValueError: Edad inválida\n\n\n\nLa asignación parece normal (p.edad = 200) pero ejecuta la validación del setter."
+  },
+  {
+    "objectID": "05_encapsulamiento.html#solo-lectura-y-propiedades-calculadas",
+    "href": "05_encapsulamiento.html#solo-lectura-y-propiedades-calculadas",
+    "title": "Encapsulamiento y propiedades",
+    "section": "Solo lectura y propiedades calculadas",
+    "text": "Solo lectura y propiedades calculadas\n\nclass Rectangulo:\n    def __init__(self, ancho, alto):\n        self.ancho, self.alto = ancho, alto\n    @property\n    def area(self):                    # sin setter\n        return self.ancho * self.alto\n\nr = Rectangulo(5, 10)\nprint(r.area)\nr.area = 100\n\n50\n\n\n\n---------------------------------------------------------------------------\nAttributeError                            Traceback (most recent call last)\nCell In[8], line 10\n      6         return self.ancho * self.alto\n      7 \n      8 r = Rectangulo(5, 10)\n      9 print(r.area)\n---&gt; 10 r.area = 100\n\nAttributeError: property 'area' of 'Rectangulo' object has no setter\n\n\n\n\nEl área se recalcula sola si cambian ancho o alto; no se puede asignar directamente."
+  },
+  {
+    "objectID": "05_encapsulamiento.html#buenas-prácticas",
+    "href": "05_encapsulamiento.html#buenas-prácticas",
+    "title": "Encapsulamiento y propiedades",
+    "section": "Buenas prácticas",
+    "text": "Buenas prácticas\n\nAtributos privados para datos que no deben tocarse directamente\n@property en lugar de get_/set_\nValida siempre en los setters\nPropiedades calculadas para valores derivados\n\n\nMencionar la retrocompatibilidad: un atributo público se puede convertir después en propiedad sin romper el código que lo usa."
+  },
+  {
+    "objectID": "05_encapsulamiento.html#resumen",
+    "href": "05_encapsulamiento.html#resumen",
+    "title": "Encapsulamiento y propiedades",
+    "section": "Resumen",
+    "text": "Resumen\n\nPúblico / _protegido / __privado (name mangling)\nEl encapsulamiento protege la coherencia del objeto\n@property + @x.setter: acceso controlado con sintaxis de atributo\n\nSiguiente tema: polimorfismo.\n\nPedir a dos o tres estudiantes que expliquen con sus palabras un punto del resumen. Recordar los ejercicios del capítulo correspondiente en el sitio del curso."
+  },
+  {
+    "objectID": "08_composicion_agregacion.html#es-un-vs.-tiene-un",
+    "href": "08_composicion_agregacion.html#es-un-vs.-tiene-un",
+    "title": "Composición y agregación",
+    "section": "“Es-un” vs. “tiene-un”",
+    "text": "“Es-un” vs. “tiene-un”\n\n\nHerencia — es-un\n\nUn Perro es un Animal\nUn Ferrari es un Coche\n\n\nComposición / agregación — tiene-un\n\nUn Coche tiene un Motor\nUna Universidad tiene Estudiantes\n\n\n\nPedir al grupo que clasifique ejemplos: Estudiante/Persona, Casa/Habitación, Equipo/Jugador."
+  },
+  {
+    "objectID": "08_composicion_agregacion.html#composición-relación-fuerte",
+    "href": "08_composicion_agregacion.html#composición-relación-fuerte",
+    "title": "Composición y agregación",
+    "section": "Composición: relación fuerte",
+    "text": "Composición: relación fuerte\n\nEl contenedor crea y posee sus partes\nLas partes no tienen sentido sin el contenedor\nSi desaparece el contenedor, desaparecen sus partes\n\nCoche → Motor · Libro → Páginas\n\nEl ciclo de vida de las partes depende del contenedor: nacen y mueren con él."
+  },
+  {
+    "objectID": "08_composicion_agregacion.html#agregación-relación-débil",
+    "href": "08_composicion_agregacion.html#agregación-relación-débil",
+    "title": "Composición y agregación",
+    "section": "Agregación: relación débil",
+    "text": "Agregación: relación débil\n\nEl contenedor usa objetos que ya existían\nLas partes existen por su cuenta\nSi desaparece el contenedor, las partes siguen\n\nUniversidad → Estudiantes · Biblioteca → Libros\n\nLas partes tienen vida propia: un estudiante existe antes de inscribirse y después de egresar."
+  },
+  {
+    "objectID": "08_composicion_agregacion.html#en-uml",
+    "href": "08_composicion_agregacion.html#en-uml",
+    "title": "Composición y agregación",
+    "section": "En UML",
+    "text": "En UML\n\n\n\n\n\n\nclassDiagram\n    Coche \"1\" *-- \"1\" Motor : composición\n    Universidad \"1\" o-- \"*\" Estudiante : agregación\n\n\n\n\n\n\nRombo relleno = composición · rombo vacío = agregación\n\nEl rombo siempre va del lado del contenedor. Los números indican cuántos objetos participan (1, * = muchos)."
+  },
+  {
+    "objectID": "08_composicion_agregacion.html#composición-en-código",
+    "href": "08_composicion_agregacion.html#composición-en-código",
+    "title": "Composición y agregación",
+    "section": "Composición en código",
+    "text": "Composición en código\n\nclass Motor:\n    def __init__(self, hp): self.hp = hp\n\nclass Coche:\n    def __init__(self, modelo, hp):\n        self.modelo = modelo\n        self.motor = Motor(hp)        # el coche CREA su motor\n\nc = Coche(\"Corolla\", 140)\nprint(c.modelo, c.motor.hp, \"HP\")\n\nCorolla 140 HP\n\n\n\nEl motor se crea dentro del init del coche; nadie más tiene una referencia a él."
+  },
+  {
+    "objectID": "08_composicion_agregacion.html#agregación-en-código",
+    "href": "08_composicion_agregacion.html#agregación-en-código",
+    "title": "Composición y agregación",
+    "section": "Agregación en código",
+    "text": "Agregación en código\n\nclass Estudiante:\n    def __init__(self, nombre): self.nombre = nombre\n\nclass Universidad:\n    def __init__(self): self.estudiantes = []\n    def inscribir(self, e): self.estudiantes.append(e)   # RECIBE uno existente\n\nana = Estudiante(\"Ana\")\nuni = Universidad(); uni.inscribir(ana)\ndel uni\nprint(ana.nombre, \"sigue existiendo\")\n\nAna sigue existiendo\n\n\n\nana existe antes que la universidad y sigue existiendo después de del uni."
+  },
+  {
+    "objectID": "08_composicion_agregacion.html#la-pregunta-clave",
+    "href": "08_composicion_agregacion.html#la-pregunta-clave",
+    "title": "Composición y agregación",
+    "section": "La pregunta clave",
+    "text": "La pregunta clave\n\n¿Quién crea la parte?\n\n\nSe crea dentro del __init__ del contenedor → composición\nLlega como parámetro desde fuera → agregación\n\n\nEs la forma más práctica de distinguirlas al leer código. Mostrar la visualización de Python Tutor del capítulo 8."
+  },
+  {
+    "objectID": "08_composicion_agregacion.html#herencia-mal-usada",
+    "href": "08_composicion_agregacion.html#herencia-mal-usada",
+    "title": "Composición y agregación",
+    "section": "Herencia mal usada",
+    "text": "Herencia mal usada\nclass Motor:\n    def encender(self): ...\n\nclass Coche(Motor):      # ✗ un coche NO ES un motor\n    pass\nclass Coche:\n    def __init__(self):\n        self.motor = Motor()   # ✓ un coche TIENE un motor\n\nSi la frase “un X es un Y” suena absurda, no es herencia."
+  },
+  {
+    "objectID": "08_composicion_agregacion.html#composición-flexibilidad",
+    "href": "08_composicion_agregacion.html#composición-flexibilidad",
+    "title": "Composición y agregación",
+    "section": "Composición = flexibilidad",
+    "text": "Composición = flexibilidad\n\nclass MotorGasolina:\n    def arrancar(self): return \"brum brum\"\nclass MotorElectrico:\n    def arrancar(self): return \"zzzz\"\n\nclass Coche:\n    def __init__(self, motor): self.motor = motor\n    def arrancar(self): print(self.motor.arrancar())\n\nc = Coche(MotorGasolina()); c.arrancar()\nc.motor = MotorElectrico(); c.arrancar()     # cambio en tiempo de ejecución\n\nbrum brum\nzzzz\n\n\n\nCon herencia el “tipo de motor” quedaría fijo en la jerarquía. Con composición se cambia la pieza."
+  },
+  {
+    "objectID": "08_composicion_agregacion.html#un-sistema-real",
+    "href": "08_composicion_agregacion.html#un-sistema-real",
+    "title": "Composición y agregación",
+    "section": "Un sistema real",
+    "text": "Un sistema real\n\n\n\n\n\n\nclassDiagram\n    Libro \"1\" *-- \"*\" Pagina : composición\n    Libro \"*\" o-- \"1\" Autor : agregación\n    Biblioteca o-- \"*\" Libro\n    Biblioteca o-- \"*\" Usuario\n\n\n\n\n\n\n\nUn mismo sistema combina ambas relaciones: el libro compone sus páginas pero sólo agrega a su autor."
+  },
+  {
+    "objectID": "08_composicion_agregacion.html#reglas-de-oro",
+    "href": "08_composicion_agregacion.html#reglas-de-oro",
+    "title": "Composición y agregación",
+    "section": "Reglas de oro",
+    "text": "Reglas de oro\n\nPrefiere composición sobre herencia\nHerencia sólo para “es-un”\nComposición = el contenedor crea y posee\nAgregación = el contenedor usa objetos externos\n\n\n“Favor composition over inheritance” es una de las recomendaciones más citadas del libro Design Patterns."
+  },
+  {
+    "objectID": "08_composicion_agregacion.html#resumen",
+    "href": "08_composicion_agregacion.html#resumen",
+    "title": "Composición y agregación",
+    "section": "Resumen",
+    "text": "Resumen\n\n“Tiene-un” se modela con composición o agregación\nDiferencia: quién crea la parte y si puede vivir sola\nLa composición da sistemas más flexibles\n\nSiguiente tema: clases abstractas e interfaces.\n\nPedir a dos o tres estudiantes que expliquen con sus palabras un punto del resumen. Recordar los ejercicios del capítulo correspondiente en el sitio del curso."
+  },
+  {
+    "objectID": "10_proyecto_integrador.html#el-objetivo",
+    "href": "10_proyecto_integrador.html#el-objetivo",
+    "title": "Proyecto integrador",
+    "section": "El objetivo",
+    "text": "El objetivo\nUn sistema de tienda en línea que use todos los conceptos del curso:\nclases · constructor · herencia · encapsulamiento · polimorfismo · métodos especiales · composición · agregación · clases abstractas\n\nExplicar que el proyecto no introduce conceptos nuevos: junta todos los anteriores en un sistema realista."
+  },
+  {
+    "objectID": "10_proyecto_integrador.html#arquitectura",
+    "href": "10_proyecto_integrador.html#arquitectura",
+    "title": "Proyecto integrador",
+    "section": "Arquitectura",
+    "text": "Arquitectura\n\n\n\n\n\n\nclassDiagram\n    direction LR\n    Producto &lt;|-- ProductoElectronico\n    Producto &lt;|-- ProductoRopa\n    Producto &lt;|-- ProductoAlimento\n    MetodoPago &lt;|-- TarjetaCredito\n    MetodoPago &lt;|-- PayPal\n    Carrito *-- ItemCarrito\n    ItemCarrito o-- Producto\n    Orden o-- Usuario\n    Orden o-- MetodoPago\n    Tienda o-- Producto\n\n\n\n\n\n\n\nRecorrer el diagrama: herencia a la izquierda, composición en el carrito, agregación en la orden."
+  },
+  {
+    "objectID": "10_proyecto_integrador.html#producto-abstracto-y-encapsulado",
+    "href": "10_proyecto_integrador.html#producto-abstracto-y-encapsulado",
+    "title": "Proyecto integrador",
+    "section": "Producto: abstracto y encapsulado",
+    "text": "Producto: abstracto y encapsulado\nclass Producto(ABC):\n    def __init__(self, nombre, precio, stock):\n        self.__nombre, self.__precio, self.__stock = nombre, precio, stock\n\n    @property\n    def precio(self):\n        return self.__precio\n\n    @abstractmethod\n    def calcular_precio_final(self): ...\n\nAbstracción (no existe un “producto genérico”) + encapsulamiento (precio validado por propiedad)."
+  },
+  {
+    "objectID": "10_proyecto_integrador.html#polimorfismo-en-el-precio",
+    "href": "10_proyecto_integrador.html#polimorfismo-en-el-precio",
+    "title": "Proyecto integrador",
+    "section": "Polimorfismo en el precio",
+    "text": "Polimorfismo en el precio\nclass ProductoElectronico(Producto):\n    def calcular_precio_final(self):\n        return self.precio * 1.16          # IVA\n\nclass ProductoRopa(Producto):\n    def calcular_precio_final(self):\n        return self.precio * 0.90          # temporada\n\nclass ProductoAlimento(Producto):\n    def calcular_precio_final(self):\n        return self.precio * (0.5 if self.dias_para_caducar() &lt;= 3 else 1)\nEl carrito sólo llama producto.calcular_precio_final().\n\nCada tipo de producto calcula su precio a su manera. El carrito y la orden no necesitan saber de qué tipo es cada producto."
+  },
+  {
+    "objectID": "10_proyecto_integrador.html#métodos-de-pago-una-interfaz",
+    "href": "10_proyecto_integrador.html#métodos-de-pago-una-interfaz",
+    "title": "Proyecto integrador",
+    "section": "Métodos de pago: una interfaz",
+    "text": "Métodos de pago: una interfaz\nclass MetodoPago(ABC):\n    @abstractmethod\n    def procesar_pago(self, monto): ...\n    @abstractmethod\n    def validar(self): ...\n\nclass PayPal(MetodoPago):\n    def validar(self):\n        return \"@\" in self.email\n    def procesar_pago(self, monto):\n        ...\n\nLa tienda depende de MetodoPago, no de PayPal ni de TarjetaCredito. Agregar un método nuevo no la modifica."
+  },
+  {
+    "objectID": "10_proyecto_integrador.html#el-carrito-composición",
+    "href": "10_proyecto_integrador.html#el-carrito-composición",
+    "title": "Proyecto integrador",
+    "section": "El carrito: composición",
+    "text": "El carrito: composición\nclass Carrito:\n    def __init__(self):\n        self.__items = []                      # el carrito posee sus items\n\n    def agregar_producto(self, producto, cantidad=1):\n        self.__items.append(ItemCarrito(producto, cantidad))\n\n    def calcular_total(self):\n        return sum(i.obtener_subtotal() for i in self.__items)\n\n    def __len__(self):                         # método especial\n        return len(self.__items)\n\nLos ItemCarrito los crea el carrito y no tienen sentido fuera de él. len permite escribir len(carrito)."
+  },
+  {
+    "objectID": "10_proyecto_integrador.html#la-orden-agregación",
+    "href": "10_proyecto_integrador.html#la-orden-agregación",
+    "title": "Proyecto integrador",
+    "section": "La orden: agregación",
+    "text": "La orden: agregación\nclass Orden:\n    def __init__(self, usuario, items, metodo_pago):\n        self.usuario = usuario          # existen fuera de la orden\n        self.items = items\n        self.metodo_pago = metodo_pago\nLa orden usa usuario, productos y método de pago; no los crea.\n\nEl usuario y los productos existen antes y después de la orden; ella sólo los referencia."
+  },
+  {
+    "objectID": "10_proyecto_integrador.html#flujo-de-una-compra",
+    "href": "10_proyecto_integrador.html#flujo-de-una-compra",
+    "title": "Proyecto integrador",
+    "section": "Flujo de una compra",
+    "text": "Flujo de una compra\n\n\n\n\n\n\nsequenceDiagram\n    participant U as Usuario\n    participant C as Carrito\n    participant T as Tienda\n    participant O as Orden\n    participant P as MetodoPago\n    U-&gt;&gt;C: agregar_producto(laptop, 1)\n    U-&gt;&gt;T: crear_orden(usuario, carrito, tarjeta)\n    T-&gt;&gt;O: Orden(usuario, items, tarjeta)\n    O-&gt;&gt;P: procesar_pago(total)\n    P--&gt;&gt;O: (True, \"aprobado\")\n    O-&gt;&gt;O: reducir stock\n    T--&gt;&gt;U: orden completada\n\n\n\n\n\n\n\nRecorrer el diagrama de arriba abajo. Señalar dónde aparece el polimorfismo (procesar_pago) y dónde se protege el stock."
+  },
+  {
+    "objectID": "10_proyecto_integrador.html#concepto-dónde-aparece",
+    "href": "10_proyecto_integrador.html#concepto-dónde-aparece",
+    "title": "Proyecto integrador",
+    "section": "Concepto → dónde aparece",
+    "text": "Concepto → dónde aparece\n\n\n\nConcepto\nEn el proyecto\n\n\n\n\nHerencia\ntipos de Producto, métodos de pago\n\n\nEncapsulamiento\n__precio, __stock, __password_hash\n\n\nPolimorfismo\ncalcular_precio_final(), procesar_pago()\n\n\nAbstracción\nProducto, MetodoPago\n\n\nComposición\nCarrito → ItemCarrito\n\n\nAgregación\nOrden → Usuario, Producto\n\n\nMétodos especiales\n__str__, __lt__, __len__, __eq__\n\n\n\n\nPedir a los estudiantes que señalen cada concepto en el código del capítulo 10 antes de mostrar la tabla completa."
+  },
+  {
+    "objectID": "10_proyecto_integrador.html#reto-extiende-el-sistema",
+    "href": "10_proyecto_integrador.html#reto-extiende-el-sistema",
+    "title": "Proyecto integrador",
+    "section": "Reto: extiende el sistema",
+    "text": "Reto: extiende el sistema\n\nCupones de descuento\nReseñas con calificación promedio\nMétodos de envío (clase abstracta)\nCarrito persistente\nBúsqueda avanzada\n\nSoluciones propuestas en el capítulo 10 del sitio.\n\nSugerir trabajar en equipos: cada equipo elige una extensión y la presenta. Las soluciones propuestas están en el sitio."
+  },
+  {
+    "objectID": "10_proyecto_integrador.html#siguientes-pasos",
+    "href": "10_proyecto_integrador.html#siguientes-pasos",
+    "title": "Proyecto integrador",
+    "section": "Siguientes pasos",
+    "text": "Siguientes pasos\n\nPruebas unitarias (unittest, pytest)\nPatrones de diseño: Factory, Observer, Strategy\nPrincipios SOLID\nFrameworks que usan POO a fondo: Django, FastAPI\n\n¡Felicidades por terminar el curso!\n\nCerrar el curso conectando la POO con lo que verán en la maestría: frameworks, pruebas y diseño de software."
+  },
+  {
+    "objectID": "01_clases_objetos.html#qué-es-la-poo",
+    "href": "01_clases_objetos.html#qué-es-la-poo",
+    "title": "Clases y objetos",
+    "section": "¿Qué es la POO?",
+    "text": "¿Qué es la POO?\n\nUna forma de organizar programas alrededor de objetos\nCada objeto junta datos (atributos) y comportamiento (métodos)\nClase = el molde · Objeto = algo concreto hecho con ese molde\n\n\nAnalogía de LEGO: el diseño de una pieza es la clase; cada pieza física es un objeto. Insistir en que la POO no es “otro lenguaje”: es una manera de organizar código."
+  },
+  {
+    "objectID": "01_clases_objetos.html#un-molde-muchos-objetos",
+    "href": "01_clases_objetos.html#un-molde-muchos-objetos",
+    "title": "Clases y objetos",
+    "section": "Un molde, muchos objetos",
+    "text": "Un molde, muchos objetos\n\n\n\n\n\n\nflowchart LR\n    C[\"Clase Coche&lt;br/&gt;(el plano de fábrica)\"] --&gt; O1[\"coche1&lt;br/&gt;Toyota rojo\"]\n    C --&gt; O2[\"coche2&lt;br/&gt;Honda azul\"]\n    C --&gt; O3[\"coche3&lt;br/&gt;Ford negro\"]\n\n\n\n\n\n\n\nEl plano se diseña una vez; con él se fabrican muchos coches. Cada coche tiene sus propios valores (marca, color) pero todos siguen el mismo diseño."
+  },
+  {
+    "objectID": "01_clases_objetos.html#tu-primera-clase",
+    "href": "01_clases_objetos.html#tu-primera-clase",
+    "title": "Clases y objetos",
+    "section": "Tu primera clase",
+    "text": "Tu primera clase\n\nclass Perro:\n    pass          # clase vacía, por ahora\n\nmi_perro = Perro()     # crear un objeto (instancia)\nprint(type(mi_perro))\n\n&lt;class '__main__.Perro'&gt;\n\n\n\nclass define la clase; el nombre va en CamelCase\nLos paréntesis Perro() crean el objeto\n\n\nHacer notar que pass sólo sirve para que la clase no quede vacía sintácticamente. Preguntar: ¿qué pasa si olvidamos los paréntesis? (mi_perro = Perro guarda la clase, no un objeto)."
+  },
+  {
+    "objectID": "01_clases_objetos.html#atributos-de-clase",
+    "href": "01_clases_objetos.html#atributos-de-clase",
+    "title": "Clases y objetos",
+    "section": "Atributos de clase",
+    "text": "Atributos de clase\n\nclass Perro:\n    especie = \"Canis familiaris\"   # compartido por todos\n\na, b = Perro(), Perro()\nprint(a.especie, \"|\", b.especie)\n\nCanis familiaris | Canis familiaris\n\n\nSe definen dentro de la clase y los comparten todas las instancias.\n\nBuen uso: constantes o datos comunes a todos los objetos (especie, número de ruedas…)."
+  },
+  {
+    "objectID": "01_clases_objetos.html#atributos-de-instancia",
+    "href": "01_clases_objetos.html#atributos-de-instancia",
+    "title": "Clases y objetos",
+    "section": "Atributos de instancia",
+    "text": "Atributos de instancia\n\nperro1 = Perro()\nperro1.nombre = \"Max\"\nperro1.edad = 3\n\nperro2 = Perro()\nperro2.nombre = \"Luna\"\nprint(perro1.nombre, perro2.nombre)\n\nMax Luna\n\n\nCada objeto guarda sus propios valores.\n\nAclarar que asignar atributos “desde fuera” funciona, pero no es la forma recomendada: en el tema 3 lo haremos con el constructor __init__."
+  },
+  {
+    "objectID": "01_clases_objetos.html#clase-vs.-objeto",
+    "href": "01_clases_objetos.html#clase-vs.-objeto",
+    "title": "Clases y objetos",
+    "section": "Clase vs. objeto",
+    "text": "Clase vs. objeto\n\n\nClase\n\nPlantilla / molde\nDefine qué atributos y métodos habrá\nSe escribe una vez\n\n\nObjeto\n\nInstancia concreta\nTiene valores específicos\nPuede haber muchos\n\n\n\nPedir ejemplos al grupo: Alumno / “Ana”, Materia / “POO”, Cuenta / “cuenta de Luis”."
+  },
+  {
+    "objectID": "01_clases_objetos.html#cada-objeto-es-distinto",
+    "href": "01_clases_objetos.html#cada-objeto-es-distinto",
+    "title": "Clases y objetos",
+    "section": "Cada objeto es distinto",
+    "text": "Cada objeto es distinto\n\np1 = Perro()\np2 = Perro()\nprint(p1 is p2)        # ¿son el mismo objeto?\nprint(id(p1) != id(p2))\n\nFalse\nTrue\n\n\nDos llamadas a Perro() producen dos objetos diferentes.\n\nis compara identidad (¿es el mismo objeto en memoria?), no igualdad de contenido."
+  },
+  {
+    "objectID": "01_clases_objetos.html#variables-referencias",
+    "href": "01_clases_objetos.html#variables-referencias",
+    "title": "Clases y objetos",
+    "section": "Variables = referencias",
+    "text": "Variables = referencias\n\notro = perro1          # NO crea un objeto nuevo\notro.nombre = \"Rex\"\nprint(perro1.nombre)\n\nRex\n\n\notro y perro1 apuntan al mismo objeto.\n\nEs el punto que más confunde. Mostrar la visualización de Python Tutor del capítulo 1: las variables son flechas hacia objetos."
+  },
+  {
+    "objectID": "01_clases_objetos.html#sin-clases-vs.-con-clases",
+    "href": "01_clases_objetos.html#sin-clases-vs.-con-clases",
+    "title": "Clases y objetos",
+    "section": "Sin clases vs. con clases",
+    "text": "Sin clases vs. con clases\n\n\n# Diccionarios sueltos\nana = {\"nombre\": \"Ana\",\n       \"edad\": 20}\n\ndef presentar(e):\n    return f\"Soy {e['nombre']}\"\n\n# Una clase\nclass Estudiante:\n    pass\n\nana = Estudiante()\nana.nombre = \"Ana\"\nana.edad = 20\n\n\nCon diccionarios, nada garantiza que todos tengan las mismas claves ni dónde vive la lógica. La clase será el lugar natural para datos + funciones (temas 2 y 3)."
+  },
+  {
+    "objectID": "01_clases_objetos.html#por-qué-usar-clases",
+    "href": "01_clases_objetos.html#por-qué-usar-clases",
+    "title": "Clases y objetos",
+    "section": "¿Por qué usar clases?",
+    "text": "¿Por qué usar clases?\n\nOrganización: datos y funciones relacionados, juntos\nReutilización: muchos objetos con la misma estructura\nAbstracción: se oculta la complejidad interna\nMantenimiento: cambios en un solo lugar\n\n\nRelacionar cada ventaja con un ejemplo de software que usen a diario (apps, juegos)."
+  },
+  {
+    "objectID": "01_clases_objetos.html#resumen",
+    "href": "01_clases_objetos.html#resumen",
+    "title": "Clases y objetos",
+    "section": "Resumen",
+    "text": "Resumen\n\nClase: molde · Objeto: instancia concreta\nclass Nombre: define; Nombre() crea\nAtributos de clase (compartidos) vs. de instancia (propios)\nLas variables son referencias a objetos\n\nSiguiente tema: métodos — cómo hacer que los objetos “hagan cosas”.\n\nDejar como reto los ejercicios del capítulo 1 del sitio del curso."
+  },
+  {
+    "objectID": "04_herencia.html#la-relación-es-un",
+    "href": "04_herencia.html#la-relación-es-un",
+    "title": "Herencia",
+    "section": "La relación “es-un”",
+    "text": "La relación “es-un”\n\nUn Perro es un Animal\nUn Gerente es un Empleado\nUn Cuadrado es un Rectángulo\n\nLa herencia crea clases nuevas reutilizando y extendiendo otras.\n\nAnalogía: clasificación biológica. Los mamíferos heredan lo de los animales y agregan lo suyo."
+  },
+  {
+    "objectID": "04_herencia.html#sintaxis",
+    "href": "04_herencia.html#sintaxis",
+    "title": "Herencia",
+    "section": "Sintaxis",
+    "text": "Sintaxis\n\nclass Animal:\n    def __init__(self, nombre):\n        self.nombre = nombre\n    def comer(self):\n        print(f\"{self.nombre} está comiendo\")\n\nclass Perro(Animal):            # Perro hereda de Animal\n    def ladrar(self):\n        print(f\"{self.nombre}: ¡Guau!\")\n\np = Perro(\"Max\")\np.comer(); p.ladrar()\n\nMax está comiendo\nMax: ¡Guau!\n\n\n\nPerro no define init ni comer: los hereda. Sólo agrega ladrar."
+  },
+  {
+    "objectID": "04_herencia.html#en-un-diagrama",
+    "href": "04_herencia.html#en-un-diagrama",
+    "title": "Herencia",
+    "section": "En un diagrama",
+    "text": "En un diagrama\n\n\n\n\n\n\nclassDiagram\n    Animal &lt;|-- Perro\n    Animal &lt;|-- Gato\n    class Animal {\n        +nombre\n        +comer()\n        +hacer_sonido()\n    }\n    class Perro {\n        +hacer_sonido()\n    }\n    class Gato {\n        +hacer_sonido()\n    }\n\n\n\n\n\n\nLa flecha de punta hueca va de la hija al padre.\n\nLas hijas sólo muestran lo que agregan o sobrescriben; todo lo demás lo heredan sin escribirlo."
+  },
+  {
+    "objectID": "04_herencia.html#sobrescribir-métodos",
+    "href": "04_herencia.html#sobrescribir-métodos",
+    "title": "Herencia",
+    "section": "Sobrescribir métodos",
+    "text": "Sobrescribir métodos\n\nclass Animal:\n    def __init__(self, nombre):\n        self.nombre = nombre\n    def hacer_sonido(self):\n        return \"...\"\n\nclass Gato(Animal):\n    def hacer_sonido(self):          # override\n        return \"¡Miau!\"\n\nprint(Animal(\"x\").hacer_sonido(), Gato(\"Tom\").hacer_sonido())\n\n... ¡Miau!\n\n\n\nLa hija redefine el método con el mismo nombre; gana la versión más específica."
+  },
+  {
+    "objectID": "04_herencia.html#super-reutilizar-al-padre",
+    "href": "04_herencia.html#super-reutilizar-al-padre",
+    "title": "Herencia",
+    "section": "super(): reutilizar al padre",
+    "text": "super(): reutilizar al padre\n\nclass Vehiculo:\n    def __init__(self, marca):\n        self.marca = marca\n\nclass Coche(Vehiculo):\n    def __init__(self, marca, puertas):\n        super().__init__(marca)      # el padre inicializa lo suyo\n        self.puertas = puertas\n\nc = Coche(\"Toyota\", 4)\nprint(c.marca, c.puertas)\n\nToyota 4\n\n\n\nSin super() tendríamos que repetir self.marca = marca en cada hija (y mantenerlo en varios sitios)."
+  },
+  {
+    "objectID": "04_herencia.html#super-en-otros-métodos",
+    "href": "04_herencia.html#super-en-otros-métodos",
+    "title": "Herencia",
+    "section": "super() en otros métodos",
+    "text": "super() en otros métodos\n\nclass Empleado:\n    def __init__(self, salario):\n        self.salario = salario\n    def pago(self):\n        return self.salario\n\nclass Gerente(Empleado):\n    def pago(self):\n        return super().pago() + 5000   # extiende, no reemplaza\n\nprint(Gerente(15000).pago())\n\n20000\n\n\n\nsuper() no sólo sirve en init: permite extender cualquier método del padre en lugar de reemplazarlo por completo."
+  },
+  {
+    "objectID": "04_herencia.html#herencia-multinivel",
+    "href": "04_herencia.html#herencia-multinivel",
+    "title": "Herencia",
+    "section": "Herencia multinivel",
+    "text": "Herencia multinivel\n\nclass SerVivo:\n    def respirar(self): print(\"respirando\")\nclass Animal(SerVivo):\n    def moverse(self): print(\"moviéndose\")\nclass Perro(Animal):\n    def ladrar(self): print(\"¡Guau!\")\n\np = Perro()\np.respirar(); p.moverse(); p.ladrar()\n\nrespirando\nmoviéndose\n¡Guau!\n\n\n\nPerro tiene acceso a los métodos de todos los niveles superiores."
+  },
+  {
+    "objectID": "04_herencia.html#dónde-busca-python-el-mro",
+    "href": "04_herencia.html#dónde-busca-python-el-mro",
+    "title": "Herencia",
+    "section": "¿Dónde busca Python? El MRO",
+    "text": "¿Dónde busca Python? El MRO\n\nprint([c.__name__ for c in Perro.__mro__])\n\n['Perro', 'Animal', 'SerVivo', 'object']\n\n\nPython busca el método en ese orden y usa el primero que encuentra.\n\nDemostrar con la animación del capítulo 4: buscar respirar() sube hasta SerVivo; volar() termina en AttributeError."
+  },
+  {
+    "objectID": "04_herencia.html#isinstance-e-issubclass",
+    "href": "04_herencia.html#isinstance-e-issubclass",
+    "title": "Herencia",
+    "section": "isinstance() e issubclass()",
+    "text": "isinstance() e issubclass()\n\nprint(isinstance(p, Animal))     # ¿p es un Animal?\nprint(issubclass(Perro, SerVivo))\nprint(issubclass(SerVivo, Perro))\n\nTrue\nTrue\nFalse\n\n\n\nisinstance respeta la herencia: un Perro también es Animal y SerVivo."
+  },
+  {
+    "objectID": "04_herencia.html#cuándo-no-usar-herencia",
+    "href": "04_herencia.html#cuándo-no-usar-herencia",
+    "title": "Herencia",
+    "section": "¿Cuándo NO usar herencia?",
+    "text": "¿Cuándo NO usar herencia?\n\nUn Coche no es un Motor → tiene un motor\nSi la relación es “tiene-un”, usa composición (tema 8)\nHerencia sólo cuando “es-un” se cumple siempre\n\n\nPregunta para el grupo: ¿Estudiante hereda de Persona? ¿Biblioteca hereda de Libro?"
+  },
+  {
+    "objectID": "04_herencia.html#resumen",
+    "href": "04_herencia.html#resumen",
+    "title": "Herencia",
+    "section": "Resumen",
+    "text": "Resumen\n\nclass Hija(Padre): hereda atributos y métodos\nSobrescribir = redefinir un método en la hija\nsuper() reutiliza el código del padre\nMRO: orden en que Python busca los métodos\nHerencia ⇔ relación es-un\n\nSiguiente tema: encapsulamiento.\n\nPedir a dos o tres estudiantes que expliquen con sus palabras un punto del resumen. Recordar los ejercicios del capítulo correspondiente en el sitio del curso."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Diapositivas del curso",
+    "section": "",
+    "text": "Presentaciones para la clase presencial. Durante la presentación: F pantalla completa, S notas del presentador, Esc vista general de todas las diapositivas.\n\n\n\n#\nTema\n\n\n\n\n1\nClases y objetos\n\n\n2\nAtributos y métodos\n\n\n3\nEl constructor y self\n\n\n4\nHerencia\n\n\n5\nEncapsulamiento y propiedades\n\n\n6\nPolimorfismo\n\n\n7\nMétodos especiales\n\n\n8\nComposición y agregación\n\n\n9\nClases abstractas e interfaces\n\n\n10\nProyecto integrador"
+  },
+  {
+    "objectID": "07_metodos_especiales.html#qué-son",
+    "href": "07_metodos_especiales.html#qué-son",
+    "title": "Métodos especiales",
+    "section": "¿Qué son?",
+    "text": "¿Qué son?\n\nMétodos con nombres como __str__, __add__, __len__\nTambién se llaman dunder (double underscore)\nTú no los llamas: Python los llama por ti\n\n\nAnalogía del control remoto universal: botones estándar que cualquier dispositivo entiende."
+  },
+  {
+    "objectID": "07_metodos_especiales.html#python-traduce",
+    "href": "07_metodos_especiales.html#python-traduce",
+    "title": "Métodos especiales",
+    "section": "Python traduce",
+    "text": "Python traduce\n\n\n\n\n\n\nflowchart LR\n    A[\"p1 + p2\"] --&gt; B[\"p1.__add__(p2)\"]\n    C[\"print(p1)\"] --&gt; D[\"p1.__str__()\"]\n    E[\"len(obj)\"] --&gt; F[\"obj.__len__()\"]\n    G[\"a &lt; b\"] --&gt; H[\"a.__lt__(b)\"]\n\n\n\n\n\n\n\nClave del tema: la sintaxis cotidiana de Python son llamadas a métodos especiales. Implementarlos integra nuestras clases al lenguaje."
+  },
+  {
+    "objectID": "07_metodos_especiales.html#str__-y-__repr__",
+    "href": "07_metodos_especiales.html#str__-y-__repr__",
+    "title": "Métodos especiales",
+    "section": "__str__ y __repr__",
+    "text": "__str__ y __repr__\n\nclass Persona:\n    def __init__(self, nombre, edad):\n        self.nombre, self.edad = nombre, edad\n    def __str__(self):                       # para usuarios\n        return f\"{self.nombre}, {self.edad} años\"\n    def __repr__(self):                      # para programadores\n        return f\"Persona({self.nombre!r}, {self.edad})\"\n\np = Persona(\"Ana\", 25)\nprint(p); print(repr(p))\n\nAna, 25 años\nPersona('Ana', 25)\n\n\n\nSin str, print muestra algo como &lt;main.Persona object at 0x…&gt;. repr idealmente permite recrear el objeto."
+  },
+  {
+    "objectID": "07_metodos_especiales.html#operadores-aritméticos",
+    "href": "07_metodos_especiales.html#operadores-aritméticos",
+    "title": "Métodos especiales",
+    "section": "Operadores aritméticos",
+    "text": "Operadores aritméticos\n\nclass Punto:\n    def __init__(self, x, y): self.x, self.y = x, y\n    def __add__(self, otro): return Punto(self.x + otro.x, self.y + otro.y)\n    def __mul__(self, k):    return Punto(self.x * k, self.y * k)\n    def __rmul__(self, k):   return self * k        # para 3 * p\n    def __repr__(self):      return f\"Punto({self.x}, {self.y})\"\n\na, b = Punto(2, 3), Punto(5, 7)\nprint(a + b, a * 3, 3 * a)\n\nPunto(7, 10) Punto(6, 9) Punto(6, 9)\n\n\n\nrmul se usa cuando el objeto está a la derecha: 3 * a → a.__rmul__(3)."
+  },
+  {
+    "objectID": "07_metodos_especiales.html#comparaciones",
+    "href": "07_metodos_especiales.html#comparaciones",
+    "title": "Métodos especiales",
+    "section": "Comparaciones",
+    "text": "Comparaciones\n\nclass Producto:\n    def __init__(self, nombre, precio): self.nombre, self.precio = nombre, precio\n    def __lt__(self, otro): return self.precio &lt; otro.precio\n    def __repr__(self): return f\"{self.nombre} ${self.precio}\"\n\nproductos = [Producto(\"Laptop\", 15000), Producto(\"Mouse\", 300), Producto(\"Teclado\", 800)]\nprint(sorted(productos))          # sorted() usa __lt__\n\n[Mouse $300, Teclado $800, Laptop $15000]\n\n\n\nsorted(), min() y max() usan lt. Con @functools.total_ordering basta definir eq y lt para obtener el resto."
+  },
+  {
+    "objectID": "07_metodos_especiales.html#objetos-como-contenedores",
+    "href": "07_metodos_especiales.html#objetos-como-contenedores",
+    "title": "Métodos especiales",
+    "section": "Objetos como contenedores",
+    "text": "Objetos como contenedores\n\nclass Playlist:\n    def __init__(self, *canciones): self.canciones = list(canciones)\n    def __len__(self): return len(self.canciones)\n    def __getitem__(self, i): return self.canciones[i]\n    def __contains__(self, c): return c in self.canciones\n\npl = Playlist(\"Imagine\", \"Hotel California\")\nprint(len(pl), pl[0], \"Imagine\" in pl)\nfor cancion in pl:                 # __getitem__ también permite iterar\n    print(\"♪\", cancion)\n\n2 Imagine True\n♪ Imagine\n♪ Hotel California\n\n\n\nCon len y getitem el objeto se comporta como una secuencia: se puede indexar, iterar y medir."
+  },
+  {
+    "objectID": "07_metodos_especiales.html#call__-objetos-como-funciones",
+    "href": "07_metodos_especiales.html#call__-objetos-como-funciones",
+    "title": "Métodos especiales",
+    "section": "__call__: objetos como funciones",
+    "text": "__call__: objetos como funciones\n\nclass Contador:\n    def __init__(self): self.cuenta = 0\n    def __call__(self, paso=1):\n        self.cuenta += paso\n        return self.cuenta\n\nc = Contador()\nprint(c(), c(), c(5))\n\n1 2 7\n\n\n\nÚtil para objetos que guardan estado entre llamadas, como este contador."
+  },
+  {
+    "objectID": "07_metodos_especiales.html#enter__-__exit__-with",
+    "href": "07_metodos_especiales.html#enter__-__exit__-with",
+    "title": "Métodos especiales",
+    "section": "__enter__ / __exit__: with",
+    "text": "__enter__ / __exit__: with\n\nclass Recurso:\n    def __enter__(self):\n        print(\"abrir\"); return self\n    def __exit__(self, tipo, valor, traza):\n        print(\"cerrar (siempre, incluso con errores)\")\n\nwith Recurso() as r:\n    print(\"usando el recurso\")\n\nabrir\nusando el recurso\ncerrar (siempre, incluso con errores)\n\n\n\nEs lo que hace open(): garantiza cerrar el archivo aunque ocurra una excepción."
+  },
+  {
+    "objectID": "07_metodos_especiales.html#bool__-y-__abs__",
+    "href": "07_metodos_especiales.html#bool__-y-__abs__",
+    "title": "Métodos especiales",
+    "section": "__bool__ y __abs__",
+    "text": "__bool__ y __abs__\n\nclass Vector:\n    def __init__(self, x, y): self.x, self.y = x, y\n    def __bool__(self): return self.x != 0 or self.y != 0\n    def __abs__(self):  return (self.x**2 + self.y**2) ** 0.5\n\nprint(abs(Vector(3, 4)), bool(Vector(0, 0)))\n\n5.0 False\n\n\n\nbool decide si el objeto es verdadero en un if; abs responde a abs()."
+  },
+  {
+    "objectID": "07_metodos_especiales.html#tabla-de-referencia",
+    "href": "07_metodos_especiales.html#tabla-de-referencia",
+    "title": "Métodos especiales",
+    "section": "Tabla de referencia",
+    "text": "Tabla de referencia\n\n\n\nMétodo\nSe activa con\nMétodo\nSe activa con\n\n\n\n\n__str__\nprint(x)\n__len__\nlen(x)\n\n\n__repr__\nrepr(x)\n__getitem__\nx[i]\n\n\n__add__\nx + y\n__contains__\na in x\n\n\n__eq__\nx == y\n__call__\nx()\n\n\n__lt__\nx &lt; y\n__enter__\nwith x:\n\n\n\n\nNo hay que memorizarla. Basta saber que existen y buscar en la documentación del modelo de datos de Python."
+  },
+  {
+    "objectID": "07_metodos_especiales.html#resumen",
+    "href": "07_metodos_especiales.html#resumen",
+    "title": "Métodos especiales",
+    "section": "Resumen",
+    "text": "Resumen\n\nLos métodos especiales conectan tus clases con la sintaxis de Python\nRepresentación, operadores, comparaciones, contenedores, with…\nvector1 + vector2 es más claro que vector1.sumar(vector2)\n\nSiguiente tema: composición y agregación.\n\nPedir a dos o tres estudiantes que expliquen con sus palabras un punto del resumen. Recordar los ejercicios del capítulo correspondiente en el sitio del curso."
+  }
+]

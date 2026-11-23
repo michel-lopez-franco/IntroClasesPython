@@ -1,0 +1,2047 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>9&nbsp; Clases Abstractas e Interfaces – Programación Orientada a Objetos en Python</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./10_proyecto_integrador.html" rel="next">
+<link href="./08_composicion_agregacion.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-5de16f5e46225c21e2daa90d340bf64f.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-3218d7d29a29f08bc4fdf3802c3e3ca5.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-5de16f5e46225c21e2daa90d340bf64f.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-e3b950a2b943166ab6d411ad4b57e84b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-e140c1282dc1723bc70c5828ab63e8bf.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-e3b950a2b943166ab6d411ad4b57e84b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No se han encontrado resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+<script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+<script src="site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Saltar al contenido principal</a><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
+        setTimeout(() => {
+          window.scrollTo(0, scrollY);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" aria-label="Barra de herramientas">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./07_metodos_especiales.html">Conceptos avanzados</a></li><li class="breadcrumb-item"><a href="./09_clases_abstractas.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Clases Abstractas e Interfaces</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Sitio web">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Programación Orientada a Objetos en Python</a> 
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro" aria-label="Alternar modo oscuro"><i class="bi"></i></button>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Presentación</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Fundamentos</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_clases_objetos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducción a Clases y Objetos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_atributos_metodos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Atributos y Métodos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_constructor_self.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Constructor y Self</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">Pilares de la POO</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04_herencia.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Herencia</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05_encapsulamiento.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Encapsulamiento y Propiedades</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_polimorfismo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Polimorfismo</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-3-label">Conceptos avanzados</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07_metodos_especiales.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Métodos Especiales (Magic Methods)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08_composicion_agregacion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Composición y Agregación</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09_clases_abstractas.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Clases Abstractas e Interfaces</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-4-label">Proyecto</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10_proyecto_integrador.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Proyecto Integrador: Sistema de Tienda en Línea</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-5-label">Apéndices</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./recursos/referencia.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Hoja de referencia de POO en Python</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#qué-son-las-clases-abstractas" id="toc-qué-son-las-clases-abstractas" class="nav-link active" data-scroll-target="#qué-son-las-clases-abstractas"><span class="header-section-number">9.1</span> ¿Qué son las Clases Abstractas?</a>
+  <ul class="collapse">
+  <li><a href="#analogía-del-mundo-real" id="toc-analogía-del-mundo-real" class="nav-link" data-scroll-target="#analogía-del-mundo-real"><span class="header-section-number">9.1.1</span> Analogía del mundo real</a></li>
+  </ul></li>
+  <li><a href="#el-módulo-abc-abstract-base-classes" id="toc-el-módulo-abc-abstract-base-classes" class="nav-link" data-scroll-target="#el-módulo-abc-abstract-base-classes"><span class="header-section-number">9.2</span> El Módulo ABC (Abstract Base Classes)</a></li>
+  <li><a href="#implementando-clases-concretas" id="toc-implementando-clases-concretas" class="nav-link" data-scroll-target="#implementando-clases-concretas"><span class="header-section-number">9.3</span> Implementando Clases Concretas</a></li>
+  <li><a href="#qué-pasa-si-no-implementas-todos-los-métodos" id="toc-qué-pasa-si-no-implementas-todos-los-métodos" class="nav-link" data-scroll-target="#qué-pasa-si-no-implementas-todos-los-métodos"><span class="header-section-number">9.4</span> ¿Qué pasa si no implementas todos los métodos?</a></li>
+  <li><a href="#interfaces-en-python" id="toc-interfaces-en-python" class="nav-link" data-scroll-target="#interfaces-en-python"><span class="header-section-number">9.5</span> Interfaces en Python</a></li>
+  <li><a href="#ejemplo-completo-sistema-de-pagos" id="toc-ejemplo-completo-sistema-de-pagos" class="nav-link" data-scroll-target="#ejemplo-completo-sistema-de-pagos"><span class="header-section-number">9.6</span> Ejemplo Completo: Sistema de Pagos</a></li>
+  <li><a href="#ejercicios-prácticos" id="toc-ejercicios-prácticos" class="nav-link" data-scroll-target="#ejercicios-prácticos"><span class="header-section-number">9.7</span> Ejercicios Prácticos</a>
+  <ul class="collapse">
+  <li><a href="#ejercicio-1-sistema-de-almacenamiento" id="toc-ejercicio-1-sistema-de-almacenamiento" class="nav-link" data-scroll-target="#ejercicio-1-sistema-de-almacenamiento"><span class="header-section-number">9.7.1</span> Ejercicio 1: Sistema de Almacenamiento</a></li>
+  <li><a href="#ejercicio-2-sistema-de-notificaciones" id="toc-ejercicio-2-sistema-de-notificaciones" class="nav-link" data-scroll-target="#ejercicio-2-sistema-de-notificaciones"><span class="header-section-number">9.7.2</span> Ejercicio 2: Sistema de Notificaciones</a></li>
+  <li><a href="#ejercicio-3-sistema-de-jugadores-desafío" id="toc-ejercicio-3-sistema-de-jugadores-desafío" class="nav-link" data-scroll-target="#ejercicio-3-sistema-de-jugadores-desafío"><span class="header-section-number">9.7.3</span> Ejercicio 3: Sistema de Jugadores (Desafío)</a></li>
+  </ul></li>
+  <li><a href="#resumen" id="toc-resumen" class="nav-link" data-scroll-target="#resumen"><span class="header-section-number">9.8</span> Resumen</a>
+  <ul class="collapse">
+  <li><a href="#ventajas-de-clases-abstractas-e-interfaces" id="toc-ventajas-de-clases-abstractas-e-interfaces" class="nav-link" data-scroll-target="#ventajas-de-clases-abstractas-e-interfaces"><span class="header-section-number">9.8.1</span> Ventajas de Clases Abstractas e Interfaces</a></li>
+  <li><a href="#cuándo-usar" id="toc-cuándo-usar" class="nav-link" data-scroll-target="#cuándo-usar"><span class="header-section-number">9.8.2</span> Cuándo Usar</a></li>
+  <li><a href="#próximo-paso" id="toc-próximo-paso" class="nav-link" data-scroll-target="#próximo-paso"><span class="header-section-number">9.8.3</span> Próximo paso</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./07_metodos_especiales.html">Conceptos avanzados</a></li><li class="breadcrumb-item"><a href="./09_clases_abstractas.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Clases Abstractas e Interfaces</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Clases Abstractas e Interfaces</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>Objetivos
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Al terminar este capítulo podrás:</p>
+<ul>
+<li>Crear clases abstractas con <code>ABC</code> y <code>@abstractmethod</code>.</li>
+<li>Explicar por qué no se puede instanciar una clase abstracta (ni una subclase incompleta).</li>
+<li>Combinar métodos abstractos y concretos en una misma plantilla.</li>
+<li>Simular interfaces e implementar varias a la vez.</li>
+<li>Escribir código que dependa de la abstracción y no de la implementación concreta.</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Material de este tema
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Diapositivas:</strong> <a href="slides/_site/09_clases_abstractas.html" target="_blank">abrir la presentación</a> (<strong>F</strong> pantalla completa, <strong>S</strong> notas del presentador, <strong>Esc</strong> vista general).</li>
+<li><strong>Notebook original:</strong> <a href="https://colab.research.google.com/github/michel-lopez-franco/IntroClasesPython/blob/main/src/09_Clases_Abstractas.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid" alt="Abrir en Colab"></a> — ejecútalo completo en Google Colab, sin instalar nada.</li>
+</ul>
+</div>
+</div>
+<section id="qué-son-las-clases-abstractas" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="qué-son-las-clases-abstractas"><span class="header-section-number">9.1</span> ¿Qué son las Clases Abstractas?</h2>
+<p>Una clase abstracta es una clase que:</p>
+<ol type="1">
+<li><strong>No puede ser instanciada</strong> directamente</li>
+<li>Sirve como <strong>plantilla</strong> para otras clases</li>
+<li>Puede tener <strong>métodos abstractos</strong> (sin implementación) que las subclases DEBEN implementar</li>
+<li>Puede tener métodos concretos (con implementación)</li>
+</ol>
+<section id="analogía-del-mundo-real" class="level3" data-number="9.1.1">
+<h3 data-number="9.1.1" class="anchored" data-anchor-id="analogía-del-mundo-real"><span class="header-section-number">9.1.1</span> Analogía del mundo real</h3>
+<p>Piensa en un contrato de trabajo:</p>
+<ul>
+<li>El <strong>contrato</strong> define obligaciones (métodos abstractos) que DEBES cumplir</li>
+<li>No puedes “instanciar” un contrato genérico, solo contratos específicos</li>
+<li>Cada tipo de trabajo (clase concreta) debe cumplir las obligaciones del contrato</li>
+</ul>
+</section>
+</section>
+<section id="el-módulo-abc-abstract-base-classes" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="el-módulo-abc-abstract-base-classes"><span class="header-section-number">9.2</span> El Módulo ABC (Abstract Base Classes)</h2>
+<p>Python proporciona el módulo <code>abc</code> para crear clases abstractas:</p>
+<div>
+<div id="pyodide-1" class="exercise-cell">
+
+</div>
+<script type="pyodide-1-contents">
+eyJhdHRyIjp7ImF1dG9ydW4iOnRydWUsImNhcHRpb24iOiJFamVtcGxvIGludGVyYWN0aXZvOiBtb2RpZsOtY2FsbyB5IHZ1ZWx2ZSBhIGVqZWN1dGFybG8iLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlfSwiY29kZSI6ImZyb20gYWJjIGltcG9ydCBBQkMsIGFic3RyYWN0bWV0aG9kXG5cbmNsYXNzIEZvcm1hKEFCQyk6ICAjIEhlcmVkYXIgZGUgQUJDIGxhIGhhY2UgYWJzdHJhY3RhXG4gICAgXG4gICAgQGFic3RyYWN0bWV0aG9kXG4gICAgZGVmIGNhbGN1bGFyX2FyZWEoc2VsZik6XG4gICAgICAgIFwiXCJcIk3DqXRvZG8gYWJzdHJhY3RvOiBsYXMgc3ViY2xhc2VzIERFQkVOIGltcGxlbWVudGFybG9cIlwiXCJcbiAgICAgICAgcGFzc1xuICAgIFxuICAgIEBhYnN0cmFjdG1ldGhvZFxuICAgIGRlZiBjYWxjdWxhcl9wZXJpbWV0cm8oc2VsZik6XG4gICAgICAgIFwiXCJcIk90cm8gbcOpdG9kbyBhYnN0cmFjdG9cIlwiXCJcbiAgICAgICAgcGFzc1xuICAgIFxuICAgICMgTcOpdG9kbyBjb25jcmV0bzogbGFzIHN1YmNsYXNlcyBsbyBoZXJlZGFuXG4gICAgZGVmIGRlc2NyaXBjaW9uKHNlbGYpOlxuICAgICAgICByZXR1cm4gXCJTb3kgdW5hIGZvcm1hIGdlb23DqXRyaWNhXCJcblxuIyBJbnRlbnRhciBpbnN0YW5jaWFyIGNsYXNlIGFic3RyYWN0YSAoRVJST1IpXG50cnk6XG4gICAgZm9ybWEgPSBGb3JtYSgpXG5leGNlcHQgVHlwZUVycm9yIGFzIGU6XG4gICAgcHJpbnQoZlwiRXJyb3I6IHtlfVwiKSJ9
+</script>
+</div>
+</section>
+<section id="implementando-clases-concretas" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="implementando-clases-concretas"><span class="header-section-number">9.3</span> Implementando Clases Concretas</h2>
+<div id="83fd8a22" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> abc <span class="im">import</span> ABC, abstractmethod</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Forma(ABC):</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">@abstractmethod</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> calcular_area(<span class="va">self</span>):</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">@abstractmethod</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> calcular_perimetro(<span class="va">self</span>):</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> descripcion(<span class="va">self</span>):</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"Forma con área: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>calcular_area()<span class="sc">:.2f}</span><span class="ss">"</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Clase concreta: DEBE implementar todos los métodos abstractos</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Rectangulo(Forma):</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, ancho, alto):</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.ancho <span class="op">=</span> ancho</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.alto <span class="op">=</span> alto</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> calcular_area(<span class="va">self</span>):</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.ancho <span class="op">*</span> <span class="va">self</span>.alto</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> calcular_perimetro(<span class="va">self</span>):</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">2</span> <span class="op">*</span> (<span class="va">self</span>.ancho <span class="op">+</span> <span class="va">self</span>.alto)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Circulo(Forma):</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, radio):</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.radio <span class="op">=</span> radio</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> calcular_area(<span class="va">self</span>):</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> math.pi <span class="op">*</span> <span class="va">self</span>.radio <span class="op">**</span> <span class="dv">2</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> calcular_perimetro(<span class="va">self</span>):</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">2</span> <span class="op">*</span> math.pi <span class="op">*</span> <span class="va">self</span>.radio</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Ahora SÍ podemos instanciar las clases concretas</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>rect <span class="op">=</span> Rectangulo(<span class="dv">5</span>, <span class="dv">10</span>)</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>circ <span class="op">=</span> Circulo(<span class="dv">7</span>)</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Rectángulo: Área=</span><span class="sc">{</span>rect<span class="sc">.</span>calcular_area()<span class="sc">}</span><span class="ss">, Perímetro=</span><span class="sc">{</span>rect<span class="sc">.</span>calcular_perimetro()<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Círculo: Área=</span><span class="sc">{</span>circ<span class="sc">.</span>calcular_area()<span class="sc">:.2f}</span><span class="ss">, Perímetro=</span><span class="sc">{</span>circ<span class="sc">.</span>calcular_perimetro()<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="co"># El método concreto también funciona</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(rect.descripcion())</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(circ.descripcion())</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rectángulo: Área=50, Perímetro=30.00
+Círculo: Área=153.94, Perímetro=43.98
+Forma con área: 50.00
+Forma con área: 153.94</code></pre>
+</div>
+</div>
+</section>
+<section id="qué-pasa-si-no-implementas-todos-los-métodos" class="level2" data-number="9.4">
+<h2 data-number="9.4" class="anchored" data-anchor-id="qué-pasa-si-no-implementas-todos-los-métodos"><span class="header-section-number">9.4</span> ¿Qué pasa si no implementas todos los métodos?</h2>
+<div id="209a73b5" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> abc <span class="im">import</span> ABC, abstractmethod</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Animal(ABC):</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">@abstractmethod</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> hacer_sonido(<span class="va">self</span>):</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">@abstractmethod</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> moverse(<span class="va">self</span>):</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Clase que NO implementa todos los métodos</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> PerroIncompleto(Animal):</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> hacer_sonido(<span class="va">self</span>):</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"¡Guau!"</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Falta implementar moverse()</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Intentar instanciar (ERROR)</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    perro <span class="op">=</span> PerroIncompleto()</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">TypeError</span> <span class="im">as</span> e:</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Error: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">No se puede instanciar porque falta implementar moverse()"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Error: Can't instantiate abstract class PerroIncompleto without an implementation for abstract method 'moverse'
+
+No se puede instanciar porque falta implementar moverse()</code></pre>
+</div>
+</div>
+<div id="a39ed0ac" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Clase completa que implementa </span><span class="al">TODO</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> PerroCompleto(Animal):</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> hacer_sonido(<span class="va">self</span>):</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"¡Guau!"</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> moverse(<span class="va">self</span>):</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"Corriendo en cuatro patas"</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Ahora SÍ funciona</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>perro <span class="op">=</span> PerroCompleto()</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Sonido: </span><span class="sc">{</span>perro<span class="sc">.</span>hacer_sonido()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Movimiento: </span><span class="sc">{</span>perro<span class="sc">.</span>moverse()<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Sonido: ¡Guau!
+Movimiento: Corriendo en cuatro patas</code></pre>
+</div>
+</div>
+</section>
+<section id="interfaces-en-python" class="level2" data-number="9.5">
+<h2 data-number="9.5" class="anchored" data-anchor-id="interfaces-en-python"><span class="header-section-number">9.5</span> Interfaces en Python</h2>
+<p>Python no tiene interfaces explícitas como Java o C#, pero podemos simularlas usando clases abstractas con SOLO métodos abstractos:</p>
+<div>
+<div id="pyodide-2" class="exercise-cell">
+
+</div>
+<script type="pyodide-2-contents">
+eyJhdHRyIjp7ImF1dG9ydW4iOnRydWUsImNhcHRpb24iOiJFamVtcGxvIGludGVyYWN0aXZvOiBtb2RpZsOtY2FsbyB5IHZ1ZWx2ZSBhIGVqZWN1dGFybG8iLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlfSwiY29kZSI6ImZyb20gYWJjIGltcG9ydCBBQkMsIGFic3RyYWN0bWV0aG9kXG5cbiMgSW50ZXJmYXo6IHNvbG8gbcOpdG9kb3MgYWJzdHJhY3Rvcywgc2luIGltcGxlbWVudGFjacOzblxuY2xhc3MgVm9sYWRvcihBQkMpOlxuICAgIEBhYnN0cmFjdG1ldGhvZFxuICAgIGRlZiBkZXNwZWdhcihzZWxmKTpcbiAgICAgICAgcGFzc1xuICAgIFxuICAgIEBhYnN0cmFjdG1ldGhvZFxuICAgIGRlZiB2b2xhcihzZWxmKTpcbiAgICAgICAgcGFzc1xuICAgIFxuICAgIEBhYnN0cmFjdG1ldGhvZFxuICAgIGRlZiBhdGVycml6YXIoc2VsZik6XG4gICAgICAgIHBhc3NcblxuY2xhc3MgTmFkYWRvcihBQkMpOlxuICAgIEBhYnN0cmFjdG1ldGhvZFxuICAgIGRlZiBuYWRhcihzZWxmKTpcbiAgICAgICAgcGFzc1xuXG4jIENsYXNlIHF1ZSBpbXBsZW1lbnRhIHVuYSBpbnRlcmZhelxuY2xhc3MgQXZpb24oVm9sYWRvcik6XG4gICAgZGVmIF9faW5pdF9fKHNlbGYsIG1vZGVsbyk6XG4gICAgICAgIHNlbGYubW9kZWxvID0gbW9kZWxvXG4gICAgXG4gICAgZGVmIGRlc3BlZ2FyKHNlbGYpOlxuICAgICAgICBwcmludChmXCJ7c2VsZi5tb2RlbG99IGRlc3BlZ2FuZG8uLi5cIilcbiAgICBcbiAgICBkZWYgdm9sYXIoc2VsZik6XG4gICAgICAgIHByaW50KGZcIntzZWxmLm1vZGVsb30gdm9sYW5kbyBhIDEwLDAwMCBtZXRyb3NcIilcbiAgICBcbiAgICBkZWYgYXRlcnJpemFyKHNlbGYpOlxuICAgICAgICBwcmludChmXCJ7c2VsZi5tb2RlbG99IGF0ZXJyaXphbmRvLi4uXCIpXG5cbiMgQ2xhc2UgcXVlIGltcGxlbWVudGEgbcO6bHRpcGxlcyBpbnRlcmZhY2VzXG5jbGFzcyBQYXRvKFZvbGFkb3IsIE5hZGFkb3IpOlxuICAgIGRlZiBfX2luaXRfXyhzZWxmLCBub21icmUpOlxuICAgICAgICBzZWxmLm5vbWJyZSA9IG5vbWJyZVxuICAgIFxuICAgIGRlZiBkZXNwZWdhcihzZWxmKTpcbiAgICAgICAgcHJpbnQoZlwie3NlbGYubm9tYnJlfSBhZ2l0YW5kbyBsYXMgYWxhcy4uLlwiKVxuICAgIFxuICAgIGRlZiB2b2xhcihzZWxmKTpcbiAgICAgICAgcHJpbnQoZlwie3NlbGYubm9tYnJlfSB2b2xhbmRvIGJham9cIilcbiAgICBcbiAgICBkZWYgYXRlcnJpemFyKHNlbGYpOlxuICAgICAgICBwcmludChmXCJ7c2VsZi5ub21icmV9IGF0ZXJyaXphbmRvIGVuIGVsIGFndWFcIilcbiAgICBcbiAgICBkZWYgbmFkYXIoc2VsZik6XG4gICAgICAgIHByaW50KGZcIntzZWxmLm5vbWJyZX0gbmFkYW5kbyBlbiBlbCBsYWdvXCIpXG5cbiMgVXNhciBsYXMgY2xhc2VzXG5hdmlvbiA9IEF2aW9uKFwiQm9laW5nIDc0N1wiKVxuYXZpb24uZGVzcGVnYXIoKVxuYXZpb24udm9sYXIoKVxuYXZpb24uYXRlcnJpemFyKClcblxucHJpbnQoXCJcXG5cIiArIFwiLVwiICogNDAgKyBcIlxcblwiKVxuXG5wYXRvID0gUGF0byhcIkRvbmFsZFwiKVxucGF0by5kZXNwZWdhcigpXG5wYXRvLnZvbGFyKClcbnBhdG8ubmFkYXIoKVxucGF0by5hdGVycml6YXIoKSJ9
+</script>
+</div>
+<p>En UML una interfaz se marca con <code>&lt;&lt;interface&gt;&gt;</code> y su implementación con una flecha <strong>punteada</strong> de punta hueca (<a href="#fig-interfaces" class="quarto-xref">Figura&nbsp;<span>9.1</span></a>).</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-interfaces" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-interfaces-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+
+<pre class="mermaid mermaid-js" data-label="fig-interfaces">classDiagram
+    Volador &lt;|.. Avion
+    Volador &lt;|.. Pato
+    Nadador &lt;|.. Pato
+    class Volador {
+        &lt;&lt;interface&gt;&gt;
+        +despegar()*
+        +volar()*
+        +aterrizar()*
+    }
+    class Nadador {
+        &lt;&lt;interface&gt;&gt;
+        +nadar()*
+    }
+    class Avion {
+        +modelo
+    }
+    class Pato {
+        +nombre
+    }
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-interfaces-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;9.1: Avion implementa Volador; Pato implementa dos interfaces a la vez.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="ejemplo-completo-sistema-de-pagos" class="level2" data-number="9.6">
+<h2 data-number="9.6" class="anchored" data-anchor-id="ejemplo-completo-sistema-de-pagos"><span class="header-section-number">9.6</span> Ejemplo Completo: Sistema de Pagos</h2>
+<div id="450da127" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="interpolate-3-1"><a href="#interpolate-3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> abc <span class="im">import</span> ABC, abstractmethod</span>
+<span id="interpolate-3-2"><a href="#interpolate-3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> datetime</span>
+<span id="interpolate-3-3"><a href="#interpolate-3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-3-4"><a href="#interpolate-3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Interfaz para métodos de pago</span></span>
+<span id="interpolate-3-5"><a href="#interpolate-3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MetodoPago(ABC):</span>
+<span id="interpolate-3-6"><a href="#interpolate-3-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">@abstractmethod</span></span>
+<span id="interpolate-3-7"><a href="#interpolate-3-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> procesar_pago(<span class="va">self</span>, monto):</span>
+<span id="interpolate-3-8"><a href="#interpolate-3-8" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Procesa el pago y retorna True si fue exitoso"""</span></span>
+<span id="interpolate-3-9"><a href="#interpolate-3-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
+<span id="interpolate-3-10"><a href="#interpolate-3-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="interpolate-3-11"><a href="#interpolate-3-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">@abstractmethod</span></span>
+<span id="interpolate-3-12"><a href="#interpolate-3-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> validar(<span class="va">self</span>):</span>
+<span id="interpolate-3-13"><a href="#interpolate-3-13" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Valida que el método de pago sea válido"""</span></span>
+<span id="interpolate-3-14"><a href="#interpolate-3-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
+<span id="interpolate-3-15"><a href="#interpolate-3-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="interpolate-3-16"><a href="#interpolate-3-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">@abstractmethod</span></span>
+<span id="interpolate-3-17"><a href="#interpolate-3-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> obtener_info(<span class="va">self</span>):</span>
+<span id="interpolate-3-18"><a href="#interpolate-3-18" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Retorna información del método de pago"""</span></span>
+<span id="interpolate-3-19"><a href="#interpolate-3-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
+<span id="interpolate-3-20"><a href="#interpolate-3-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-3-21"><a href="#interpolate-3-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Implementaciones concretas</span></span>
+<span id="interpolate-3-22"><a href="#interpolate-3-22" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TarjetaCredito(MetodoPago):</span>
+<span id="interpolate-3-23"><a href="#interpolate-3-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, numero, titular, cvv, fecha_expiracion):</span>
+<span id="interpolate-3-24"><a href="#interpolate-3-24" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.numero <span class="op">=</span> numero</span>
+<span id="interpolate-3-25"><a href="#interpolate-3-25" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.titular <span class="op">=</span> titular</span>
+<span id="interpolate-3-26"><a href="#interpolate-3-26" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.cvv <span class="op">=</span> cvv</span>
+<span id="interpolate-3-27"><a href="#interpolate-3-27" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.fecha_expiracion <span class="op">=</span> fecha_expiracion</span>
+<span id="interpolate-3-28"><a href="#interpolate-3-28" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="interpolate-3-29"><a href="#interpolate-3-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> validar(<span class="va">self</span>):</span>
+<span id="interpolate-3-30"><a href="#interpolate-3-30" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Validaciones básicas</span></span>
+<span id="interpolate-3-31"><a href="#interpolate-3-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">len</span>(<span class="va">self</span>.numero) <span class="op">!=</span> <span class="dv">16</span>:</span>
+<span id="interpolate-3-32"><a href="#interpolate-3-32" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">False</span></span>
+<span id="interpolate-3-33"><a href="#interpolate-3-33" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">len</span>(<span class="va">self</span>.cvv) <span class="op">!=</span> <span class="dv">3</span>:</span>
+<span id="interpolate-3-34"><a href="#interpolate-3-34" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">False</span></span>
+<span id="interpolate-3-35"><a href="#interpolate-3-35" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Aquí podrían ir más validaciones</span></span>
+<span id="interpolate-3-36"><a href="#interpolate-3-36" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">True</span></span>
+<span id="interpolate-3-37"><a href="#interpolate-3-37" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="interpolate-3-38"><a href="#interpolate-3-38" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> procesar_pago(<span class="va">self</span>, monto):</span>
+<span id="interpolate-3-39"><a href="#interpolate-3-39" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> <span class="va">self</span>.validar():</span>
+<span id="interpolate-3-40"><a href="#interpolate-3-40" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">"✗ Tarjeta inválida"</span>)</span>
+<span id="interpolate-3-41"><a href="#interpolate-3-41" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">False</span></span>
+<span id="interpolate-3-42"><a href="#interpolate-3-42" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="interpolate-3-43"><a href="#interpolate-3-43" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Procesando $</span><span class="sc">{</span>monto<span class="sc">}</span><span class="ss"> con tarjeta de crédito..."</span>)</span>
+<span id="interpolate-3-44"><a href="#interpolate-3-44" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Titular: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>titular<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="interpolate-3-45"><a href="#interpolate-3-45" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Últimos 4 dígitos: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>numero[<span class="op">-</span><span class="dv">4</span>:]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="interpolate-3-46"><a href="#interpolate-3-46" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"✓ Pago aprobado"</span>)</span>
+<span id="interpolate-3-47"><a href="#interpolate-3-47" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">True</span></span>
+<span id="interpolate-3-48"><a href="#interpolate-3-48" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="interpolate-3-49"><a href="#interpolate-3-49" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> obtener_info(<span class="va">self</span>):</span>
+<span id="interpolate-3-50"><a href="#interpolate-3-50" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"Tarjeta de crédito ****</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>numero[<span class="op">-</span><span class="dv">4</span>:]<span class="sc">}</span><span class="ss">"</span></span>
+<span id="interpolate-3-51"><a href="#interpolate-3-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-3-52"><a href="#interpolate-3-52" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> PayPal(MetodoPago):</span>
+<span id="interpolate-3-53"><a href="#interpolate-3-53" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, email, password):</span>
+<span id="interpolate-3-54"><a href="#interpolate-3-54" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.email <span class="op">=</span> email</span>
+<span id="interpolate-3-55"><a href="#interpolate-3-55" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.password <span class="op">=</span> password</span>
+<span id="interpolate-3-56"><a href="#interpolate-3-56" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.saldo <span class="op">=</span> <span class="dv">5000</span>  <span class="co"># Simulación</span></span>
+<span id="interpolate-3-57"><a href="#interpolate-3-57" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="interpolate-3-58"><a href="#interpolate-3-58" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> validar(<span class="va">self</span>):</span>
+<span id="interpolate-3-59"><a href="#interpolate-3-59" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="st">'@'</span> <span class="kw">not</span> <span class="kw">in</span> <span class="va">self</span>.email:</span>
+<span id="interpolate-3-60"><a href="#interpolate-3-60" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">False</span></span>
+<span id="interpolate-3-61"><a href="#interpolate-3-61" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">len</span>(<span class="va">self</span>.password) <span class="op">&lt;</span> <span class="dv">6</span>:</span>
+<span id="interpolate-3-62"><a href="#interpolate-3-62" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">False</span></span>
+<span id="interpolate-3-63"><a href="#interpolate-3-63" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">True</span></span>
+<span id="interpolate-3-64"><a href="#interpolate-3-64" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="interpolate-3-65"><a href="#interpolate-3-65" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> procesar_pago(<span class="va">self</span>, monto):</span>
+<span id="interpolate-3-66"><a href="#interpolate-3-66" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> <span class="va">self</span>.validar():</span>
+<span id="interpolate-3-67"><a href="#interpolate-3-67" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">"✗ Cuenta PayPal inválida"</span>)</span>
+<span id="interpolate-3-68"><a href="#interpolate-3-68" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">False</span></span>
+<span id="interpolate-3-69"><a href="#interpolate-3-69" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="interpolate-3-70"><a href="#interpolate-3-70" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> monto <span class="op">&gt;</span> <span class="va">self</span>.saldo:</span>
+<span id="interpolate-3-71"><a href="#interpolate-3-71" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"✗ Saldo insuficiente (disponible: $</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>saldo<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="interpolate-3-72"><a href="#interpolate-3-72" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">False</span></span>
+<span id="interpolate-3-73"><a href="#interpolate-3-73" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="interpolate-3-74"><a href="#interpolate-3-74" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Procesando $</span><span class="sc">{</span>monto<span class="sc">}</span><span class="ss"> con PayPal..."</span>)</span>
+<span id="interpolate-3-75"><a href="#interpolate-3-75" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Email: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>email<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="interpolate-3-76"><a href="#interpolate-3-76" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.saldo <span class="op">-=</span> monto</span>
+<span id="interpolate-3-77"><a href="#interpolate-3-77" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"✓ Pago aprobado (saldo restante: $</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>saldo<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="interpolate-3-78"><a href="#interpolate-3-78" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">True</span></span>
+<span id="interpolate-3-79"><a href="#interpolate-3-79" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="interpolate-3-80"><a href="#interpolate-3-80" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> obtener_info(<span class="va">self</span>):</span>
+<span id="interpolate-3-81"><a href="#interpolate-3-81" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"PayPal: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>email<span class="sc">}</span><span class="ss">"</span></span>
+<span id="interpolate-3-82"><a href="#interpolate-3-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-3-83"><a href="#interpolate-3-83" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Transferencia(MetodoPago):</span>
+<span id="interpolate-3-84"><a href="#interpolate-3-84" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, banco, cuenta, nombre_titular):</span>
+<span id="interpolate-3-85"><a href="#interpolate-3-85" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.banco <span class="op">=</span> banco</span>
+<span id="interpolate-3-86"><a href="#interpolate-3-86" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.cuenta <span class="op">=</span> cuenta</span>
+<span id="interpolate-3-87"><a href="#interpolate-3-87" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.nombre_titular <span class="op">=</span> nombre_titular</span>
+<span id="interpolate-3-88"><a href="#interpolate-3-88" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="interpolate-3-89"><a href="#interpolate-3-89" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> validar(<span class="va">self</span>):</span>
+<span id="interpolate-3-90"><a href="#interpolate-3-90" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">len</span>(<span class="va">self</span>.cuenta) <span class="op">&lt;</span> <span class="dv">10</span>:</span>
+<span id="interpolate-3-91"><a href="#interpolate-3-91" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">False</span></span>
+<span id="interpolate-3-92"><a href="#interpolate-3-92" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">True</span></span>
+<span id="interpolate-3-93"><a href="#interpolate-3-93" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="interpolate-3-94"><a href="#interpolate-3-94" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> procesar_pago(<span class="va">self</span>, monto):</span>
+<span id="interpolate-3-95"><a href="#interpolate-3-95" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> <span class="va">self</span>.validar():</span>
+<span id="interpolate-3-96"><a href="#interpolate-3-96" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">"✗ Datos de transferencia inválidos"</span>)</span>
+<span id="interpolate-3-97"><a href="#interpolate-3-97" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">False</span></span>
+<span id="interpolate-3-98"><a href="#interpolate-3-98" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="interpolate-3-99"><a href="#interpolate-3-99" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Procesando transferencia de $</span><span class="sc">{</span>monto<span class="sc">}</span><span class="ss">..."</span>)</span>
+<span id="interpolate-3-100"><a href="#interpolate-3-100" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Banco: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>banco<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="interpolate-3-101"><a href="#interpolate-3-101" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Cuenta: ****</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>cuenta[<span class="op">-</span><span class="dv">4</span>:]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="interpolate-3-102"><a href="#interpolate-3-102" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Titular: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>nombre_titular<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="interpolate-3-103"><a href="#interpolate-3-103" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"✓ Transferencia iniciada (puede tardar 24-48 horas)"</span>)</span>
+<span id="interpolate-3-104"><a href="#interpolate-3-104" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">True</span></span>
+<span id="interpolate-3-105"><a href="#interpolate-3-105" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="interpolate-3-106"><a href="#interpolate-3-106" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> obtener_info(<span class="va">self</span>):</span>
+<span id="interpolate-3-107"><a href="#interpolate-3-107" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"Transferencia bancaria: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>banco<span class="sc">}</span><span class="ss">"</span></span>
+<span id="interpolate-3-108"><a href="#interpolate-3-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-3-109"><a href="#interpolate-3-109" aria-hidden="true" tabindex="-1"></a><span class="co"># Sistema de procesamiento que funciona con CUALQUIER método de pago</span></span>
+<span id="interpolate-3-110"><a href="#interpolate-3-110" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ProcesadorPagos:</span>
+<span id="interpolate-3-111"><a href="#interpolate-3-111" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="interpolate-3-112"><a href="#interpolate-3-112" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.historial <span class="op">=</span> []</span>
+<span id="interpolate-3-113"><a href="#interpolate-3-113" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="interpolate-3-114"><a href="#interpolate-3-114" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> procesar(<span class="va">self</span>, metodo_pago: MetodoPago, monto: <span class="bu">float</span>, descripcion: <span class="bu">str</span>):</span>
+<span id="interpolate-3-115"><a href="#interpolate-3-115" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Procesa un pago usando cualquier método que implemente MetodoPago"""</span></span>
+<span id="interpolate-3-116"><a href="#interpolate-3-116" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span> <span class="op">+</span> <span class="st">"="</span> <span class="op">*</span> <span class="dv">50</span>)</span>
+<span id="interpolate-3-117"><a href="#interpolate-3-117" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Procesando: </span><span class="sc">{</span>descripcion<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="interpolate-3-118"><a href="#interpolate-3-118" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Monto: $</span><span class="sc">{</span>monto<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="interpolate-3-119"><a href="#interpolate-3-119" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Método: </span><span class="sc">{</span>metodo_pago<span class="sc">.</span>obtener_info()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="interpolate-3-120"><a href="#interpolate-3-120" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">50</span>)</span>
+<span id="interpolate-3-121"><a href="#interpolate-3-121" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="interpolate-3-122"><a href="#interpolate-3-122" aria-hidden="true" tabindex="-1"></a>        exito <span class="op">=</span> metodo_pago.procesar_pago(monto)</span>
+<span id="interpolate-3-123"><a href="#interpolate-3-123" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="interpolate-3-124"><a href="#interpolate-3-124" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.historial.append({</span>
+<span id="interpolate-3-125"><a href="#interpolate-3-125" aria-hidden="true" tabindex="-1"></a>            <span class="st">'fecha'</span>: datetime.now(),</span>
+<span id="interpolate-3-126"><a href="#interpolate-3-126" aria-hidden="true" tabindex="-1"></a>            <span class="st">'monto'</span>: monto,</span>
+<span id="interpolate-3-127"><a href="#interpolate-3-127" aria-hidden="true" tabindex="-1"></a>            <span class="st">'descripcion'</span>: descripcion,</span>
+<span id="interpolate-3-128"><a href="#interpolate-3-128" aria-hidden="true" tabindex="-1"></a>            <span class="st">'metodo'</span>: metodo_pago.obtener_info(),</span>
+<span id="interpolate-3-129"><a href="#interpolate-3-129" aria-hidden="true" tabindex="-1"></a>            <span class="st">'exito'</span>: exito</span>
+<span id="interpolate-3-130"><a href="#interpolate-3-130" aria-hidden="true" tabindex="-1"></a>        })</span>
+<span id="interpolate-3-131"><a href="#interpolate-3-131" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="interpolate-3-132"><a href="#interpolate-3-132" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> exito</span>
+<span id="interpolate-3-133"><a href="#interpolate-3-133" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="interpolate-3-134"><a href="#interpolate-3-134" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> mostrar_historial(<span class="va">self</span>):</span>
+<span id="interpolate-3-135"><a href="#interpolate-3-135" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span> <span class="op">+</span> <span class="st">"="</span> <span class="op">*</span> <span class="dv">50</span>)</span>
+<span id="interpolate-3-136"><a href="#interpolate-3-136" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"HISTORIAL DE TRANSACCIONES"</span>)</span>
+<span id="interpolate-3-137"><a href="#interpolate-3-137" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">50</span>)</span>
+<span id="interpolate-3-138"><a href="#interpolate-3-138" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i, transaccion <span class="kw">in</span> <span class="bu">enumerate</span>(<span class="va">self</span>.historial, <span class="dv">1</span>):</span>
+<span id="interpolate-3-139"><a href="#interpolate-3-139" aria-hidden="true" tabindex="-1"></a>            estado <span class="op">=</span> <span class="st">"✓"</span> <span class="cf">if</span> transaccion[<span class="st">'exito'</span>] <span class="cf">else</span> <span class="st">"✗"</span></span>
+<span id="interpolate-3-140"><a href="#interpolate-3-140" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">. </span><span class="sc">{</span>estado<span class="sc">}</span><span class="ss"> $</span><span class="sc">{</span>transaccion[<span class="st">'monto'</span>]<span class="sc">}</span><span class="ss"> - </span><span class="sc">{</span>transaccion[<span class="st">'descripcion'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="interpolate-3-141"><a href="#interpolate-3-141" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"   </span><span class="sc">{</span>transaccion[<span class="st">'metodo'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="interpolate-3-142"><a href="#interpolate-3-142" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>()</span>
+<span id="interpolate-3-143"><a href="#interpolate-3-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-3-144"><a href="#interpolate-3-144" aria-hidden="true" tabindex="-1"></a><span class="co"># Usar el sistema</span></span>
+<span id="interpolate-3-145"><a href="#interpolate-3-145" aria-hidden="true" tabindex="-1"></a>procesador <span class="op">=</span> ProcesadorPagos()</span>
+<span id="interpolate-3-146"><a href="#interpolate-3-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-3-147"><a href="#interpolate-3-147" aria-hidden="true" tabindex="-1"></a><span class="co"># Diferentes métodos de pago</span></span>
+<span id="interpolate-3-148"><a href="#interpolate-3-148" aria-hidden="true" tabindex="-1"></a>tarjeta <span class="op">=</span> TarjetaCredito(<span class="st">"1234567890123456"</span>, <span class="st">"Ana García"</span>, <span class="st">"123"</span>, <span class="st">"12/25"</span>)</span>
+<span id="interpolate-3-149"><a href="#interpolate-3-149" aria-hidden="true" tabindex="-1"></a>paypal <span class="op">=</span> PayPal(<span class="st">"usuario@example.com"</span>, <span class="st">"password123"</span>)</span>
+<span id="interpolate-3-150"><a href="#interpolate-3-150" aria-hidden="true" tabindex="-1"></a>transferencia <span class="op">=</span> Transferencia(<span class="st">"Banco Nacional"</span>, <span class="st">"1234567890"</span>, <span class="st">"Carlos López"</span>)</span>
+<span id="interpolate-3-151"><a href="#interpolate-3-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-3-152"><a href="#interpolate-3-152" aria-hidden="true" tabindex="-1"></a><span class="co"># Procesar pagos</span></span>
+<span id="interpolate-3-153"><a href="#interpolate-3-153" aria-hidden="true" tabindex="-1"></a>procesador.procesar(tarjeta, <span class="dv">1500</span>, <span class="st">"Compra en línea"</span>)</span>
+<span id="interpolate-3-154"><a href="#interpolate-3-154" aria-hidden="true" tabindex="-1"></a>procesador.procesar(paypal, <span class="dv">3000</span>, <span class="st">"Suscripción mensual"</span>)</span>
+<span id="interpolate-3-155"><a href="#interpolate-3-155" aria-hidden="true" tabindex="-1"></a>procesador.procesar(transferencia, <span class="dv">10000</span>, <span class="st">"Pago de renta"</span>)</span>
+<span id="interpolate-3-156"><a href="#interpolate-3-156" aria-hidden="true" tabindex="-1"></a>procesador.procesar(paypal, <span class="dv">5000</span>, <span class="st">"Compra grande"</span>)  <span class="co"># Excede saldo</span></span>
+<span id="interpolate-3-157"><a href="#interpolate-3-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-3-158"><a href="#interpolate-3-158" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar historial</span></span>
+<span id="interpolate-3-159"><a href="#interpolate-3-159" aria-hidden="true" tabindex="-1"></a>procesador.mostrar_historial()</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+==================================================
+Procesando: Compra en línea
+Monto: $1500
+Método: Tarjeta de crédito ****3456
+==================================================
+Procesando $1500 con tarjeta de crédito...
+Titular: Ana García
+Últimos 4 dígitos: 3456
+✓ Pago aprobado
+
+==================================================
+Procesando: Suscripción mensual
+Monto: $3000
+Método: PayPal: usuario@example.com
+==================================================
+Procesando $3000 con PayPal...
+Email: usuario@example.com
+✓ Pago aprobado (saldo restante: $2000)
+
+==================================================
+Procesando: Pago de renta
+Monto: $10000
+Método: Transferencia bancaria: Banco Nacional
+==================================================
+Procesando transferencia de $10000...
+Banco: Banco Nacional
+Cuenta: ****7890
+Titular: Carlos López
+✓ Transferencia iniciada (puede tardar 24-48 horas)
+
+==================================================
+Procesando: Compra grande
+Monto: $5000
+Método: PayPal: usuario@example.com
+==================================================
+✗ Saldo insuficiente (disponible: $2000)
+
+==================================================
+HISTORIAL DE TRANSACCIONES
+==================================================
+1. ✓ $1500 - Compra en línea
+   Tarjeta de crédito ****3456
+
+2. ✓ $3000 - Suscripción mensual
+   PayPal: usuario@example.com
+
+3. ✓ $10000 - Pago de renta
+   Transferencia bancaria: Banco Nacional
+
+4. ✗ $5000 - Compra grande
+   PayPal: usuario@example.com
+</code></pre>
+</div>
+</div>
+<p><code>ProcesadorPagos</code> sólo conoce la abstracción <code>MetodoPago</code>; agregar un nuevo método de pago no requiere modificarlo (<a href="#fig-pagos-abc" class="quarto-xref">Figura&nbsp;<span>9.2</span></a>).</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-pagos-abc" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pagos-abc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+
+<pre class="mermaid mermaid-js" data-label="fig-pagos-abc">classDiagram
+    MetodoPago &lt;|-- TarjetaCredito
+    MetodoPago &lt;|-- PayPal
+    MetodoPago &lt;|-- Transferencia
+    ProcesadorPagos ..&gt; MetodoPago : usa
+    class MetodoPago {
+        &lt;&lt;abstract&gt;&gt;
+        +procesar_pago(monto)*
+        +validar()*
+        +obtener_info()*
+    }
+    class ProcesadorPagos {
+        +historial
+        +procesar(metodo_pago, monto, descripcion)
+        +mostrar_historial()
+    }
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pagos-abc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;9.2: ProcesadorPagos depende de la clase abstracta MetodoPago, no de sus implementaciones.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="ejercicios-prácticos" class="level2" data-number="9.7">
+<h2 data-number="9.7" class="anchored" data-anchor-id="ejercicios-prácticos"><span class="header-section-number">9.7</span> Ejercicios Prácticos</h2>
+<section id="ejercicio-1-sistema-de-almacenamiento" class="level3" data-number="9.7.1">
+<h3 data-number="9.7.1" class="anchored" data-anchor-id="ejercicio-1-sistema-de-almacenamiento"><span class="header-section-number">9.7.1</span> Ejercicio 1: Sistema de Almacenamiento</h3>
+<p>Crea una interfaz <code>Almacenable</code> con métodos abstractos:</p>
+<ul>
+<li><code>guardar(datos)</code>: Guarda datos</li>
+<li><code>cargar(id)</code>: Carga datos por ID</li>
+<li><code>eliminar(id)</code>: Elimina datos</li>
+<li><code>listar()</code>: Lista todos los datos</li>
+</ul>
+<p>Implementa tres clases concretas:</p>
+<ul>
+<li><code>AlmacenamientoMemoria</code>: Usa un diccionario</li>
+<li><code>AlmacenamientoArchivo</code>: Simula guardado en archivo (usa print)</li>
+<li><code>AlmacenamientoBaseDatos</code>: Simula base de datos (usa print)</li>
+</ul>
+<p>Crea una función que funcione con cualquier tipo de almacenamiento.</p>
+<div>
+<div id="pyodide-4" class="exercise-cell">
+
+</div>
+<script type="pyodide-4-contents">
+eyJhdHRyIjp7ImNhcHRpb24iOiJQcnVlYmEgdMO6OiBlamVyY2ljaW8gMSIsImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1pbi1saW5lcyI6OH0sImNvZGUiOiIjIEVzY3JpYmUgYXF1w60gdHUgc29sdWNpw7NuIn0=
+</script>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Solución del ejercicio 1
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="d544f16e" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> abc <span class="im">import</span> ABC, abstractmethod</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Almacenable(ABC):</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">@abstractmethod</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> guardar(<span class="va">self</span>, datos): ...</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">@abstractmethod</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> cargar(<span class="va">self</span>, <span class="bu">id</span>): ...</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">@abstractmethod</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> eliminar(<span class="va">self</span>, <span class="bu">id</span>): ...</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">@abstractmethod</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> listar(<span class="va">self</span>): ...</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> AlmacenamientoMemoria(Almacenable):</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>._datos <span class="op">=</span> {}</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>._siguiente_id <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> guardar(<span class="va">self</span>, datos):</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>        id_nuevo <span class="op">=</span> <span class="va">self</span>._siguiente_id</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>._datos[id_nuevo] <span class="op">=</span> datos</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>._siguiente_id <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> id_nuevo</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> cargar(<span class="va">self</span>, <span class="bu">id</span>):</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>._datos.get(<span class="bu">id</span>)</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> eliminar(<span class="va">self</span>, <span class="bu">id</span>):</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>._datos.pop(<span class="bu">id</span>, <span class="va">None</span>) <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> listar(<span class="va">self</span>):</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">list</span>(<span class="va">self</span>._datos.items())</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> AlmacenamientoArchivo(Almacenable):</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> guardar(<span class="va">self</span>, datos):</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  [archivo] escribiendo </span><span class="sc">{</span>datos<span class="sc">!r}</span><span class="ss"> en datos.json"</span>)</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">1</span></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> cargar(<span class="va">self</span>, <span class="bu">id</span>):</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  [archivo] leyendo registro </span><span class="sc">{</span><span class="bu">id</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> eliminar(<span class="va">self</span>, <span class="bu">id</span>):</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  [archivo] borrando registro </span><span class="sc">{</span><span class="bu">id</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> listar(<span class="va">self</span>):</span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"  [archivo] listando datos.json"</span>)</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> []</span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> AlmacenamientoBaseDatos(Almacenable):</span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> guardar(<span class="va">self</span>, datos):</span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  [BD] INSERT INTO registros VALUES (</span><span class="sc">{</span>datos<span class="sc">!r}</span><span class="ss">)"</span>)</span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">1</span></span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> cargar(<span class="va">self</span>, <span class="bu">id</span>):</span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  [BD] SELECT * FROM registros WHERE id = </span><span class="sc">{</span><span class="bu">id</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> eliminar(<span class="va">self</span>, <span class="bu">id</span>):</span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  [BD] DELETE FROM registros WHERE id = </span><span class="sc">{</span><span class="bu">id</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> listar(<span class="va">self</span>):</span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"  [BD] SELECT * FROM registros"</span>)</span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> []</span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> respaldar(almacen: Almacenable, registros):</span>
+<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Funciona con cualquier implementación de Almacenable."""</span></span>
+<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="bu">type</span>(almacen).<span class="va">__name__</span>)</span>
+<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a>    ids <span class="op">=</span> [almacen.guardar(r) <span class="cf">for</span> r <span class="kw">in</span> registros]</span>
+<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a>    almacen.eliminar(ids[<span class="dv">0</span>])</span>
+<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> almacen.listar()</span>
+<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> almacen <span class="kw">in</span> [AlmacenamientoMemoria(), AlmacenamientoArchivo(), AlmacenamientoBaseDatos()]:</span>
+<span id="cb8-67"><a href="#cb8-67" aria-hidden="true" tabindex="-1"></a>    resultado <span class="op">=</span> respaldar(almacen, [<span class="st">"Ana"</span>, <span class="st">"Luis"</span>, <span class="st">"Eva"</span>])</span>
+<span id="cb8-68"><a href="#cb8-68" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> resultado:</span>
+<span id="cb8-69"><a href="#cb8-69" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"  Quedan:"</span>, resultado)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>AlmacenamientoMemoria
+  Quedan: [(2, 'Luis'), (3, 'Eva')]
+AlmacenamientoArchivo
+  [archivo] escribiendo 'Ana' en datos.json
+  [archivo] escribiendo 'Luis' en datos.json
+  [archivo] escribiendo 'Eva' en datos.json
+  [archivo] borrando registro 1
+  [archivo] listando datos.json
+AlmacenamientoBaseDatos
+  [BD] INSERT INTO registros VALUES ('Ana')
+  [BD] INSERT INTO registros VALUES ('Luis')
+  [BD] INSERT INTO registros VALUES ('Eva')
+  [BD] DELETE FROM registros WHERE id = 1
+  [BD] SELECT * FROM registros</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="ejercicio-2-sistema-de-notificaciones" class="level3" data-number="9.7.2">
+<h3 data-number="9.7.2" class="anchored" data-anchor-id="ejercicio-2-sistema-de-notificaciones"><span class="header-section-number">9.7.2</span> Ejercicio 2: Sistema de Notificaciones</h3>
+<p>Crea una clase abstracta <code>Notificador</code> con:</p>
+<ul>
+<li><code>enviar(destinatario, mensaje)</code>: método abstracto</li>
+<li><code>validar_destinatario(destinatario)</code>: método abstracto</li>
+<li><code>log(mensaje)</code>: método concreto que imprime el log</li>
+</ul>
+<p>Implementa:</p>
+<ul>
+<li><code>NotificadorEmail</code>: valida que tenga @</li>
+<li><code>NotificadorSMS</code>: valida que sea número de 10 dígitos</li>
+<li><code>NotificadorPush</code>: valida que tenga formato device-XXXXX</li>
+</ul>
+<p>Crea un <code>GestorNotificaciones</code> que pueda enviar a múltiples canales.</p>
+<div>
+<div id="pyodide-5" class="exercise-cell">
+
+</div>
+<script type="pyodide-5-contents">
+eyJhdHRyIjp7ImNhcHRpb24iOiJQcnVlYmEgdMO6OiBlamVyY2ljaW8gMiIsImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1pbi1saW5lcyI6OH0sImNvZGUiOiIjIEVzY3JpYmUgYXF1w60gdHUgc29sdWNpw7NuIn0=
+</script>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Solución del ejercicio 2
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="f27a6148" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> abc <span class="im">import</span> ABC, abstractmethod</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Notificador(ABC):</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">@abstractmethod</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> enviar(<span class="va">self</span>, destinatario, mensaje): ...</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">@abstractmethod</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> validar_destinatario(<span class="va">self</span>, destinatario): ...</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> log(<span class="va">self</span>, mensaje):  <span class="co"># Método concreto compartido</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  [</span><span class="sc">{</span><span class="bu">type</span>(<span class="va">self</span>)<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">] </span><span class="sc">{</span>mensaje<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> NotificadorEmail(Notificador):</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> validar_destinatario(<span class="va">self</span>, destinatario):</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"@"</span> <span class="kw">in</span> destinatario</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> enviar(<span class="va">self</span>, destinatario, mensaje):</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> <span class="va">self</span>.validar_destinatario(destinatario):</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.log(<span class="ss">f"destinatario inválido: </span><span class="sc">{</span>destinatario<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.log(<span class="ss">f"email a </span><span class="sc">{</span>destinatario<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>mensaje<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> NotificadorSMS(Notificador):</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> validar_destinatario(<span class="va">self</span>, destinatario):</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> destinatario.isdigit() <span class="kw">and</span> <span class="bu">len</span>(destinatario) <span class="op">==</span> <span class="dv">10</span></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> enviar(<span class="va">self</span>, destinatario, mensaje):</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> <span class="va">self</span>.validar_destinatario(destinatario):</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.log(<span class="ss">f"destinatario inválido: </span><span class="sc">{</span>destinatario<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.log(<span class="ss">f"SMS a </span><span class="sc">{</span>destinatario<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>mensaje[:<span class="dv">160</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> NotificadorPush(Notificador):</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> validar_destinatario(<span class="va">self</span>, destinatario):</span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> re.fullmatch(<span class="vs">r"device-</span><span class="dv">\w</span><span class="op">{5}</span><span class="vs">"</span>, destinatario) <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span></span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> enviar(<span class="va">self</span>, destinatario, mensaje):</span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> <span class="va">self</span>.validar_destinatario(destinatario):</span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.log(<span class="ss">f"destinatario inválido: </span><span class="sc">{</span>destinatario<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.log(<span class="ss">f"push a </span><span class="sc">{</span>destinatario<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>mensaje<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> GestorNotificaciones:</span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.canales <span class="op">=</span> []   <span class="co"># Lista de (notificador, destinatario)</span></span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> suscribir(<span class="va">self</span>, notificador: Notificador, destinatario):</span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.canales.append((notificador, destinatario))</span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> notificar(<span class="va">self</span>, mensaje):</span>
+<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a>        enviados <span class="op">=</span> <span class="bu">sum</span>(n.enviar(d, mensaje) <span class="cf">for</span> n, d <span class="kw">in</span> <span class="va">self</span>.canales)</span>
+<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Enviados </span><span class="sc">{</span>enviados<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span><span class="bu">len</span>(<span class="va">self</span>.canales)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a>gestor <span class="op">=</span> GestorNotificaciones()</span>
+<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a>gestor.suscribir(NotificadorEmail(), <span class="st">"ana@correo.com"</span>)</span>
+<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a>gestor.suscribir(NotificadorSMS(), <span class="st">"3312345678"</span>)</span>
+<span id="cb10-58"><a href="#cb10-58" aria-hidden="true" tabindex="-1"></a>gestor.suscribir(NotificadorPush(), <span class="st">"device-AB123"</span>)</span>
+<span id="cb10-59"><a href="#cb10-59" aria-hidden="true" tabindex="-1"></a>gestor.suscribir(NotificadorSMS(), <span class="st">"12-34"</span>)          <span class="co"># Inválido</span></span>
+<span id="cb10-60"><a href="#cb10-60" aria-hidden="true" tabindex="-1"></a>gestor.notificar(<span class="st">"Tu pedido va en camino"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [NotificadorEmail] email a ana@correo.com: Tu pedido va en camino
+  [NotificadorSMS] SMS a 3312345678: Tu pedido va en camino
+  [NotificadorPush] push a device-AB123: Tu pedido va en camino
+  [NotificadorSMS] destinatario inválido: 12-34
+Enviados 3/4</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="ejercicio-3-sistema-de-jugadores-desafío" class="level3" data-number="9.7.3">
+<h3 data-number="9.7.3" class="anchored" data-anchor-id="ejercicio-3-sistema-de-jugadores-desafío"><span class="header-section-number">9.7.3</span> Ejercicio 3: Sistema de Jugadores (Desafío)</h3>
+<p>Crea un sistema de juego con interfaces múltiples:</p>
+<ol type="1">
+<li>Interfaces:
+<ul>
+<li><code>Atacante</code>: métodos <code>atacar()</code>, <code>obtener_daño()</code></li>
+<li><code>Defensor</code>: métodos <code>defender(daño)</code>, <code>obtener_defensa()</code></li>
+<li><code>Curador</code>: métodos <code>curar(objetivo)</code>, <code>obtener_curacion()</code></li>
+</ul></li>
+<li>Clase abstracta base <code>Personaje</code>:
+<ul>
+<li>Atributos: nombre, vida, vida_maxima</li>
+<li>Métodos concretos: <code>esta_vivo()</code>, <code>recibir_daño(daño)</code>, <code>info()</code></li>
+</ul></li>
+<li>Implementa personajes que implementen diferentes combinaciones:
+<ul>
+<li><code>Guerrero</code>: Personaje + Atacante + Defensor</li>
+<li><code>Mago</code>: Personaje + Atacante</li>
+<li><code>Paladin</code>: Personaje + Atacante + Defensor + Curador</li>
+<li><code>Sacerdote</code>: Personaje + Curador</li>
+</ul></li>
+<li>Crea funciones genéricas:
+<ul>
+<li><code>realizar_ataque(atacante, defensor)</code>: funciona con cualquier Atacante y Defensor</li>
+<li><code>realizar_curacion(curador, objetivo)</code>: funciona con cualquier Curador</li>
+</ul></li>
+</ol>
+<p>Demuestra el sistema con una batalla entre diferentes personajes.</p>
+<div>
+<div id="pyodide-6" class="exercise-cell">
+
+</div>
+<script type="pyodide-6-contents">
+eyJhdHRyIjp7ImNhcHRpb24iOiJQcnVlYmEgdMO6OiBlamVyY2ljaW8gMyIsImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1pbi1saW5lcyI6OH0sImNvZGUiOiIjIEVzY3JpYmUgYXF1w60gdHUgc29sdWNpw7NuIn0=
+</script>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Solución del ejercicio 3
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="1d4d9cd9" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> abc <span class="im">import</span> ABC, abstractmethod</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Interfaces</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Atacante(ABC):</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">@abstractmethod</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> obtener_daño(<span class="va">self</span>): ...</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> atacar(<span class="va">self</span>):</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.obtener_daño()</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Defensor(ABC):</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">@abstractmethod</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> obtener_defensa(<span class="va">self</span>): ...</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> defender(<span class="va">self</span>, daño):</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">max</span>(<span class="dv">0</span>, daño <span class="op">-</span> <span class="va">self</span>.obtener_defensa())</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Curador(ABC):</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">@abstractmethod</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> obtener_curacion(<span class="va">self</span>): ...</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> curar(<span class="va">self</span>, objetivo):</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>        objetivo.vida <span class="op">=</span> <span class="bu">min</span>(objetivo.vida_maxima, objetivo.vida <span class="op">+</span> <span class="va">self</span>.obtener_curacion())</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Clase base abstracta</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Personaje(ABC):</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, nombre, vida_maxima):</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.nombre <span class="op">=</span> nombre</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.vida_maxima <span class="op">=</span> vida_maxima</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.vida <span class="op">=</span> vida_maxima</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> esta_vivo(<span class="va">self</span>):</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.vida <span class="op">&gt;</span> <span class="dv">0</span></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> recibir_daño(<span class="va">self</span>, daño):</span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.vida <span class="op">=</span> <span class="bu">max</span>(<span class="dv">0</span>, <span class="va">self</span>.vida <span class="op">-</span> daño)</span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> info(<span class="va">self</span>):</span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>        roles <span class="op">=</span> [c.<span class="va">__name__</span> <span class="cf">for</span> c <span class="kw">in</span> (Atacante, Defensor, Curador) <span class="cf">if</span> <span class="bu">isinstance</span>(<span class="va">self</span>, c)]</span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>nombre<span class="sc">:&lt;7}</span><span class="ss"> </span><span class="sc">{</span><span class="bu">type</span>(<span class="va">self</span>)<span class="sc">.</span><span class="va">__name__</span><span class="sc">:&lt;9}</span><span class="ss"> vida </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>vida<span class="sc">:&gt;3}</span><span class="ss">/</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>vida_maxima<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>              <span class="ss">f"  roles: </span><span class="sc">{</span><span class="st">', '</span><span class="sc">.</span>join(roles)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Guerrero(Personaje, Atacante, Defensor):</span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> obtener_daño(<span class="va">self</span>): <span class="cf">return</span> <span class="dv">20</span></span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> obtener_defensa(<span class="va">self</span>): <span class="cf">return</span> <span class="dv">8</span></span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Mago(Personaje, Atacante):</span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> obtener_daño(<span class="va">self</span>): <span class="cf">return</span> <span class="dv">30</span></span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Paladin(Personaje, Atacante, Defensor, Curador):</span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> obtener_daño(<span class="va">self</span>): <span class="cf">return</span> <span class="dv">15</span></span>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> obtener_defensa(<span class="va">self</span>): <span class="cf">return</span> <span class="dv">5</span></span>
+<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> obtener_curacion(<span class="va">self</span>): <span class="cf">return</span> <span class="dv">15</span></span>
+<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Sacerdote(Personaje, Curador):</span>
+<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> obtener_curacion(<span class="va">self</span>): <span class="cf">return</span> <span class="dv">25</span></span>
+<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a><span class="co"># Funciones genéricas: dependen de las interfaces, no de las clases concretas</span></span>
+<span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> realizar_ataque(atacante: Atacante, objetivo: Personaje):</span>
+<span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a>    daño <span class="op">=</span> atacante.atacar()</span>
+<span id="cb12-58"><a href="#cb12-58" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">isinstance</span>(objetivo, Defensor):</span>
+<span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a>        daño <span class="op">=</span> objetivo.defender(daño)</span>
+<span id="cb12-60"><a href="#cb12-60" aria-hidden="true" tabindex="-1"></a>    objetivo.recibir_daño(daño)</span>
+<span id="cb12-61"><a href="#cb12-61" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>atacante<span class="sc">.</span>nombre<span class="sc">}</span><span class="ss"> ataca a </span><span class="sc">{</span>objetivo<span class="sc">.</span>nombre<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>da<span class="sc">ñ</span>o<span class="sc">}</span><span class="ss"> de daño"</span>)</span>
+<span id="cb12-62"><a href="#cb12-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-63"><a href="#cb12-63" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> realizar_curacion(curador: Curador, objetivo: Personaje):</span>
+<span id="cb12-64"><a href="#cb12-64" aria-hidden="true" tabindex="-1"></a>    antes <span class="op">=</span> objetivo.vida</span>
+<span id="cb12-65"><a href="#cb12-65" aria-hidden="true" tabindex="-1"></a>    curador.curar(objetivo)</span>
+<span id="cb12-66"><a href="#cb12-66" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>curador<span class="sc">.</span>nombre<span class="sc">}</span><span class="ss"> cura a </span><span class="sc">{</span>objetivo<span class="sc">.</span>nombre<span class="sc">}</span><span class="ss">: +</span><span class="sc">{</span>objetivo<span class="sc">.</span>vida <span class="op">-</span> antes<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb12-67"><a href="#cb12-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-68"><a href="#cb12-68" aria-hidden="true" tabindex="-1"></a>conan, merlin <span class="op">=</span> Guerrero(<span class="st">"Conan"</span>, <span class="dv">120</span>), Mago(<span class="st">"Merlín"</span>, <span class="dv">80</span>)</span>
+<span id="cb12-69"><a href="#cb12-69" aria-hidden="true" tabindex="-1"></a>arturo, teresa <span class="op">=</span> Paladin(<span class="st">"Arturo"</span>, <span class="dv">110</span>), Sacerdote(<span class="st">"Teresa"</span>, <span class="dv">70</span>)</span>
+<span id="cb12-70"><a href="#cb12-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-71"><a href="#cb12-71" aria-hidden="true" tabindex="-1"></a>realizar_ataque(merlin, conan)      <span class="co"># Conan defiende: 30 - 8</span></span>
+<span id="cb12-72"><a href="#cb12-72" aria-hidden="true" tabindex="-1"></a>realizar_ataque(conan, merlin)      <span class="co"># Merlín no es Defensor</span></span>
+<span id="cb12-73"><a href="#cb12-73" aria-hidden="true" tabindex="-1"></a>realizar_ataque(merlin, arturo)</span>
+<span id="cb12-74"><a href="#cb12-74" aria-hidden="true" tabindex="-1"></a>realizar_curacion(teresa, merlin)</span>
+<span id="cb12-75"><a href="#cb12-75" aria-hidden="true" tabindex="-1"></a>realizar_curacion(arturo, arturo)</span>
+<span id="cb12-76"><a href="#cb12-76" aria-hidden="true" tabindex="-1"></a>realizar_ataque(arturo, teresa)</span>
+<span id="cb12-77"><a href="#cb12-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-78"><a href="#cb12-78" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Estado final:"</span>)</span>
+<span id="cb12-79"><a href="#cb12-79" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> p <span class="kw">in</span> (conan, merlin, arturo, teresa):</span>
+<span id="cb12-80"><a href="#cb12-80" aria-hidden="true" tabindex="-1"></a>    p.info()</span>
+<span id="cb12-81"><a href="#cb12-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-82"><a href="#cb12-82" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">¿Se puede curar con un Mago?"</span>, <span class="bu">isinstance</span>(merlin, Curador))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Merlín ataca a Conan: 22 de daño
+Conan ataca a Merlín: 20 de daño
+Merlín ataca a Arturo: 25 de daño
+Teresa cura a Merlín: +20
+Arturo cura a Arturo: +15
+Arturo ataca a Teresa: 15 de daño
+
+Estado final:
+  Conan   Guerrero  vida  98/120  roles: Atacante, Defensor
+  Merlín  Mago      vida  80/80  roles: Atacante
+  Arturo  Paladin   vida 100/110  roles: Atacante, Defensor, Curador
+  Teresa  Sacerdote vida  55/70  roles: Curador
+
+¿Se puede curar con un Mago? False</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="resumen" class="level2" data-number="9.8">
+<h2 data-number="9.8" class="anchored" data-anchor-id="resumen"><span class="header-section-number">9.8</span> Resumen</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>Lo que aprendiste en este capítulo
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>✅ Qué son las clases abstractas y por qué son útiles</li>
+<li>✅ Cómo usar el módulo <code>abc</code> en Python</li>
+<li>✅ Diferencia entre métodos abstractos y concretos</li>
+<li>✅ Cómo crear interfaces en Python</li>
+<li>✅ Herencia múltiple con interfaces</li>
+<li>✅ Diseño de APIs y contratos</li>
+</ul>
+</div>
+</div>
+<section id="ventajas-de-clases-abstractas-e-interfaces" class="level3" data-number="9.8.1">
+<h3 data-number="9.8.1" class="anchored" data-anchor-id="ventajas-de-clases-abstractas-e-interfaces"><span class="header-section-number">9.8.1</span> Ventajas de Clases Abstractas e Interfaces</h3>
+<ol type="1">
+<li><strong>Contrato garantizado</strong>: Aseguras que las subclases implementen métodos necesarios</li>
+<li><strong>Documentación viva</strong>: La clase abstracta documenta qué debe implementarse</li>
+<li><strong>Polimorfismo robusto</strong>: Código que funciona con cualquier implementación</li>
+<li><strong>Detección temprana de errores</strong>: Python te avisa si falta implementar algo</li>
+<li><strong>Diseño limpio</strong>: Separa la interfaz de la implementación</li>
+</ol>
+</section>
+<section id="cuándo-usar" class="level3" data-number="9.8.2">
+<h3 data-number="9.8.2" class="anchored" data-anchor-id="cuándo-usar"><span class="header-section-number">9.8.2</span> Cuándo Usar</h3>
+<p><strong>Clase Abstracta</strong>:</p>
+<ul>
+<li>Quieres compartir código común (métodos concretos)</li>
+<li>Defines una familia de clases relacionadas</li>
+<li>Necesitas forzar implementación de ciertos métodos</li>
+</ul>
+<p><strong>Interfaz</strong> (clase abstracta solo con métodos abstractos):</p>
+<ul>
+<li>Solo defines qué hacer, no cómo hacerlo</li>
+<li>Quieres permitir herencia múltiple sin problemas</li>
+<li>Defines un “contrato” que múltiples clases no relacionadas pueden cumplir</li>
+</ul>
+</section>
+<section id="próximo-paso" class="level3" data-number="9.8.3">
+<h3 data-number="9.8.3" class="anchored" data-anchor-id="próximo-paso"><span class="header-section-number">9.8.3</span> Próximo paso</h3>
+<p>En el siguiente y último capítulo:</p>
+<ul>
+<li><strong>Proyecto Integrador</strong>: Aplicarás TODO lo aprendido</li>
+<li>Sistema completo usando todos los conceptos de POO</li>
+<li>Buenas prácticas y patrones de diseño</li>
+</ul>
+<p><strong>¡Ya conoces todas las herramientas profesionales de POO en Python!</strong></p>
+
+
+<script type="pyodide-data">
+eyJvcHRpb25zIjp7ImVudiI6eyJQTE9UTFlfUkVOREVSRVIiOiJwbG90bHlfbWltZXR5cGUifSwiaW5kZXhVUkwiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvcHlvZGlkZS92MC4yOC4xL2Z1bGwvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsicHlvZGlkZV9odHRwIiwibWljcm9waXAiLCJpcHl0aG9uIl19fQ==
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTYiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl82ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS02LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzYgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzYsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl81ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS01LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzUgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzUsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTQiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl80ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS00LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNC1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzQgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzQsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTIiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8yID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0yLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzIgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzIsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTEiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8xID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0xLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzEgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzEsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJpbnRlcnBvbGF0ZS0zIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoie1xuICBjb25zdCB7IGludGVycG9sYXRlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuICBjb25zdCBibG9ja19pZCA9IFwiM1wiO1xuICBjb25zdCBsYW5ndWFnZSA9IFwicHl0aG9uXCI7XG4gIGNvbnN0IGRlZl9tYXAgPSB7XG5tb250byxcbm1vbnRvLFxubW9udG8sXG5tb250byxcbn07XG4gIGNvbnN0IGVsZW0gPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChgaW50ZXJwb2xhdGUtJHtibG9ja19pZH1gKTtcblxuICAvLyBTdG9yZSBvcmlnaW5hbCB0ZW1wbGF0ZWQgSFRNTCBmb3IgcmVmZXJlbmNlIGluIGZ1dHVyZSByZWFjdGl2ZSB1cGRhdGVzXG4gIGlmICghZWxlbS5vcmlnSFRNTCkgZWxlbS5vcmlnSFRNTCA9IGVsZW0uaW5uZXJIVE1MO1xuXG4gIC8vIEludGVycG9sYXRlIHJlYWN0aXZlIE9KUyB2YXJpYWJsZXMgaW50byBlc3RhYmxpc2hlZCBIVE1MIGVsZW1lbnRcbiAgZWxlbS5pbm5lckhUTUwgPSBlbGVtLm9yaWdIVE1MO1xuICBPYmplY3Qua2V5cyhkZWZfbWFwKS5mb3JFYWNoKChkZWYpID0+XG4gICAgaW50ZXJwb2xhdGUoZWxlbSwgXCIke1wiICsgZGVmICsgXCJ9XCIsIGRlZl9tYXBbZGVmXSwgbGFuZ3VhZ2UpXG4gICk7XG59XG4ifSx7ImNlbGxOYW1lIjoicHlvZGlkZS1wcmVsdWRlIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoicHlvZGlkZU9qcyA9IHtcbiAgY29uc3Qge1xuICAgIFB5b2RpZGVFdmFsdWF0b3IsXG4gICAgUHlvZGlkZUVudmlyb25tZW50TWFuYWdlcixcbiAgICBzZXR1cFB5dGhvbixcbiAgICBzdGFydFB5b2RpZGVXb3JrZXIsXG4gICAgYjY0RGVjb2RlLFxuICAgIGNvbGxhcHNlUGF0aCxcbiAgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG5cbiAgY29uc3Qgc3RhdHVzQ29udGFpbmVyID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoXCJleGVyY2lzZS1sb2FkaW5nLXN0YXR1c1wiKTtcbiAgY29uc3QgaW5kaWNhdG9yQ29udGFpbmVyID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoXCJleGVyY2lzZS1sb2FkaW5nLWluZGljYXRvclwiKTtcbiAgaW5kaWNhdG9yQ29udGFpbmVyLmNsYXNzTGlzdC5yZW1vdmUoXCJkLW5vbmVcIik7XG5cbiAgbGV0IHN0YXR1c1RleHQgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpXG4gIHN0YXR1c1RleHQuY2xhc3NMaXN0ID0gXCJleGVyY2lzZS1sb2FkaW5nLWRldGFpbHNcIjtcbiAgc3RhdHVzVGV4dCA9IHN0YXR1c0NvbnRhaW5lci5hcHBlbmRDaGlsZChzdGF0dXNUZXh0KTtcbiAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBJbml0aWFsaXNlYDtcblxuICAvLyBIb2lzdCBpbmRpY2F0b3Igb3V0IGZyb20gZmluYWwgc2xpZGUgd2hlbiBydW5uaW5nIHVuZGVyIHJldmVhbFxuICBjb25zdCByZXZlYWxTdGF0dXMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLnJldmVhbCAuZXhlcmNpc2UtbG9hZGluZy1pbmRpY2F0b3JcIik7XG4gIGlmIChyZXZlYWxTdGF0dXMpIHtcbiAgICByZXZlYWxTdGF0dXMucmVtb3ZlKCk7XG4gICAgZG9jdW1lbnQucXVlcnlTZWxlY3RvcihcIi5yZXZlYWwgPiAuc2xpZGVzXCIpLmFwcGVuZENoaWxkKHJldmVhbFN0YXR1cyk7XG4gIH1cblxuICAvLyBNYWtlIGFueSByZXZlYWwgc2xpZGVzIHdpdGggbGl2ZSBjZWxscyBzY3JvbGxhYmxlXG4gIGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3JBbGwoXCIucmV2ZWFsIC5leGVyY2lzZS1jZWxsXCIpLmZvckVhY2goKGVsKSA9PiB7XG4gICAgZWwuY2xvc2VzdCgnc2VjdGlvbi5zbGlkZScpLmNsYXNzTGlzdC5hZGQoXCJzY3JvbGxhYmxlXCIpO1xuICB9KVxuXG4gIC8vIFB5b2RpZGUgc3VwcGxlbWVudGFsIGRhdGEgYW5kIG9wdGlvbnNcbiAgY29uc3QgZGF0YUNvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS1kYXRhXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgZGF0YSA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKGRhdGFDb250ZW50KSk7XG5cbiAgLy8gR3JhYiBsaXN0IG9mIHJlc291cmNlcyB0byBiZSBkb3dubG9hZGVkXG4gIGNvbnN0IGZpbGVzQ29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJ2ZnMtZmlsZVxcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGZpbGVzID0gSlNPTi5wYXJzZShiNjREZWNvZGUoZmlsZXNDb250ZW50KSk7XG5cbiAgbGV0IHB5b2RpZGVQcm9taXNlID0gKGFzeW5jICgpID0+IHtcbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIFB5b2RpZGVgO1xuICAgIGNvbnN0IHB5b2RpZGUgPSBhd2FpdCBzdGFydFB5b2RpZGVXb3JrZXIoZGF0YS5vcHRpb25zKTtcblxuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcGFja2FnZTogbWljcm9waXBgO1xuICAgIGF3YWl0IHB5b2RpZGUubG9hZFBhY2thZ2UoXCJtaWNyb3BpcFwiKTtcbiAgICBjb25zdCBtaWNyb3BpcCA9IGF3YWl0IHB5b2RpZGUucHlpbXBvcnQoXCJtaWNyb3BpcFwiKTtcbiAgICBhd2FpdCBkYXRhLnBhY2thZ2VzLnBrZ3MubWFwKChwa2cpID0+ICgpID0+IHtcbiAgICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcGFja2FnZTogJHtwa2d9YDtcbiAgICAgIHJldHVybiBtaWNyb3BpcC5pbnN0YWxsKHBrZyk7XG4gICAgfSkucmVkdWNlKChjdXIsIG5leHQpID0+IGN1ci50aGVuKG5leHQpLCBQcm9taXNlLnJlc29sdmUoKSk7XG4gICAgYXdhaXQgbWljcm9waXAuZGVzdHJveSgpO1xuXG4gICAgLy8gRG93bmxvYWQgYW5kIGluc3RhbGwgcmVzb3VyY2VzXG4gICAgYXdhaXQgZmlsZXMubWFwKChmaWxlKSA9PiBhc3luYyAoKSA9PiB7XG4gICAgICBjb25zdCBuYW1lID0gZmlsZS5zdWJzdHJpbmcoZmlsZS5sYXN0SW5kZXhPZignLycpICsgMSk7XG4gICAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIHJlc291cmNlOiAke25hbWV9YDtcbiAgICAgIGNvbnN0IHJlc3BvbnNlID0gYXdhaXQgZmV0Y2goZmlsZSk7XG4gICAgICBpZiAoIXJlc3BvbnNlLm9rKSB7XG4gICAgICAgIHRocm93IG5ldyBFcnJvcihgQ2FuJ3QgZG93bmxvYWQgXFxgJHtmaWxlfVxcYC4gRXJyb3IgJHtyZXNwb25zZS5zdGF0dXN9OiBcIiR7cmVzcG9uc2Uuc3RhdHVzVGV4dH1cIi5gKTtcbiAgICAgIH1cbiAgICAgIGNvbnN0IGRhdGEgPSBhd2FpdCByZXNwb25zZS5hcnJheUJ1ZmZlcigpO1xuXG4gICAgICAvLyBTdG9yZSBVUkxzIGluIHRoZSBjd2Qgd2l0aG91dCBhbnkgc3ViZGlyZWN0b3J5IHN0cnVjdHVyZVxuICAgICAgaWYgKGZpbGUuaW5jbHVkZXMoXCI6Ly9cIikpIHtcbiAgICAgICAgZmlsZSA9IG5hbWU7XG4gICAgICB9XG5cbiAgICAgIC8vIENvbGxhcHNlIGhpZ2hlciBkaXJlY3Rvcnkgc3RydWN0dXJlXG4gICAgICBmaWxlID0gY29sbGFwc2VQYXRoKGZpbGUpO1xuXG4gICAgICAvLyBDcmVhdGUgZGlyZWN0b3J5IHRyZWUsIGlnbm9yaW5nIFwiZGlyZWN0b3J5IGV4aXN0c1wiIFZGUyBlcnJvcnNcbiAgICAgIGNvbnN0IHBhcnRzID0gZmlsZS5zcGxpdCgnLycpLnNsaWNlKDAsIC0xKTtcbiAgICAgIGxldCBwYXRoID0gJyc7XG4gICAgICB3aGlsZSAocGFydHMubGVuZ3RoID4gMCkge1xuICAgICAgICBwYXRoICs9IHBhcnRzLnNoaWZ0KCkgKyAnLyc7XG4gICAgICAgIHRyeSB7XG4gICAgICAgICAgYXdhaXQgcHlvZGlkZS5GUy5ta2RpcihwYXRoKTtcbiAgICAgICAgfSBjYXRjaCAoZSkge1xuICAgICAgICAgIGlmIChlLm5hbWUgIT09IFwiRXJybm9FcnJvclwiKSB0aHJvdyBlO1xuICAgICAgICAgIGlmIChlLmVycm5vICE9PSAyMCkge1xuICAgICAgICAgICAgY29uc3QgZXJyb3JUZXh0UHRyID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLl9zdHJlcnJvcihlLmVycm5vKTtcbiAgICAgICAgICAgIGNvbnN0IGVycm9yVGV4dCA9IGF3YWl0IHB5b2RpZGUuX21vZHVsZS5VVEY4VG9TdHJpbmcoZXJyb3JUZXh0UHRyKTtcbiAgICAgICAgICAgIHRocm93IG5ldyBFcnJvcihgRmlsZXN5c3RlbSBFcnJvciAke2UuZXJybm99IFwiJHtlcnJvclRleHR9XCIuYCk7XG4gICAgICAgICAgfVxuICAgICAgICB9XG4gICAgICB9XG5cbiAgICAgIC8vIFdyaXRlIHRoaXMgZmlsZSB0byB0aGUgVkZTXG4gICAgICB0cnkge1xuICAgICAgICByZXR1cm4gYXdhaXQgcHlvZGlkZS5GUy53cml0ZUZpbGUoZmlsZSwgbmV3IFVpbnQ4QXJyYXkoZGF0YSkpO1xuICAgICAgfSBjYXRjaCAoZSkge1xuICAgICAgICBpZiAoZS5uYW1lICE9PSBcIkVycm5vRXJyb3JcIikgdGhyb3cgZTtcbiAgICAgICAgY29uc3QgZXJyb3JUZXh0UHRyID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLl9zdHJlcnJvcihlLmVycm5vKTtcbiAgICAgICAgY29uc3QgZXJyb3JUZXh0ID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLlVURjhUb1N0cmluZyhlcnJvclRleHRQdHIpO1xuICAgICAgICB0aHJvdyBuZXcgRXJyb3IoYEZpbGVzeXN0ZW0gRXJyb3IgJHtlLmVycm5vfSBcIiR7ZXJyb3JUZXh0fVwiLmApO1xuICAgICAgfVxuICAgIH0pLnJlZHVjZSgoY3VyLCBuZXh0KSA9PiBjdXIudGhlbihuZXh0KSwgUHJvbWlzZS5yZXNvbHZlKCkpO1xuXG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBQeW9kaWRlIGVudmlyb25tZW50IHNldHVwYDtcbiAgICBhd2FpdCBzZXR1cFB5dGhvbihweW9kaWRlKTtcblxuICAgIHN0YXR1c1RleHQucmVtb3ZlKCk7XG4gICAgaWYgKHN0YXR1c0NvbnRhaW5lci5jaGlsZHJlbi5sZW5ndGggPT0gMCkge1xuICAgICAgc3RhdHVzQ29udGFpbmVyLnBhcmVudE5vZGUucmVtb3ZlKCk7XG4gICAgfVxuICAgIHJldHVybiBweW9kaWRlO1xuICB9KSgpLmNhdGNoKChlcnIpID0+IHtcbiAgICBzdGF0dXNUZXh0LnN0eWxlLmNvbG9yID0gXCJ2YXIoLS1leGVyY2lzZS1lZGl0b3ItaGwtZXIsICNBRDAwMDApXCI7XG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGVyci5tZXNzYWdlO1xuICAgIC8vaW5kaWNhdG9yQ29udGFpbmVyLnF1ZXJ5U2VsZWN0b3IoXCIuc3Bpbm5lci1ncm93XCIpLmNsYXNzTGlzdC5hZGQoXCJkLW5vbmVcIik7XG4gICAgdGhyb3cgZXJyO1xuICB9KTtcblxuICAvLyBLZWVwIHRyYWNrIG9mIGluaXRpYWwgT0pTIGJsb2NrIHJlbmRlclxuICBjb25zdCByZW5kZXJlZE9qcyA9IHt9O1xuXG4gIGNvbnN0IHByb2Nlc3MgPSBhc3luYyAoY29udGV4dCwgaW5wdXRzKSA9PiB7XG4gICAgY29uc3QgcHlvZGlkZSA9IGF3YWl0IHB5b2RpZGVQcm9taXNlO1xuICAgIGNvbnN0IGV2YWx1YXRvciA9IG5ldyBQeW9kaWRlRXZhbHVhdG9yKHB5b2RpZGUsIGNvbnRleHQpO1xuICAgIGF3YWl0IGV2YWx1YXRvci5wcm9jZXNzKGlucHV0cyk7XG4gICAgcmV0dXJuIGV2YWx1YXRvci5jb250YWluZXI7XG4gIH1cblxuICByZXR1cm4ge1xuICAgIHB5b2RpZGVQcm9taXNlLFxuICAgIHJlbmRlcmVkT2pzLFxuICAgIHByb2Nlc3MsXG4gIH07XG59XG4ifV19
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+W10=
+</script>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script>
+// Traduce al español los textos de la interfaz de quarto-live (la extensión no tiene opción de idioma).
+(function () {
+  const traducciones = [
+    [/^Run Code$/, "Ejecutar"],
+    [/^Start Over$/, "Reiniciar"],
+    [/^Show Solution$/, "Ver solución"],
+    [/^Show Hint$/, "Ver pista"],
+    [/^Downloading Pyodide/, "Descargando Python (Pyodide)…"],
+    [/^Initialise$/, "Iniciando…"],
+    [/^Pyodide environment setup$/, "Preparando el entorno de Python…"],
+    [/^Downloading package: (.*)$/, "Descargando paquete: $1"],
+    [/^Downloading resource: (.*)$/, "Descargando recurso: $1"],
+  ];
+  function traducir(raiz) {
+    const recorrido = document.createTreeWalker(raiz, NodeFilter.SHOW_TEXT);
+    let nodo;
+    while ((nodo = recorrido.nextNode())) {
+      const texto = nodo.nodeValue.trim();
+      if (!texto) continue;
+      for (const [patron, reemplazo] of traducciones) {
+        if (patron.test(texto)) {
+          nodo.nodeValue = nodo.nodeValue.replace(texto, texto.replace(patron, reemplazo));
+          break;
+        }
+      }
+    }
+  }
+  const observador = new MutationObserver((cambios) => {
+    for (const c of cambios) {
+      if (c.type === "characterData") traducir(c.target.parentNode || document.body);
+      for (const n of c.addedNodes) traducir(n.nodeType === 1 ? n : n.parentNode || document.body);
+    }
+  });
+  document.addEventListener("DOMContentLoaded", () => {
+    traducir(document.body);
+    observador.observe(document.body, { childList: true, subtree: true, characterData: true });
+  });
+})();
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W119
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../..";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Alternar modo oscuro");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Alternar modo oscuro");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Código desplazable","output":"Salida desplazable"};
+  </script>
+<nav class="page-navigation" aria-label="Página">
+  <div class="nav-page nav-page-previous">
+      <a href="./08_composicion_agregacion.html" class="pagination-link" aria-label="Composición y Agregación">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Composición y Agregación</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./10_proyecto_integrador.html" class="pagination-link" aria-label="Proyecto Integrador: Sistema de Tienda en Línea">
+        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Proyecto Integrador: Sistema de Tienda en Línea</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
