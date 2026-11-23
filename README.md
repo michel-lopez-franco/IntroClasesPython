@@ -251,6 +251,12 @@ uv sync --upgrade-package jupyter
 uv sync        # y ejecuta siempre con: uv run ...
 ```
 
+**Actualizar el sitio**: basca con
+
+```bash
+ uv run quarto publish gh-pages curso
+```
+
 **Problema**: Errores de sintaxis
 
 - Verifica que estés usando Python 3.13 o superior (`uv run python --version`)
