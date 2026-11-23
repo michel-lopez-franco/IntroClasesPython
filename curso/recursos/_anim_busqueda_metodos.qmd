@@ -1,0 +1,104 @@
+```{=html}
+<div id="anim-mro" class="anim-poo">
+  <style>
+    .anim-poo { border: 1px solid var(--bs-border-color, #ccc); border-radius: 10px; padding: 1rem; margin: 1rem 0; }
+    .anim-poo .controles { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .8rem; }
+    .anim-poo .controles button { font-family: var(--bs-font-monospace, monospace); font-size: .85rem; }
+    .anim-poo .cuerpo { display: flex; flex-wrap: wrap; gap: 1.2rem; align-items: flex-start; }
+    .anim-poo .jerarquia { flex: 0 1 260px; display: flex; flex-direction: column; align-items: stretch; }
+    .anim-poo .clase { border: 2px solid var(--bs-border-color, #bbb); border-radius: 8px; padding: .35rem .7rem;
+                       font-family: var(--bs-font-monospace, monospace); font-size: .85rem; transition: all .25s; }
+    .anim-poo .clase b { display: block; font-size: .95rem; }
+    .anim-poo .flecha { text-align: center; line-height: 1.3; opacity: .6; font-size: .8rem; }
+    .anim-poo .clase.buscando { border-color: #f0ad4e; background: rgba(240,173,78,.18); }
+    .anim-poo .clase.encontrado { border-color: #3fb618; background: rgba(63,182,24,.18); }
+    .anim-poo .clase.fallo { border-color: #ff0039; background: rgba(255,0,57,.12); }
+    .anim-poo .registro { flex: 1 1 280px; min-height: 12rem; font-family: var(--bs-font-monospace, monospace);
+                          font-size: .82rem; white-space: pre-wrap; background: rgba(128,128,128,.08);
+                          border-radius: 8px; padding: .6rem .8rem; margin: 0; }
+  </style>
+  <div class="controles">
+    <button class="btn btn-sm btn-outline-primary" data-metodo="ladrar">mi_perro.ladrar()</button>
+    <button class="btn btn-sm btn-outline-primary" data-metodo="moverse">mi_perro.moverse()</button>
+    <button class="btn btn-sm btn-outline-primary" data-metodo="respirar">mi_perro.respirar()</button>
+    <button class="btn btn-sm btn-outline-danger" data-metodo="volar">mi_perro.volar()</button>
+    <button class="btn btn-sm btn-outline-success" data-metodo="__init__">Perro("Max", "Labrador")</button>
+  </div>
+  <div class="cuerpo">
+    <div class="jerarquia">
+      <div class="clase" data-clase="object"><b>object</b>(clase base de todo)</div>
+      <div class="flecha">▲ hereda de</div>
+      <div class="clase" data-clase="SerVivo"><b>SerVivo</b>__init__(nombre)<br>respirar()</div>
+      <div class="flecha">▲ hereda de</div>
+      <div class="clase" data-clase="Animal"><b>Animal</b>__init__(nombre, especie)<br>moverse()</div>
+      <div class="flecha">▲ hereda de</div>
+      <div class="clase" data-clase="Perro"><b>Perro</b>__init__(nombre, raza)<br>ladrar()</div>
+    </div>
+    <pre class="registro" aria-live="polite">Elige una llamada para ver cómo Python busca el método.</pre>
+  </div>
+  <script>
+  (() => {
+    const raiz = document.getElementById("anim-mro");
+    const mro = ["Perro", "Animal", "SerVivo", "object"];
+    const metodos = { Perro: ["__init__", "ladrar"], Animal: ["__init__", "moverse"],
+                      SerVivo: ["__init__", "respirar"], object: ["__init__"] };
+    const cajas = Object.fromEntries([...raiz.querySelectorAll(".clase")].map(c => [c.dataset.clase, c]));
+    const registro = raiz.querySelector(".registro");
+    const botones = raiz.querySelectorAll("button");
+    const pausa = ms => new Promise(r => setTimeout(r, ms));
+    const limpiar = () => Object.values(cajas).forEach(c => c.classList.remove("buscando", "encontrado", "fallo"));
+    const escribir = t => { registro.textContent += t + "\n"; };
+
+    async function buscar(metodo) {
+      escribir(`¿Dónde está ${metodo}()? Orden de búsqueda (MRO): ${mro.join(" → ")}`);
+      for (const clase of mro) {
+        cajas[clase].classList.add("buscando");
+        await pausa(700);
+        cajas[clase].classList.remove("buscando");
+        if (metodos[clase].includes(metodo)) {
+          cajas[clase].classList.add("encontrado");
+          escribir(`  ✓ ${clase} define ${metodo}() → se ejecuta ${clase}.${metodo}()`);
+          return clase;
+        }
+        cajas[clase].classList.add("fallo");
+        escribir(clase === "object"
+          ? `  ✗ ${clase} tampoco lo define y ya no hay más clases.`
+          : `  ✗ ${clase} no define ${metodo}(), subimos…`);
+        await pausa(300);
+      }
+      escribir(`AttributeError: 'Perro' object has no attribute '${metodo}'`);
+      return null;
+    }
+
+    async function constructor() {
+      const cadena = [
+        ["Perro",   'Perro.__init__(self, "Max", "Labrador")', 'super().__init__("Max", "Canis familiaris")'],
+        ["Animal",  'Animal.__init__(self, "Max", "Canis familiaris")', 'super().__init__("Max")'],
+        ["SerVivo", 'SerVivo.__init__(self, "Max")', 'self.nombre = "Max"'],
+      ];
+      escribir('Perro("Max", "Labrador") llama a __init__; cada super() sube un nivel:');
+      for (const [clase, llamada, siguiente] of cadena) {
+        cajas[clase].classList.add("buscando");
+        escribir(`  → ${llamada}\n      ${siguiente}`);
+        await pausa(1000);
+        cajas[clase].classList.replace("buscando", "encontrado");
+      }
+      escribir("  ← SerVivo asignó nombre");
+      await pausa(500);
+      escribir('  ← Animal asignó especie = "Canis familiaris"');
+      await pausa(500);
+      escribir('  ← Perro asignó raza = "Labrador"   ✓ objeto listo');
+    }
+
+    botones.forEach(b => b.addEventListener("click", async () => {
+      botones.forEach(x => x.disabled = true);
+      limpiar();
+      registro.textContent = "";
+      if (b.dataset.metodo === "__init__") await constructor();
+      else await buscar(b.dataset.metodo);
+      botones.forEach(x => x.disabled = false);
+    }));
+  })();
+  </script>
+</div>
+```

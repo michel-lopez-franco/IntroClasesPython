@@ -1,0 +1,928 @@
+---
+title: 'Proyecto Integrador: Sistema de Tienda en Línea'
+jupyter: python3
+---
+
+::: {.callout-note title="Objetivos"}
+Al terminar este capítulo podrás:
+
+- Integrar en un solo sistema todos los conceptos del curso.
+- Leer e interpretar la arquitectura de un programa orientado a objetos.
+- Identificar qué concepto de POO resuelve cada parte del diseño.
+- Extender un sistema existente sin modificar el código que ya funciona.
+:::
+
+## Objetivo del Proyecto
+
+Crear un **sistema completo de tienda en línea** que integre TODOS los conceptos aprendidos:
+
+1. ✅ Clases y objetos
+2. ✅ Atributos y métodos
+3. ✅ Constructor y `self`
+4. ✅ Herencia
+5. ✅ Encapsulamiento y propiedades
+6. ✅ Polimorfismo
+7. ✅ Métodos especiales
+8. ✅ Composición y agregación
+9. ✅ Clases abstractas e interfaces
+
+## Arquitectura del Sistema
+
+### Componentes:
+
+1. **Productos** (Herencia y polimorfismo)
+2. **Usuarios** (Encapsulamiento)
+3. **Carrito de compras** (Composición)
+4. **Métodos de pago** (Interfaz/Clase abstracta)
+5. **Órdenes** (Agregación)
+6. **Tienda** (Coordinador principal)
+
+La @fig-arquitectura-tienda muestra todas las clases del sistema y cómo se relacionan. Vuelve a
+este diagrama cada vez que avances un paso.
+
+```{mermaid}
+%%| label: fig-arquitectura-tienda
+%%| fig-cap: "Arquitectura de la tienda en línea: herencia, interfaces, composición y agregación."
+classDiagram
+    direction TB
+    Producto <|-- ProductoElectronico
+    Producto <|-- ProductoRopa
+    Producto <|-- ProductoAlimento
+    MetodoPago <|-- TarjetaCredito
+    MetodoPago <|-- PayPal
+    Carrito "1" *-- "*" ItemCarrito : composición
+    ItemCarrito o-- Producto
+    Orden o-- Usuario
+    Orden o-- "*" ItemCarrito
+    Orden o-- MetodoPago
+    Tienda o-- "*" Producto : catálogo
+    Tienda o-- "*" Usuario
+    Tienda o-- "*" Orden
+    class Producto {
+        <<abstract>>
+        -__id
+        -__nombre
+        -__precio
+        -__stock
+        +reducir_stock(cantidad)
+        +obtener_descripcion()*
+        +calcular_precio_final()*
+    }
+    class MetodoPago {
+        <<interface>>
+        +procesar_pago(monto)*
+        +validar()*
+    }
+    class Usuario {
+        -__password_hash
+        +verificar_password(password)
+    }
+    class Carrito {
+        +agregar_producto(producto, cantidad)
+        +calcular_total()
+    }
+    class Orden {
+        +numero_orden
+        +estado
+        +procesar()
+    }
+    class Tienda {
+        +listar_productos()
+        +registrar_usuario()
+        +crear_orden()
+    }
+```
+
+## Paso 1: Clase Abstracta para Productos
+
+```{python}
+from abc import ABC, abstractmethod
+from datetime import datetime, timedelta
+import random
+
+class Producto(ABC):
+    """Clase abstracta base para todos los productos"""
+    
+    contador_id = 1000
+    
+    def __init__(self, nombre, precio, stock):
+        Producto.contador_id += 1
+        self.__id = Producto.contador_id
+        self.__nombre = nombre
+        self.__precio = precio
+        self.__stock = stock
+    
+    # Propiedades con getters y setters
+    @property
+    def id(self):
+        return self.__id
+    
+    @property
+    def nombre(self):
+        return self.__nombre
+    
+    @property
+    def precio(self):
+        return self.__precio
+    
+    @precio.setter
+    def precio(self, valor):
+        if valor > 0:
+            self.__precio = valor
+        else:
+            raise ValueError("El precio debe ser positivo")
+    
+    @property
+    def stock(self):
+        return self.__stock
+    
+    def reducir_stock(self, cantidad):
+        if cantidad <= self.__stock:
+            self.__stock -= cantidad
+            return True
+        return False
+    
+    def aumentar_stock(self, cantidad):
+        if cantidad > 0:
+            self.__stock += cantidad
+    
+    # Método abstracto que las subclases deben implementar
+    @abstractmethod
+    def obtener_descripcion(self):
+        pass
+    
+    # Método abstracto para calcular precio con descuentos especiales
+    @abstractmethod
+    def calcular_precio_final(self):
+        pass
+    
+    # Métodos especiales
+    def __str__(self):
+        return f"{self.nombre} - ${self.precio}"
+    
+    def __repr__(self):
+        return f"{self.__class__.__name__}(id={self.id}, nombre='{self.nombre}', precio={self.precio})"
+    
+    def __eq__(self, otro):
+        return self.id == otro.id
+    
+    def __lt__(self, otro):
+        return self.precio < otro.precio
+```
+
+## Paso 2: Productos Específicos (Herencia y Polimorfismo)
+
+```{python}
+class ProductoElectronico(Producto):
+    """Productos electrónicos con garantía"""
+    
+    def __init__(self, nombre, precio, stock, marca, garantia_meses):
+        super().__init__(nombre, precio, stock)
+        self.marca = marca
+        self.garantia_meses = garantia_meses
+    
+    def obtener_descripcion(self):
+        return f"{self.nombre} ({self.marca}) - Garantía: {self.garantia_meses} meses"
+    
+    def calcular_precio_final(self):
+        # Los electrónicos tienen 16% de IVA
+        return self.precio * 1.16
+
+class ProductoRopa(Producto):
+    """Productos de ropa con talla"""
+    
+    def __init__(self, nombre, precio, stock, talla, color):
+        super().__init__(nombre, precio, stock)
+        self.talla = talla
+        self.color = color
+    
+    def obtener_descripcion(self):
+        return f"{self.nombre} - Talla: {self.talla}, Color: {self.color}"
+    
+    def calcular_precio_final(self):
+        # La ropa tiene descuento del 10% en temporada
+        return self.precio * 0.90
+
+class ProductoAlimento(Producto):
+    """Productos alimenticios con fecha de caducidad"""
+    
+    def __init__(self, nombre, precio, stock, fecha_caducidad):
+        super().__init__(nombre, precio, stock)
+        self.fecha_caducidad = fecha_caducidad
+    
+    def dias_para_caducar(self):
+        delta = self.fecha_caducidad - datetime.now()
+        return max(0, delta.days)
+    
+    def obtener_descripcion(self):
+        dias = self.dias_para_caducar()
+        return f"{self.nombre} - Caduca en {dias} días"
+    
+    def calcular_precio_final(self):
+        # Si está próximo a caducar, aplica descuento
+        dias = self.dias_para_caducar()
+        if dias <= 3:
+            return self.precio * 0.50  # 50% descuento
+        elif dias <= 7:
+            return self.precio * 0.70  # 30% descuento
+        return self.precio
+```
+
+## Paso 3: Interfaz de Métodos de Pago
+
+```{python}
+class MetodoPago(ABC):
+    """Interfaz para métodos de pago"""
+    
+    @abstractmethod
+    def procesar_pago(self, monto):
+        pass
+    
+    @abstractmethod
+    def validar(self):
+        pass
+
+class TarjetaCredito(MetodoPago):
+    def __init__(self, numero, titular, cvv):
+        self.numero = numero
+        self.titular = titular
+        self.cvv = cvv
+    
+    def validar(self):
+        return len(self.numero) == 16 and len(self.cvv) == 3
+    
+    def procesar_pago(self, monto):
+        if not self.validar():
+            return False, "Tarjeta inválida"
+        # Simulación de procesamiento
+        exito = random.choice([True, True, True, False])  # 75% de éxito
+        if exito:
+            return True, f"Pago de ${monto:.2f} procesado con tarjeta ****{self.numero[-4:]}"
+        return False, "Pago rechazado por el banco"
+
+class PayPal(MetodoPago):
+    def __init__(self, email):
+        self.email = email
+        self.saldo = 10000  # Simulación
+    
+    def validar(self):
+        return '@' in self.email
+    
+    def procesar_pago(self, monto):
+        if not self.validar():
+            return False, "Email inválido"
+        if monto > self.saldo:
+            return False, f"Saldo insuficiente (disponible: ${self.saldo:.2f})"
+        self.saldo -= monto
+        return True, f"Pago de ${monto:.2f} procesado con PayPal ({self.email})"
+```
+
+## Paso 4: Usuario y Sistema de Autenticación
+
+```{python}
+class Usuario:
+    """Usuario de la tienda con encapsulamiento"""
+    
+    def __init__(self, nombre, email, password):
+        self.__nombre = nombre
+        self.__email = email
+        self.__password_hash = hash(password)  # Simulación simple
+        self.__historial_ordenes = []
+    
+    @property
+    def nombre(self):
+        return self.__nombre
+    
+    @property
+    def email(self):
+        return self.__email
+    
+    def verificar_password(self, password):
+        return hash(password) == self.__password_hash
+    
+    def agregar_orden(self, orden):
+        self.__historial_ordenes.append(orden)
+    
+    def obtener_historial(self):
+        return self.__historial_ordenes.copy()
+    
+    def __str__(self):
+        return f"Usuario: {self.nombre} ({self.email})"
+```
+
+## Paso 5: Carrito de Compras (Composición)
+
+```{python}
+class ItemCarrito:
+    """Item individual en el carrito (composición)"""
+    
+    def __init__(self, producto, cantidad):
+        self.producto = producto
+        self.cantidad = cantidad
+    
+    def obtener_subtotal(self):
+        return self.producto.calcular_precio_final() * self.cantidad
+    
+    def __str__(self):
+        return f"{self.producto.nombre} x{self.cantidad} = ${self.obtener_subtotal():.2f}"
+
+class Carrito:
+    """Carrito de compras con composición de items"""
+    
+    def __init__(self):
+        self.__items = []  # Composición: los items pertenecen al carrito
+    
+    def agregar_producto(self, producto, cantidad=1):
+        if cantidad <= 0:
+            return False, "Cantidad inválida"
+        
+        if producto.stock < cantidad:
+            return False, f"Stock insuficiente (disponible: {producto.stock})"
+        
+        # Buscar si el producto ya está en el carrito
+        for item in self.__items:
+            if item.producto == producto:
+                if producto.stock >= item.cantidad + cantidad:
+                    item.cantidad += cantidad
+                    return True, f"{producto.nombre} actualizado en el carrito"
+                else:
+                    return False, "Stock insuficiente"
+        
+        # Agregar nuevo item
+        self.__items.append(ItemCarrito(producto, cantidad))
+        return True, f"{producto.nombre} agregado al carrito"
+    
+    def remover_producto(self, producto_id):
+        for i, item in enumerate(self.__items):
+            if item.producto.id == producto_id:
+                del self.__items[i]
+                return True, "Producto removido del carrito"
+        return False, "Producto no encontrado"
+    
+    def vaciar(self):
+        self.__items.clear()
+    
+    def obtener_items(self):
+        return self.__items.copy()
+    
+    def calcular_total(self):
+        return sum(item.obtener_subtotal() for item in self.__items)
+    
+    def __len__(self):
+        return len(self.__items)
+    
+    def __str__(self):
+        if not self.__items:
+            return "Carrito vacío"
+        
+        lineas = ["\nCARRITO DE COMPRAS:", "=" * 50]
+        for item in self.__items:
+            lineas.append(f"  {item}")
+        lineas.append("=" * 50)
+        lineas.append(f"TOTAL: ${self.calcular_total():.2f}")
+        return "\n".join(lineas)
+```
+
+## Paso 6: Orden de Compra (Agregación)
+
+```{python}
+class Orden:
+    """Orden de compra (agrega productos pero no los posee)"""
+    
+    contador_orden = 5000
+    
+    def __init__(self, usuario, items, metodo_pago):
+        Orden.contador_orden += 1
+        self.numero_orden = Orden.contador_orden
+        self.usuario = usuario  # Agregación
+        self.items = items  # Agregación
+        self.metodo_pago = metodo_pago  # Agregación
+        self.fecha = datetime.now()
+        self.estado = "Pendiente"
+        self.total = sum(item.obtener_subtotal() for item in items)
+    
+    def procesar(self):
+        # Verificar stock nuevamente
+        for item in self.items:
+            if item.producto.stock < item.cantidad:
+                self.estado = "Cancelada - Stock insuficiente"
+                return False, self.estado
+        
+        # Procesar pago
+        exito, mensaje = self.metodo_pago.procesar_pago(self.total)
+        if not exito:
+            self.estado = f"Cancelada - {mensaje}"
+            return False, self.estado
+        
+        # Reducir stock
+        for item in self.items:
+            item.producto.reducir_stock(item.cantidad)
+        
+        self.estado = "Completada"
+        return True, f"Orden #{self.numero_orden} procesada exitosamente"
+    
+    def __str__(self):
+        lineas = [
+            f"\n{'='*60}",
+            f"ORDEN #{self.numero_orden}",
+            f"{'='*60}",
+            f"Usuario: {self.usuario.nombre}",
+            f"Fecha: {self.fecha.strftime('%Y-%m-%d %H:%M:%S')}",
+            f"Estado: {self.estado}",
+            f"\nProductos:"
+        ]
+        
+        for item in self.items:
+            lineas.append(f"  - {item}")
+        
+        lineas.extend([
+            f"\nTOTAL: ${self.total:.2f}",
+            f"{'='*60}"
+        ])
+        
+        return "\n".join(lineas)
+```
+
+## Paso 7: Tienda (Coordinador Principal)
+
+```{python}
+class Tienda:
+    """Clase principal que coordina todo el sistema"""
+    
+    def __init__(self, nombre):
+        self.nombre = nombre
+        self.__catalogo = []
+        self.__usuarios = {}
+        self.__ordenes = []
+    
+    # Gestión de productos
+    def agregar_producto(self, producto):
+        self.__catalogo.append(producto)
+    
+    def buscar_producto(self, producto_id):
+        for producto in self.__catalogo:
+            if producto.id == producto_id:
+                return producto
+        return None
+    
+    def listar_productos(self, categoria=None):
+        print(f"\n{'='*60}")
+        print(f"CATÁLOGO - {self.nombre}")
+        print(f"{'='*60}\n")
+        
+        productos = self.__catalogo
+        if categoria:
+            productos = [p for p in productos if isinstance(p, categoria)]
+        
+        for producto in sorted(productos):  # Usa __lt__ para ordenar por precio
+            precio_final = producto.calcular_precio_final()
+            print(f"ID: {producto.id}")
+            print(f"  {producto.obtener_descripcion()}")
+            print(f"  Precio: ${producto.precio:.2f} → ${precio_final:.2f}")
+            print(f"  Stock: {producto.stock} unidades")
+            print()
+    
+    # Gestión de usuarios
+    def registrar_usuario(self, nombre, email, password):
+        if email in self.__usuarios:
+            return False, "Email ya registrado"
+        
+        usuario = Usuario(nombre, email, password)
+        self.__usuarios[email] = usuario
+        return True, f"Usuario {nombre} registrado exitosamente"
+    
+    def autenticar_usuario(self, email, password):
+        usuario = self.__usuarios.get(email)
+        if usuario and usuario.verificar_password(password):
+            return usuario
+        return None
+    
+    # Gestión de órdenes
+    def crear_orden(self, usuario, carrito, metodo_pago):
+        if len(carrito) == 0:
+            return None, "El carrito está vacío"
+        
+        items = carrito.obtener_items()
+        orden = Orden(usuario, items, metodo_pago)
+        
+        exito, mensaje = orden.procesar()
+        
+        if exito:
+            self.__ordenes.append(orden)
+            usuario.agregar_orden(orden)
+            carrito.vaciar()
+        
+        return orden, mensaje
+    
+    def mostrar_estadisticas(self):
+        print(f"\n{'='*60}")
+        print(f"ESTADÍSTICAS - {self.nombre}")
+        print(f"{'='*60}")
+        print(f"Total de productos: {len(self.__catalogo)}")
+        print(f"Total de usuarios: {len(self.__usuarios)}")
+        print(f"Total de órdenes: {len(self.__ordenes)}")
+        
+        ordenes_completadas = [o for o in self.__ordenes if o.estado == "Completada"]
+        if ordenes_completadas:
+            ventas_totales = sum(o.total for o in ordenes_completadas)
+            print(f"Órdenes completadas: {len(ordenes_completadas)}")
+            print(f"Ventas totales: ${ventas_totales:.2f}")
+        print(f"{'='*60}\n")
+```
+
+```{python}
+#| include: false
+# El pago con tarjeta se aprueba al azar (75 %). Fijamos la semilla para que
+# el resultado mostrado en el libro sea siempre el mismo.
+random.seed(1)
+```
+
+## Paso 8: Demostración del Sistema Completo
+
+```{python}
+# Crear la tienda
+tienda = Tienda("TechShop Online")
+
+# Agregar productos de diferentes tipos
+tienda.agregar_producto(
+    ProductoElectronico("Laptop Dell", 15000, 5, "Dell", 24)
+)
+tienda.agregar_producto(
+    ProductoElectronico("Mouse Logitech", 350, 20, "Logitech", 12)
+)
+tienda.agregar_producto(
+    ProductoElectronico("Teclado Mecánico", 1200, 10, "Corsair", 12)
+)
+tienda.agregar_producto(
+    ProductoRopa("Camisa Polo", 450, 15, "M", "Azul")
+)
+tienda.agregar_producto(
+    ProductoRopa("Jeans", 800, 8, "32", "Negro")
+)
+tienda.agregar_producto(
+    ProductoAlimento("Leche", 25, 50, datetime.now() + timedelta(days=2))
+)
+tienda.agregar_producto(
+    ProductoAlimento("Pan", 35, 30, datetime.now() + timedelta(days=10))
+)
+
+# Mostrar catálogo completo
+tienda.listar_productos()
+
+# Registrar usuarios
+print("\n" + "="*60)
+print("REGISTRO DE USUARIOS")
+print("="*60)
+exito, msg = tienda.registrar_usuario("Ana García", "ana@email.com", "password123")
+print(msg)
+exito, msg = tienda.registrar_usuario("Carlos López", "carlos@email.com", "pass456")
+print(msg)
+
+# Autenticar usuario
+print("\n" + "="*60)
+print("AUTENTICACIÓN")
+print("="*60)
+usuario = tienda.autenticar_usuario("ana@email.com", "password123")
+if usuario:
+    print(f"✓ Bienvenida, {usuario.nombre}!")
+else:
+    print("✗ Autenticación fallida")
+
+# Crear carrito y agregar productos
+print("\n" + "="*60)
+print("COMPRAS")
+print("="*60)
+carrito = Carrito()
+
+# Buscar y agregar productos
+laptop = tienda.buscar_producto(1001)
+mouse = tienda.buscar_producto(1002)
+leche = tienda.buscar_producto(1006)
+
+exito, msg = carrito.agregar_producto(laptop, 1)
+print(msg)
+exito, msg = carrito.agregar_producto(mouse, 2)
+print(msg)
+exito, msg = carrito.agregar_producto(leche, 3)
+print(msg)
+
+# Mostrar carrito
+print(carrito)
+
+# Procesar orden
+print("\n" + "="*60)
+print("PROCESANDO PAGO")
+print("="*60)
+tarjeta = TarjetaCredito("1234567890123456", "Ana García", "123")
+orden, mensaje = tienda.crear_orden(usuario, carrito, tarjeta)
+
+print(mensaje)
+if orden:
+    print(orden)
+
+# Mostrar estadísticas
+tienda.mostrar_estadisticas()
+
+# Mostrar catálogo actualizado (stock reducido)
+print("\n" + "="*60)
+print("CATÁLOGO ACTUALIZADO")
+print("="*60)
+tienda.listar_productos(ProductoElectronico)
+```
+
+## Conceptos Aplicados en el Proyecto
+
+### 1. Clases y Objetos
+
+- ✅ `Producto`, `Usuario`, `Carrito`, `Orden`, `Tienda`
+
+### 2. Herencia
+
+- ✅ `ProductoElectronico`, `ProductoRopa`, `ProductoAlimento` heredan de `Producto`
+- ✅ `TarjetaCredito`, `PayPal` heredan de `MetodoPago`
+
+### 3. Encapsulamiento
+
+- ✅ Atributos privados (`__nombre`, `__precio`, `__stock`)
+- ✅ Propiedades con `@property`
+- ✅ Validación en setters
+
+### 4. Polimorfismo
+
+- ✅ `calcular_precio_final()` se comporta diferente en cada tipo de producto
+- ✅ `procesar_pago()` funciona con cualquier método de pago
+
+### 5. Abstracción
+
+- ✅ Clase abstracta `Producto` con métodos abstractos
+- ✅ Interfaz `MetodoPago`
+
+### 6. Composición
+
+- ✅ `Carrito` contiene `ItemCarrito` (los items pertenecen al carrito)
+
+### 7. Agregación
+
+- ✅ `Orden` agrega `Usuario`, `Producto`, `MetodoPago` (existen independientemente)
+
+### 8. Métodos Especiales
+
+- ✅ `__str__`, `__repr__`, `__eq__`, `__lt__`, `__len__`
+
+## Ejercicio Final
+
+### Extiende el sistema agregando:
+
+1. **Sistema de cupones de descuento**:
+   - Clase `Cupon` con código, porcentaje de descuento, fecha de expiración
+   - Método para aplicar cupón al carrito
+
+2. **Sistema de reseñas**:
+   - Clase `Reseña` con usuario, producto, calificación (1-5), comentario
+   - Método en `Producto` para agregar y mostrar reseñas
+   - Método para calcular calificación promedio
+
+3. **Sistema de envío**:
+   - Clase abstracta `MetodoEnvio`
+   - Implementaciones: `EnvioEstandar`, `EnvioExpress`, `EnvioInternacional`
+   - Cada uno calcula costos y tiempos diferentes
+   - Agregar método de envío a la orden
+
+4. **Carrito persistente**:
+   - Guardar carrito del usuario
+   - Recuperar carrito cuando el usuario vuelva a iniciar sesión
+
+5. **Búsqueda avanzada**:
+   - Buscar por nombre, rango de precio, categoría
+   - Ordenar resultados por precio, popularidad, etc.
+
+### Soluciones propuestas
+
+Las siguientes soluciones **extienden** las clases del proyecto sin modificarlas (usando
+herencia, composición y nuevas clases). En tu propio código también podrías agregar los métodos
+directamente en las clases originales.
+
+::: {.callout-tip collapse="true" title="Solución 1: cupones de descuento"}
+```{python}
+class Cupon:
+    def __init__(self, codigo, porcentaje, fecha_expiracion):
+        if not 0 < porcentaje <= 100:
+            raise ValueError("El porcentaje debe estar entre 1 y 100")
+        self.codigo = codigo.upper()
+        self.porcentaje = porcentaje
+        self.fecha_expiracion = fecha_expiracion
+
+    @property
+    def vigente(self):
+        return datetime.now() <= self.fecha_expiracion
+
+    def aplicar(self, total):
+        return total * (1 - self.porcentaje / 100)
+
+class CarritoConCupon(Carrito):
+    def __init__(self):
+        super().__init__()
+        self.cupon = None
+
+    def aplicar_cupon(self, cupon):
+        if not cupon.vigente:
+            return False, f"El cupón {cupon.codigo} expiró"
+        self.cupon = cupon
+        return True, f"Cupón {cupon.codigo} aplicado (-{cupon.porcentaje}%)"
+
+    def calcular_total(self):  # Sobrescribe: __str__ de Carrito lo usa automáticamente
+        total = super().calcular_total()
+        return self.cupon.aplicar(total) if self.cupon else total
+
+carrito2 = CarritoConCupon()
+carrito2.agregar_producto(tienda.buscar_producto(1004), 2)   # Camisa Polo
+print(carrito2.aplicar_cupon(Cupon("verano", 20, datetime.now() - timedelta(days=1)))[1])
+print(carrito2.aplicar_cupon(Cupon("bienvenida", 15, datetime.now() + timedelta(days=30)))[1])
+print(carrito2)
+```
+:::
+
+::: {.callout-tip collapse="true" title="Solución 2: reseñas de productos"}
+```{python}
+class Resena:
+    def __init__(self, usuario, calificacion, comentario=""):
+        if calificacion not in range(1, 6):
+            raise ValueError("La calificación debe ser un entero de 1 a 5")
+        self.usuario = usuario
+        self.calificacion = calificacion
+        self.comentario = comentario
+
+    def __str__(self):
+        estrellas = "★" * self.calificacion + "☆" * (5 - self.calificacion)
+        return f"{estrellas} {self.usuario.nombre}: {self.comentario}"
+
+class ConResenas:
+    """Mixin: agrega reseñas a cualquier tipo de producto."""
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)   # Sigue el MRO hasta Producto
+        self._resenas = []
+
+    def agregar_resena(self, resena):
+        self._resenas.append(resena)
+
+    @property
+    def calificacion_promedio(self):
+        if not self._resenas:
+            return 0
+        return sum(r.calificacion for r in self._resenas) / len(self._resenas)
+
+    def mostrar_resenas(self):
+        print(f"{self.nombre} — {self.calificacion_promedio:.1f}/5 ({len(self._resenas)} reseñas)")
+        for r in self._resenas:
+            print(f"  {r}")
+
+class ElectronicoConResenas(ConResenas, ProductoElectronico):
+    pass
+
+audifonos = ElectronicoConResenas("Audífonos BT", 900, 10, "Sony", 12)
+carlos = tienda.autenticar_usuario("carlos@email.com", "pass456")
+audifonos.agregar_resena(Resena(usuario, 5, "Excelente sonido"))
+audifonos.agregar_resena(Resena(carlos, 3, "La batería dura poco"))
+audifonos.mostrar_resenas()
+```
+:::
+
+::: {.callout-tip collapse="true" title="Solución 3: métodos de envío"}
+```{python}
+class MetodoEnvio(ABC):
+    @abstractmethod
+    def calcular_costo(self, peso_kg): ...
+
+    @abstractmethod
+    def dias_estimados(self): ...
+
+    def resumen(self, peso_kg):
+        return (f"{type(self).__name__:<19} ${self.calcular_costo(peso_kg):>7.2f}"
+                f"  {self.dias_estimados()} días")
+
+class EnvioEstandar(MetodoEnvio):
+    def calcular_costo(self, peso_kg):
+        return 99 + 10 * peso_kg
+    def dias_estimados(self):
+        return 6
+
+class EnvioExpress(MetodoEnvio):
+    def calcular_costo(self, peso_kg):
+        return 199 + 25 * peso_kg
+    def dias_estimados(self):
+        return 2
+
+class EnvioInternacional(MetodoEnvio):
+    def __init__(self, pais):
+        self.pais = pais
+    def calcular_costo(self, peso_kg):
+        return 500 + 80 * peso_kg
+    def dias_estimados(self):
+        return 15
+
+class OrdenConEnvio(Orden):
+    def __init__(self, usuario, items, metodo_pago, metodo_envio, peso_kg=1):
+        super().__init__(usuario, items, metodo_pago)
+        self.metodo_envio = metodo_envio
+        self.costo_envio = metodo_envio.calcular_costo(peso_kg)
+        self.total += self.costo_envio   # procesar() cobrará el total con envío
+
+for envio in [EnvioEstandar(), EnvioExpress(), EnvioInternacional("Chile")]:
+    print(envio.resumen(peso_kg=2))
+
+carrito3 = Carrito()
+carrito3.agregar_producto(tienda.buscar_producto(1003), 1)   # Teclado
+orden_envio = OrdenConEnvio(carlos, carrito3.obtener_items(), PayPal("carlos@email.com"),
+                            EnvioExpress(), peso_kg=1.5)
+print(orden_envio.procesar()[1])
+print(f"Envío: ${orden_envio.costo_envio:.2f} | Total cobrado: ${orden_envio.total:.2f}")
+```
+:::
+
+::: {.callout-tip collapse="true" title="Solución 4: carrito persistente"}
+```{python}
+class GestorCarritos:
+    """Guarda el contenido del carrito de cada usuario (en memoria).
+    En una aplicación real se guardaría en un archivo JSON o en una base de datos."""
+    def __init__(self):
+        self.__guardados = {}
+
+    def guardar(self, usuario, carrito):
+        self.__guardados[usuario.email] = [(i.producto, i.cantidad) for i in carrito.obtener_items()]
+
+    def recuperar(self, usuario):
+        carrito = Carrito()
+        for producto, cantidad in self.__guardados.get(usuario.email, []):
+            carrito.agregar_producto(producto, cantidad)   # Revalida el stock
+        return carrito
+
+gestor = GestorCarritos()
+c = Carrito()
+c.agregar_producto(tienda.buscar_producto(1005), 1)    # Jeans
+c.agregar_producto(tienda.buscar_producto(1007), 4)    # Pan
+gestor.guardar(usuario, c)
+del c                                                  # El usuario cierra sesión
+
+carrito_recuperado = gestor.recuperar(usuario)         # ...y vuelve más tarde
+print(carrito_recuperado)
+```
+:::
+
+::: {.callout-tip collapse="true" title="Solución 5: búsqueda avanzada"}
+```{python}
+def buscar_productos(productos, texto=None, precio_min=0, precio_max=float("inf"),
+                     categoria=None, ordenar_por="precio", descendente=False):
+    resultado = [
+        p for p in productos
+        if (texto is None or texto.lower() in p.nombre.lower())
+        and precio_min <= p.calcular_precio_final() <= precio_max
+        and (categoria is None or isinstance(p, categoria))
+    ]
+    claves = {
+        "precio": lambda p: p.calcular_precio_final(),
+        "nombre": lambda p: p.nombre,
+        "stock": lambda p: p.stock,
+    }
+    return sorted(resultado, key=claves[ordenar_por], reverse=descendente)
+
+# El catálogo de Tienda es privado (__catalogo); lo recorremos con su método público
+catalogo = [p for p in (tienda.buscar_producto(i) for i in range(1001, 1008)) if p]
+
+print("Electrónicos de menos de $2,000:")
+for p in buscar_productos(catalogo, precio_max=2000, categoria=ProductoElectronico):
+    print(f"  {p.nombre}: ${p.calcular_precio_final():.2f}")
+
+print("Todo, ordenado por stock (mayor a menor):")
+for p in buscar_productos(catalogo, ordenar_por="stock", descendente=True):
+    print(f"  {p.nombre}: {p.stock} unidades")
+```
+:::
+
+## Conclusión
+
+### ¡Felicidades! Has completado el curso de POO en Python
+
+::: {.callout-note title="Resumen del curso: ahora dominas"}
+1. ✅ **Fundamentos**: Clases, objetos, atributos, métodos
+2. ✅ **Los 4 Pilares**: Encapsulamiento, Abstracción, Herencia, Polimorfismo
+3. ✅ **Conceptos Avanzados**: Composición, Agregación, Clases Abstractas
+4. ✅ **Métodos Especiales**: Hacer tus clases pythónicas
+5. ✅ **Diseño de Sistemas**: Arquitectura limpia y mantenible
+:::
+
+### Próximos Pasos
+
+1. **Practica**: Crea tus propios proyectos usando POO
+2. **Patrones de Diseño**: Estudia patrones como Singleton, Factory, Observer
+3. **Testing**: Aprende a hacer pruebas unitarias de tus clases
+4. **Frameworks**: Explora Django, Flask, FastAPI que usan POO intensivamente
+5. **Clean Code**: Lee sobre principios SOLID y Clean Architecture
+
+### Recursos Recomendados
+
+- "Python 3 Object-Oriented Programming" - Dusty Phillips
+- "Clean Code" - Robert C. Martin
+- "Design Patterns" - Gang of Four
+- Documentación oficial de Python: https://docs.python.org/3/tutorial/classes.html
+
+**¡Sigue programando y construyendo proyectos increíbles!**

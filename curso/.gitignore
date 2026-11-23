@@ -1,0 +1,14 @@
+# Salidas generadas por `quarto render`
+_book/
+_site/
+.quarto/
+*_files/
+*.html
+**/*.quarto_ipynb
+__pycache__/
+# Archivo que crea el ejemplo de context manager del capítulo 07
+temp.txt
+
+/.quarto/
+# Fragmentos HTML propios (sí se versionan)
+!recursos/*.html

@@ -1,0 +1,767 @@
+---
+title: 'Polimorfismo'
+jupyter: python3
+---
+
+::: {.callout-note title="Objetivos"}
+Al terminar este capítulo podrás:
+
+- Explicar el polimorfismo como "mismo mensaje, distinto comportamiento".
+- Aplicar polimorfismo mediante herencia y sobrescritura de métodos.
+- Usar *duck typing* para escribir funciones que aceptan cualquier objeto con los métodos adecuados.
+- Diseñar sistemas extensibles sin cadenas de `if` que pregunten por el tipo.
+:::
+
+## ¿Qué es el Polimorfismo?
+
+Polimorfismo significa "muchas formas". Es la capacidad de objetos de diferentes clases de responder al mismo método de manera diferente.
+
+### Analogía del mundo real
+
+Piensa en el comando "habla":
+
+- Un **perro** responde: "¡Guau!"
+- Un **gato** responde: "¡Miau!"
+- Un **pato** responde: "¡Cuac!"
+
+Todos responden al mismo comando, pero cada uno a su manera. Eso es polimorfismo.
+
+## Polimorfismo Básico con Herencia
+
+```{pyodide}
+#| caption: "Ejemplo interactivo: modifícalo y vuelve a ejecutarlo"
+#| autorun: true
+class Animal:
+    def __init__(self, nombre):
+        self.nombre = nombre
+    
+    def hacer_sonido(self):
+        pass  # Método genérico
+
+class Perro(Animal):
+    def hacer_sonido(self):
+        return f"{self.nombre} dice: ¡Guau!"
+
+class Gato(Animal):
+    def hacer_sonido(self):
+        return f"{self.nombre} dice: ¡Miau!"
+
+class Vaca(Animal):
+    def hacer_sonido(self):
+        return f"{self.nombre} dice: ¡Muuu!"
+
+# Crear diferentes animales
+animales = [
+    Perro("Rex"),
+    Gato("Whiskers"),
+    Vaca("Lola"),
+    Perro("Max")
+]
+
+# Polimorfismo en acción: mismo método, diferentes resultados
+for animal in animales:
+    print(animal.hacer_sonido())
+```
+
+### La Magia del Polimorfismo
+
+No necesitamos saber el tipo exacto del objeto. Solo necesitamos saber que tiene el método `hacer_sonido()`.
+
+### El despacho polimórfico, paso a paso
+
+En cada vuelta del ciclo, la variable `animal` apunta a un objeto distinto. Python no mira el nombre de la variable sino el **tipo real del objeto** para decidir qué versión de `hacer_sonido()` ejecutar.
+
+{{< include recursos/_anim_polimorfismo.qmd >}}
+
+## Duck Typing
+
+> "Si camina como un pato y grazna como un pato, entonces debe ser un pato."
+
+En Python, el polimorfismo no requiere herencia. Solo necesitas que los objetos tengan el mismo método.
+
+```{pyodide}
+#| caption: "Ejemplo interactivo: modifícalo y vuelve a ejecutarlo"
+#| autorun: true
+# Estas clases NO tienen relación de herencia
+class Pato:
+    def hablar(self):
+        return "¡Cuac cuac!"
+
+class Persona:
+    def hablar(self):
+        return "¡Hola!"
+
+class Robot:
+    def hablar(self):
+        return "Beep boop"
+
+# Función que acepta cualquier objeto con método hablar()
+def hacer_hablar(cosa):
+    print(cosa.hablar())
+
+# Funciona con todos, sin importar la clase
+hacer_hablar(Pato())
+hacer_hablar(Persona())
+hacer_hablar(Robot())
+```
+
+## Polimorfismo con Diferentes Clases
+
+Un ejemplo más práctico: diferentes formas de pago
+
+```{python}
+class TarjetaCredito:
+    def __init__(self, numero, titular):
+        self.numero = numero
+        self.titular = titular
+    
+    def procesar_pago(self, monto):
+        print(f"Procesando ${monto} con tarjeta de crédito")
+        print(f"Titular: {self.titular}")
+        print(f"Últimos 4 dígitos: {self.numero[-4:]}")
+        return True
+
+class PayPal:
+    def __init__(self, email):
+        self.email = email
+    
+    def procesar_pago(self, monto):
+        print(f"Procesando ${monto} con PayPal")
+        print(f"Email: {self.email}")
+        return True
+
+class Efectivo:
+    def procesar_pago(self, monto):
+        print(f"Recibiendo ${monto} en efectivo")
+        print("Por favor, entregue el dinero al cajero")
+        return True
+
+class Carrito:
+    def __init__(self):
+        self.total = 0
+    
+    def agregar_monto(self, monto):
+        self.total += monto
+    
+    # Este método acepta CUALQUIER forma de pago
+    def pagar(self, metodo_pago):
+        print(f"\nTotal a pagar: ${self.total}")
+        print("-" * 40)
+        
+        if metodo_pago.procesar_pago(self.total):
+            print("✓ Pago exitoso")
+            self.total = 0
+        else:
+            print("✗ Pago fallido")
+
+# Crear carrito
+carrito = Carrito()
+carrito.agregar_monto(100)
+carrito.agregar_monto(50)
+
+# Probar con diferentes métodos de pago
+tarjeta = TarjetaCredito("1234567890123456", "Ana García")
+carrito.pagar(tarjeta)
+
+# Otro carrito, otro método
+carrito.agregar_monto(75)
+paypal = PayPal("usuario@example.com")
+carrito.pagar(paypal)
+
+# Otro más
+carrito.agregar_monto(200)
+efectivo = Efectivo()
+carrito.pagar(efectivo)
+```
+
+Observa en la @fig-pagos-duck que las tres formas de pago **no comparten una clase padre**:
+`Carrito` sólo depende de que exista un método `procesar_pago(monto)`.
+
+```{mermaid}
+%%| label: fig-pagos-duck
+%%| fig-cap: "Duck typing: Carrito usa cualquier objeto que tenga procesar_pago(), sin herencia."
+classDiagram
+    class Carrito {
+        +total
+        +agregar_monto(monto)
+        +pagar(metodo_pago)
+    }
+    class TarjetaCredito {
+        +numero
+        +titular
+        +procesar_pago(monto)
+    }
+    class PayPal {
+        +email
+        +procesar_pago(monto)
+    }
+    class Efectivo {
+        +procesar_pago(monto)
+    }
+    Carrito ..> TarjetaCredito : usa
+    Carrito ..> PayPal : usa
+    Carrito ..> Efectivo : usa
+```
+
+## Polimorfismo con Operadores
+
+Python permite polimorfismo con operadores incorporados:
+
+```{python}
+# El operador + funciona diferente según el tipo
+print("Números:", 5 + 3)
+print("Strings:", "Hola" + " " + "Mundo")
+print("Listas:", [1, 2] + [3, 4])
+
+# len() funciona con diferentes tipos
+print("\nlen() polimórfico:")
+print("String:", len("Hola"))
+print("Lista:", len([1, 2, 3, 4, 5]))
+print("Diccionario:", len({"a": 1, "b": 2}))
+```
+
+## Ejemplo: Sistema de Notificaciones
+
+```{python}
+class Email:
+    def __init__(self, destinatario):
+        self.destinatario = destinatario
+    
+    def enviar(self, mensaje):
+        print(f"📧 Enviando email a {self.destinatario}")
+        print(f"Mensaje: {mensaje}")
+        print()
+
+class SMS:
+    def __init__(self, numero):
+        self.numero = numero
+    
+    def enviar(self, mensaje):
+        # Limitar a 160 caracteres
+        mensaje_corto = mensaje[:160]
+        print(f"📱 Enviando SMS a {self.numero}")
+        print(f"Mensaje: {mensaje_corto}")
+        if len(mensaje) > 160:
+            print("(Mensaje truncado)")
+        print()
+
+class Push:
+    def __init__(self, dispositivo_id):
+        self.dispositivo_id = dispositivo_id
+    
+    def enviar(self, mensaje):
+        print(f"🔔 Enviando notificación push al dispositivo {self.dispositivo_id}")
+        print(f"Mensaje: {mensaje}")
+        print()
+
+class SistemaNotificaciones:
+    def __init__(self):
+        self.canales = []
+    
+    def agregar_canal(self, canal):
+        self.canales.append(canal)
+    
+    def notificar_todos(self, mensaje):
+        print("=" * 50)
+        print("Enviando notificaciones...")
+        print("=" * 50)
+        
+        for canal in self.canales:
+            # Polimorfismo: cada canal envía a su manera
+            canal.enviar(mensaje)
+
+# Configurar sistema
+sistema = SistemaNotificaciones()
+sistema.agregar_canal(Email("usuario@example.com"))
+sistema.agregar_canal(SMS("+52-123-456-7890"))
+sistema.agregar_canal(Push("device-12345"))
+
+# Enviar notificación a todos los canales
+sistema.notificar_todos("¡Tu pedido ha sido enviado! Número de seguimiento: ABC123")
+```
+
+## Ejemplo: Sistema de Archivos
+
+```{python}
+class Archivo:
+    def __init__(self, nombre, tamaño):
+        self.nombre = nombre
+        self.tamaño = tamaño  # en KB
+    
+    def abrir(self):
+        print(f"Abriendo archivo: {self.nombre}")
+    
+    def obtener_tamaño(self):
+        return self.tamaño
+    
+    def obtener_info(self):
+        return f"{self.nombre} ({self.tamaño} KB)"
+
+class ArchivoImagen(Archivo):
+    def __init__(self, nombre, tamaño, resolucion):
+        super().__init__(nombre, tamaño)
+        self.resolucion = resolucion
+    
+    def abrir(self):
+        print(f"🖼️  Abriendo imagen: {self.nombre}")
+        print(f"Resolución: {self.resolucion}")
+    
+    def obtener_info(self):
+        return f"{self.nombre} - {self.resolucion} ({self.tamaño} KB)"
+
+class ArchivoAudio(Archivo):
+    def __init__(self, nombre, tamaño, duracion):
+        super().__init__(nombre, tamaño)
+        self.duracion = duracion  # en segundos
+    
+    def abrir(self):
+        print(f"🎵 Reproduciendo audio: {self.nombre}")
+        print(f"Duración: {self.duracion} segundos")
+    
+    def obtener_info(self):
+        return f"{self.nombre} - {self.duracion}s ({self.tamaño} KB)"
+
+class ArchivoVideo(Archivo):
+    def __init__(self, nombre, tamaño, duracion, resolucion):
+        super().__init__(nombre, tamaño)
+        self.duracion = duracion
+        self.resolucion = resolucion
+    
+    def abrir(self):
+        print(f"🎬 Reproduciendo video: {self.nombre}")
+        print(f"Duración: {self.duracion}s - Resolución: {self.resolucion}")
+    
+    def obtener_info(self):
+        return f"{self.nombre} - {self.resolucion} - {self.duracion}s ({self.tamaño} KB)"
+
+class Carpeta:
+    def __init__(self, nombre):
+        self.nombre = nombre
+        self.contenido = []
+    
+    def agregar(self, item):
+        self.contenido.append(item)
+    
+    def listar(self):
+        print(f"\n📁 Carpeta: {self.nombre}")
+        print("-" * 50)
+        for item in self.contenido:
+            print(f"  • {item.obtener_info()}")
+    
+    def abrir_todo(self):
+        print(f"\nAbriendo archivos de: {self.nombre}")
+        print("=" * 50)
+        for item in self.contenido:
+            # Polimorfismo: cada archivo se abre a su manera
+            item.abrir()
+            print()
+    
+    def obtener_tamaño_total(self):
+        total = sum(item.obtener_tamaño() for item in self.contenido)
+        return total
+
+# Crear archivos de diferentes tipos
+foto1 = ArchivoImagen("vacaciones.jpg", 2500, "1920x1080")
+foto2 = ArchivoImagen("perfil.png", 150, "500x500")
+cancion = ArchivoAudio("favorita.mp3", 3500, 180)
+video = ArchivoVideo("tutorial.mp4", 15000, 300, "1280x720")
+documento = Archivo("readme.txt", 5)
+
+# Crear carpeta y agregar archivos
+mi_carpeta = Carpeta("Mis Documentos")
+mi_carpeta.agregar(foto1)
+mi_carpeta.agregar(foto2)
+mi_carpeta.agregar(cancion)
+mi_carpeta.agregar(video)
+mi_carpeta.agregar(documento)
+
+# Listar contenido
+mi_carpeta.listar()
+print(f"\nTamaño total: {mi_carpeta.obtener_tamaño_total()} KB")
+
+# Abrir todos los archivos (polimorfismo en acción)
+mi_carpeta.abrir_todo()
+```
+
+El sistema de archivos combina herencia (tipos de archivo) con una carpeta que trata a todos
+por igual (@fig-archivos).
+
+```{mermaid}
+%%| label: fig-archivos
+%%| fig-cap: "Carpeta llama a abrir() y obtener_info() sin saber qué tipo de archivo tiene."
+classDiagram
+    Archivo <|-- ArchivoImagen
+    Archivo <|-- ArchivoAudio
+    Archivo <|-- ArchivoVideo
+    Carpeta o-- Archivo : contenido
+    class Archivo {
+        +nombre
+        +tamaño
+        +abrir()
+        +obtener_info()
+    }
+    class ArchivoImagen {
+        +resolucion
+        +abrir()
+    }
+    class ArchivoAudio {
+        +duracion
+        +abrir()
+    }
+    class ArchivoVideo {
+        +duracion
+        +resolucion
+        +abrir()
+    }
+    class Carpeta {
+        +agregar(item)
+        +listar()
+        +abrir_todo()
+    }
+```
+
+## Ejercicios Prácticos
+
+### Ejercicio 1: Formas Geométricas
+
+Crea clases para diferentes formas geométricas:
+
+- `Circulo`, `Rectangulo`, `Triangulo`
+- Todas deben tener métodos: `calcular_area()` y `calcular_perimetro()`
+- Crea una función `mostrar_info_forma(forma)` que funcione con cualquier forma
+- Crea una lista de diferentes formas y calcula el área total
+
+```{pyodide}
+#| caption: "Prueba tú: ejercicio 1"
+#| min-lines: 8
+# Escribe aquí tu solución
+```
+
+::: {.callout-tip collapse="true" title="Solución del ejercicio 1"}
+```{python}
+import math
+
+class Circulo:
+    def __init__(self, radio):
+        self.radio = radio
+    def calcular_area(self):
+        return math.pi * self.radio ** 2
+    def calcular_perimetro(self):
+        return 2 * math.pi * self.radio
+
+class Rectangulo:
+    def __init__(self, ancho, alto):
+        self.ancho, self.alto = ancho, alto
+    def calcular_area(self):
+        return self.ancho * self.alto
+    def calcular_perimetro(self):
+        return 2 * (self.ancho + self.alto)
+
+class Triangulo:
+    def __init__(self, a, b, c):
+        self.a, self.b, self.c = a, b, c
+    def calcular_perimetro(self):
+        return self.a + self.b + self.c
+    def calcular_area(self):  # Fórmula de Herón
+        s = self.calcular_perimetro() / 2
+        return math.sqrt(s * (s - self.a) * (s - self.b) * (s - self.c))
+
+def mostrar_info_forma(forma):
+    print(f"{type(forma).__name__:<11} área={forma.calcular_area():7.2f}  "
+          f"perímetro={forma.calcular_perimetro():6.2f}")
+
+formas = [Circulo(2), Rectangulo(3, 4), Triangulo(3, 4, 5)]
+for f in formas:
+    mostrar_info_forma(f)
+print(f"Área total: {sum(f.calcular_area() for f in formas):.2f}")
+```
+:::
+
+### Ejercicio 2: Sistema de Transporte
+
+Crea clases para diferentes medios de transporte:
+
+- `Coche`, `Bicicleta`, `Avion`, `Barco`
+- Todos deben tener: método `viajar(distancia)` que imprime cómo viajan
+- Método `obtener_velocidad_promedio()` que retorna la velocidad en km/h
+- Crea una función `planear_viaje(transporte, distancia)` que:
+  - Muestre el medio de transporte
+  - Calcule el tiempo estimado (distancia / velocidad)
+  - Funcione con cualquier transporte
+
+```{pyodide}
+#| caption: "Prueba tú: ejercicio 2"
+#| min-lines: 8
+# Escribe aquí tu solución
+```
+
+::: {.callout-tip collapse="true" title="Solución del ejercicio 2"}
+```{python}
+class Coche:
+    def viajar(self, distancia):
+        print(f"🚗 Conduciendo {distancia} km por carretera")
+    def obtener_velocidad_promedio(self):
+        return 90
+
+class Bicicleta:
+    def viajar(self, distancia):
+        print(f"🚲 Pedaleando {distancia} km")
+    def obtener_velocidad_promedio(self):
+        return 18
+
+class Avion:
+    def viajar(self, distancia):
+        print(f"✈️ Volando {distancia} km")
+    def obtener_velocidad_promedio(self):
+        return 800
+
+class Barco:
+    def viajar(self, distancia):
+        print(f"🚢 Navegando {distancia} km")
+    def obtener_velocidad_promedio(self):
+        return 35
+
+def planear_viaje(transporte, distancia):
+    transporte.viajar(distancia)
+    horas = distancia / transporte.obtener_velocidad_promedio()
+    print(f"   {type(transporte).__name__}: tiempo estimado {horas:.1f} h")
+
+for t in [Coche(), Bicicleta(), Avion(), Barco()]:
+    planear_viaje(t, 540)  # Guadalajara → CDMX, aprox.
+```
+:::
+
+### Ejercicio 3: Sistema de Empleados
+
+Crea una jerarquía de empleados con diferentes formas de calcular salario:
+
+- `Empleado` (clase base): salario fijo
+- `EmpleadoPorHoras`: salario = horas × tarifa_por_hora
+- `Vendedor`: salario = salario_base + (ventas × comision)
+- `Gerente`: salario = salario_base + bono + (porcentaje de ventas del equipo)
+
+Todos deben tener:
+
+- Método `calcular_salario()`
+- Método `generar_recibo()` que muestra nombre, puesto y salario
+
+Crea una función `procesar_nomina(empleados)` que genere recibos para todos.
+
+```{pyodide}
+#| caption: "Prueba tú: ejercicio 3"
+#| min-lines: 8
+# Escribe aquí tu solución
+```
+
+::: {.callout-tip collapse="true" title="Solución del ejercicio 3"}
+```{python}
+class Empleado:
+    puesto = "Empleado"
+    def __init__(self, nombre, salario_fijo):
+        self.nombre = nombre
+        self.salario_fijo = salario_fijo
+    def calcular_salario(self):
+        return self.salario_fijo
+    def generar_recibo(self):
+        print(f"{self.nombre:<8} {self.puesto:<16} ${self.calcular_salario():>10,.2f}")
+
+class EmpleadoPorHoras(Empleado):
+    puesto = "Por horas"
+    def __init__(self, nombre, horas, tarifa_por_hora):
+        super().__init__(nombre, 0)
+        self.horas = horas
+        self.tarifa_por_hora = tarifa_por_hora
+    def calcular_salario(self):
+        return self.horas * self.tarifa_por_hora
+
+class Vendedor(Empleado):
+    puesto = "Vendedor"
+    def __init__(self, nombre, salario_base, ventas, comision):
+        super().__init__(nombre, salario_base)
+        self.ventas = ventas
+        self.comision = comision
+    def calcular_salario(self):
+        return self.salario_fijo + self.ventas * self.comision
+
+class Gerente(Empleado):
+    puesto = "Gerente"
+    def __init__(self, nombre, salario_base, bono, ventas_equipo, porcentaje):
+        super().__init__(nombre, salario_base)
+        self.bono = bono
+        self.ventas_equipo = ventas_equipo
+        self.porcentaje = porcentaje
+    def calcular_salario(self):
+        return self.salario_fijo + self.bono + self.ventas_equipo * self.porcentaje
+
+def procesar_nomina(empleados):
+    total = 0
+    for e in empleados:
+        e.generar_recibo()   # Polimorfismo: cada uno calcula a su manera
+        total += e.calcular_salario()
+    print(f"{'TOTAL':<25} ${total:>10,.2f}")
+
+procesar_nomina([
+    Empleado("Rosa", 12000),
+    EmpleadoPorHoras("Iván", 80, 120),
+    Vendedor("Marta", 8000, 150000, 0.03),
+    Gerente("Jorge", 25000, 5000, 400000, 0.01),
+])
+```
+:::
+
+### Ejercicio 4: Sistema de Jugadores de Videojuego (Desafío)
+
+Crea un sistema de personajes de videojuego con polimorfismo:
+
+1. Clase base `Personaje`:
+   - Atributos: nombre, vida, nivel
+   - Métodos abstractos: `atacar()`, `defender(daño)`, `habilidad_especial()`
+
+2. Clases derivadas:
+   - `Guerrero`: Alto daño físico, ataque normal fuerte
+   - `Mago`: Ataques mágicos, habilidad especial poderosa
+   - `Arquero`: Ataques a distancia, esquiva ataques
+   - `Curandero`: Ataque débil pero puede curarse
+
+3. Cada clase debe implementar:
+   - `atacar()`: Retorna el daño causado (diferente por clase)
+   - `defender(daño)`: Reduce la vida según el daño recibido (con diferentes defensas)
+   - `habilidad_especial()`: Habilidad única de cada clase
+   - `esta_vivo()`: Retorna True si vida > 0
+   - `info()`: Muestra nombre, clase, vida, nivel
+
+4. Crea una función `simular_batalla(personaje1, personaje2)` que:
+   - Haga que se ataquen por turnos
+   - Use aleatoriamente habilidades especiales
+   - Termine cuando uno muera
+   - Muestre el ganador
+
+Usa polimorfismo para que la función funcione con cualquier combinación de personajes.
+
+```{pyodide}
+#| caption: "Prueba tú: ejercicio 4"
+#| min-lines: 8
+# Escribe aquí tu solución
+```
+
+::: {.callout-tip collapse="true" title="Solución del ejercicio 4"}
+```{python}
+import random
+
+random.seed(7)  # Semilla fija para que el resultado sea reproducible
+
+class Personaje:
+    def __init__(self, nombre, vida=100, nivel=1):
+        self.nombre = nombre
+        self.vida = vida
+        self.nivel = nivel
+
+    # "Métodos abstractos": las subclases deben sobrescribirlos
+    def atacar(self):
+        raise NotImplementedError
+    def habilidad_especial(self):
+        raise NotImplementedError
+
+    def defender(self, daño):
+        self.vida = max(0, self.vida - daño)
+
+    def esta_vivo(self):
+        return self.vida > 0
+
+    def info(self):
+        print(f"{self.nombre} ({type(self).__name__}) vida={self.vida} nivel={self.nivel}")
+
+class Guerrero(Personaje):
+    def atacar(self):
+        return random.randint(12, 18)
+    def defender(self, daño):
+        super().defender(int(daño * 0.7))  # Armadura: recibe 30% menos
+    def habilidad_especial(self):
+        print(f"  {self.nombre} usa ¡Golpe devastador!")
+        return 30
+
+class Mago(Personaje):
+    def atacar(self):
+        return random.randint(8, 14)
+    def habilidad_especial(self):
+        print(f"  {self.nombre} lanza ¡Bola de fuego!")
+        return 40
+
+class Arquero(Personaje):
+    def atacar(self):
+        return random.randint(10, 15)
+    def defender(self, daño):
+        if random.random() < 0.3:
+            print(f"  {self.nombre} esquiva el ataque")
+            return
+        super().defender(daño)
+    def habilidad_especial(self):
+        print(f"  {self.nombre} dispara ¡Lluvia de flechas!")
+        return 25
+
+class Curandero(Personaje):
+    def atacar(self):
+        return random.randint(5, 9)
+    def habilidad_especial(self):
+        self.vida = min(100, self.vida + 25)
+        print(f"  {self.nombre} se cura (+25) → vida {self.vida}")
+        return 0
+
+def simular_batalla(p1, p2):
+    atacante, defensor = p1, p2
+    turno = 1
+    while p1.esta_vivo() and p2.esta_vivo():
+        if random.random() < 0.2:
+            daño = atacante.habilidad_especial()
+        else:
+            daño = atacante.atacar()
+        if daño:
+            defensor.defender(daño)
+            print(f"T{turno}: {atacante.nombre} → {defensor.nombre} ({daño}); "
+                  f"vida de {defensor.nombre}: {defensor.vida}")
+        atacante, defensor = defensor, atacante
+        turno += 1
+    ganador = p1 if p1.esta_vivo() else p2
+    print(f"🏆 Gana {ganador.nombre}")
+
+simular_batalla(Guerrero("Thor"), Mago("Merlín"))
+print()
+simular_batalla(Arquero("Robin"), Curandero("Aria"))
+```
+:::
+
+## Resumen
+
+::: {.callout-note title="Lo que aprendiste en este capítulo"}
+- ✅ Qué es el polimorfismo y su importancia
+- ✅ Polimorfismo con herencia
+- ✅ Duck typing en Python
+- ✅ Polimorfismo sin herencia
+- ✅ Cómo diseñar sistemas flexibles y extensibles
+- ✅ Ventajas del polimorfismo en código real
+:::
+
+### Conceptos Clave
+
+1. **Mismo método, diferente comportamiento**: El núcleo del polimorfismo
+2. **Desacoplamiento**: El código no necesita conocer el tipo exacto
+3. **Extensibilidad**: Fácil agregar nuevos tipos sin modificar código existente
+4. **Duck Typing**: "Si camina como pato y grazna como pato..."
+
+### Los 4 Pilares de POO (¡Ya los conoces todos!)
+
+1. ✅ **Encapsulamiento**: Ocultar detalles internos
+2. ✅ **Abstracción**: Simplificar complejidad
+3. ✅ **Herencia**: Reutilizar código
+4. ✅ **Polimorfismo**: Múltiples formas
+
+### Próximo paso
+
+En el siguiente capítulo aprenderás:
+
+- **Métodos especiales** (magic methods)
+- Sobrecarga de operadores
+- `__str__`, `__repr__`, `__len__`, `__add__`, etc.
+- Hacer tus clases más "pythonicas"
+
+**¡Felicidades! Ya dominas los 4 pilares de la POO!**

@@ -1,0 +1,59 @@
+# Presentación {.unnumbered}
+
+Bienvenida al curso **Introducción a la Programación Orientada a Objetos en Python**,
+parte del propedéutico de maestría del CUCEI.
+
+## Objetivos del curso
+
+- Comprender los fundamentos de la Programación Orientada a Objetos (POO).
+- Crear y usar clases y objetos en Python.
+- Aplicar los cuatro pilares de la POO: **encapsulamiento**, **herencia**,
+  **polimorfismo** y **abstracción**.
+- Diseñar relaciones entre objetos (composición y agregación).
+- Integrar todo en un proyecto práctico: una tienda en línea.
+
+## Requisitos previos
+
+- Conocimientos básicos de Python: variables, funciones, listas, diccionarios y ciclos.
+- No hace falta instalar nada para leer el sitio. Para ejecutar el código localmente
+  basta con Python 3.13 o superior.
+
+## Contenido
+
+| # | Tema |
+|---|---|
+| 1 | Clases y objetos |
+| 2 | Atributos y métodos |
+| 3 | El constructor `__init__` y `self` |
+| 4 | Herencia y `super()` |
+| 5 | Encapsulamiento y propiedades |
+| 6 | Polimorfismo y *duck typing* |
+| 7 | Métodos especiales |
+| 8 | Composición y agregación |
+| 9 | Clases abstractas e interfaces |
+| 10 | Proyecto integrador: tienda en línea |
+
+## Cómo usar este sitio
+
+::: {.callout-note}
+## Para estudiar por tu cuenta
+Sigue los capítulos en orden. Cada uno empieza con sus **objetivos**, desarrolla el tema con
+ejemplos progresivos y termina con un **resumen** y **ejercicios** cuya solución puedes
+desplegar cuando ya lo hayas intentado.
+:::
+
+::: {.callout-note}
+## Código ejecutable en el navegador
+Los ejemplos marcados como **"Ejemplo interactivo"** y las celdas **"Prueba tú"** de los
+ejercicios se ejecutan directamente en tu navegador (con
+[Pyodide](https://pyodide.org)), sin instalar nada. La primera vez tardan unos segundos en
+cargar. Edita el código y pulsa **Ejecutar**; **Reiniciar** recupera el código original.
+Las variables definidas en una celda interactiva están disponibles en las demás celdas
+interactivas de la misma página.
+:::
+
+::: {.callout-tip}
+## Consejo
+La mejor forma de aprender POO es escribiendo código: modifica los ejemplos, rómpelos y
+observa qué pasa.
+:::

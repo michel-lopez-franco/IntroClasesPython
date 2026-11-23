@@ -1,0 +1,796 @@
+---
+title: 'Clases Abstractas e Interfaces'
+jupyter: python3
+---
+
+::: {.callout-note title="Objetivos"}
+Al terminar este capítulo podrás:
+
+- Crear clases abstractas con `ABC` y `@abstractmethod`.
+- Explicar por qué no se puede instanciar una clase abstracta (ni una subclase incompleta).
+- Combinar métodos abstractos y concretos en una misma plantilla.
+- Simular interfaces e implementar varias a la vez.
+- Escribir código que dependa de la abstracción y no de la implementación concreta.
+:::
+
+## ¿Qué son las Clases Abstractas?
+
+Una clase abstracta es una clase que:
+
+1. **No puede ser instanciada** directamente
+2. Sirve como **plantilla** para otras clases
+3. Puede tener **métodos abstractos** (sin implementación) que las subclases DEBEN implementar
+4. Puede tener métodos concretos (con implementación)
+
+### Analogía del mundo real
+
+Piensa en un contrato de trabajo:
+
+- El **contrato** define obligaciones (métodos abstractos) que DEBES cumplir
+- No puedes "instanciar" un contrato genérico, solo contratos específicos
+- Cada tipo de trabajo (clase concreta) debe cumplir las obligaciones del contrato
+
+## El Módulo ABC (Abstract Base Classes)
+
+Python proporciona el módulo `abc` para crear clases abstractas:
+
+```{pyodide}
+#| caption: "Ejemplo interactivo: modifícalo y vuelve a ejecutarlo"
+#| autorun: true
+from abc import ABC, abstractmethod
+
+class Forma(ABC):  # Heredar de ABC la hace abstracta
+    
+    @abstractmethod
+    def calcular_area(self):
+        """Método abstracto: las subclases DEBEN implementarlo"""
+        pass
+    
+    @abstractmethod
+    def calcular_perimetro(self):
+        """Otro método abstracto"""
+        pass
+    
+    # Método concreto: las subclases lo heredan
+    def descripcion(self):
+        return "Soy una forma geométrica"
+
+# Intentar instanciar clase abstracta (ERROR)
+try:
+    forma = Forma()
+except TypeError as e:
+    print(f"Error: {e}")
+```
+
+## Implementando Clases Concretas
+
+```{python}
+from abc import ABC, abstractmethod
+import math
+
+class Forma(ABC):
+    @abstractmethod
+    def calcular_area(self):
+        pass
+    
+    @abstractmethod
+    def calcular_perimetro(self):
+        pass
+    
+    def descripcion(self):
+        return f"Forma con área: {self.calcular_area():.2f}"
+
+# Clase concreta: DEBE implementar todos los métodos abstractos
+class Rectangulo(Forma):
+    def __init__(self, ancho, alto):
+        self.ancho = ancho
+        self.alto = alto
+    
+    def calcular_area(self):
+        return self.ancho * self.alto
+    
+    def calcular_perimetro(self):
+        return 2 * (self.ancho + self.alto)
+
+class Circulo(Forma):
+    def __init__(self, radio):
+        self.radio = radio
+    
+    def calcular_area(self):
+        return math.pi * self.radio ** 2
+    
+    def calcular_perimetro(self):
+        return 2 * math.pi * self.radio
+
+# Ahora SÍ podemos instanciar las clases concretas
+rect = Rectangulo(5, 10)
+circ = Circulo(7)
+
+print(f"Rectángulo: Área={rect.calcular_area()}, Perímetro={rect.calcular_perimetro():.2f}")
+print(f"Círculo: Área={circ.calcular_area():.2f}, Perímetro={circ.calcular_perimetro():.2f}")
+
+# El método concreto también funciona
+print(rect.descripcion())
+print(circ.descripcion())
+```
+
+## ¿Qué pasa si no implementas todos los métodos?
+
+```{python}
+from abc import ABC, abstractmethod
+
+class Animal(ABC):
+    @abstractmethod
+    def hacer_sonido(self):
+        pass
+    
+    @abstractmethod
+    def moverse(self):
+        pass
+
+# Clase que NO implementa todos los métodos
+class PerroIncompleto(Animal):
+    def hacer_sonido(self):
+        return "¡Guau!"
+    
+    # Falta implementar moverse()
+
+# Intentar instanciar (ERROR)
+try:
+    perro = PerroIncompleto()
+except TypeError as e:
+    print(f"Error: {e}")
+    print("\nNo se puede instanciar porque falta implementar moverse()")
+```
+
+```{python}
+# Clase completa que implementa TODO
+class PerroCompleto(Animal):
+    def hacer_sonido(self):
+        return "¡Guau!"
+    
+    def moverse(self):
+        return "Corriendo en cuatro patas"
+
+# Ahora SÍ funciona
+perro = PerroCompleto()
+print(f"Sonido: {perro.hacer_sonido()}")
+print(f"Movimiento: {perro.moverse()}")
+```
+
+## Interfaces en Python
+
+Python no tiene interfaces explícitas como Java o C#, pero podemos simularlas usando clases abstractas con SOLO métodos abstractos:
+
+```{pyodide}
+#| caption: "Ejemplo interactivo: modifícalo y vuelve a ejecutarlo"
+#| autorun: true
+from abc import ABC, abstractmethod
+
+# Interfaz: solo métodos abstractos, sin implementación
+class Volador(ABC):
+    @abstractmethod
+    def despegar(self):
+        pass
+    
+    @abstractmethod
+    def volar(self):
+        pass
+    
+    @abstractmethod
+    def aterrizar(self):
+        pass
+
+class Nadador(ABC):
+    @abstractmethod
+    def nadar(self):
+        pass
+
+# Clase que implementa una interfaz
+class Avion(Volador):
+    def __init__(self, modelo):
+        self.modelo = modelo
+    
+    def despegar(self):
+        print(f"{self.modelo} despegando...")
+    
+    def volar(self):
+        print(f"{self.modelo} volando a 10,000 metros")
+    
+    def aterrizar(self):
+        print(f"{self.modelo} aterrizando...")
+
+# Clase que implementa múltiples interfaces
+class Pato(Volador, Nadador):
+    def __init__(self, nombre):
+        self.nombre = nombre
+    
+    def despegar(self):
+        print(f"{self.nombre} agitando las alas...")
+    
+    def volar(self):
+        print(f"{self.nombre} volando bajo")
+    
+    def aterrizar(self):
+        print(f"{self.nombre} aterrizando en el agua")
+    
+    def nadar(self):
+        print(f"{self.nombre} nadando en el lago")
+
+# Usar las clases
+avion = Avion("Boeing 747")
+avion.despegar()
+avion.volar()
+avion.aterrizar()
+
+print("\n" + "-" * 40 + "\n")
+
+pato = Pato("Donald")
+pato.despegar()
+pato.volar()
+pato.nadar()
+pato.aterrizar()
+```
+
+En UML una interfaz se marca con `<<interface>>` y su implementación con una flecha
+**punteada** de punta hueca (@fig-interfaces).
+
+```{mermaid}
+%%| label: fig-interfaces
+%%| fig-cap: "Avion implementa Volador; Pato implementa dos interfaces a la vez."
+classDiagram
+    Volador <|.. Avion
+    Volador <|.. Pato
+    Nadador <|.. Pato
+    class Volador {
+        <<interface>>
+        +despegar()*
+        +volar()*
+        +aterrizar()*
+    }
+    class Nadador {
+        <<interface>>
+        +nadar()*
+    }
+    class Avion {
+        +modelo
+    }
+    class Pato {
+        +nombre
+    }
+```
+
+## Ejemplo Completo: Sistema de Pagos
+
+```{python}
+from abc import ABC, abstractmethod
+from datetime import datetime
+
+# Interfaz para métodos de pago
+class MetodoPago(ABC):
+    @abstractmethod
+    def procesar_pago(self, monto):
+        """Procesa el pago y retorna True si fue exitoso"""
+        pass
+    
+    @abstractmethod
+    def validar(self):
+        """Valida que el método de pago sea válido"""
+        pass
+    
+    @abstractmethod
+    def obtener_info(self):
+        """Retorna información del método de pago"""
+        pass
+
+# Implementaciones concretas
+class TarjetaCredito(MetodoPago):
+    def __init__(self, numero, titular, cvv, fecha_expiracion):
+        self.numero = numero
+        self.titular = titular
+        self.cvv = cvv
+        self.fecha_expiracion = fecha_expiracion
+    
+    def validar(self):
+        # Validaciones básicas
+        if len(self.numero) != 16:
+            return False
+        if len(self.cvv) != 3:
+            return False
+        # Aquí podrían ir más validaciones
+        return True
+    
+    def procesar_pago(self, monto):
+        if not self.validar():
+            print("✗ Tarjeta inválida")
+            return False
+        
+        print(f"Procesando ${monto} con tarjeta de crédito...")
+        print(f"Titular: {self.titular}")
+        print(f"Últimos 4 dígitos: {self.numero[-4:]}")
+        print("✓ Pago aprobado")
+        return True
+    
+    def obtener_info(self):
+        return f"Tarjeta de crédito ****{self.numero[-4:]}"
+
+class PayPal(MetodoPago):
+    def __init__(self, email, password):
+        self.email = email
+        self.password = password
+        self.saldo = 5000  # Simulación
+    
+    def validar(self):
+        if '@' not in self.email:
+            return False
+        if len(self.password) < 6:
+            return False
+        return True
+    
+    def procesar_pago(self, monto):
+        if not self.validar():
+            print("✗ Cuenta PayPal inválida")
+            return False
+        
+        if monto > self.saldo:
+            print(f"✗ Saldo insuficiente (disponible: ${self.saldo})")
+            return False
+        
+        print(f"Procesando ${monto} con PayPal...")
+        print(f"Email: {self.email}")
+        self.saldo -= monto
+        print(f"✓ Pago aprobado (saldo restante: ${self.saldo})")
+        return True
+    
+    def obtener_info(self):
+        return f"PayPal: {self.email}"
+
+class Transferencia(MetodoPago):
+    def __init__(self, banco, cuenta, nombre_titular):
+        self.banco = banco
+        self.cuenta = cuenta
+        self.nombre_titular = nombre_titular
+    
+    def validar(self):
+        if len(self.cuenta) < 10:
+            return False
+        return True
+    
+    def procesar_pago(self, monto):
+        if not self.validar():
+            print("✗ Datos de transferencia inválidos")
+            return False
+        
+        print(f"Procesando transferencia de ${monto}...")
+        print(f"Banco: {self.banco}")
+        print(f"Cuenta: ****{self.cuenta[-4:]}")
+        print(f"Titular: {self.nombre_titular}")
+        print("✓ Transferencia iniciada (puede tardar 24-48 horas)")
+        return True
+    
+    def obtener_info(self):
+        return f"Transferencia bancaria: {self.banco}"
+
+# Sistema de procesamiento que funciona con CUALQUIER método de pago
+class ProcesadorPagos:
+    def __init__(self):
+        self.historial = []
+    
+    def procesar(self, metodo_pago: MetodoPago, monto: float, descripcion: str):
+        """Procesa un pago usando cualquier método que implemente MetodoPago"""
+        print("\n" + "=" * 50)
+        print(f"Procesando: {descripcion}")
+        print(f"Monto: ${monto}")
+        print(f"Método: {metodo_pago.obtener_info()}")
+        print("=" * 50)
+        
+        exito = metodo_pago.procesar_pago(monto)
+        
+        self.historial.append({
+            'fecha': datetime.now(),
+            'monto': monto,
+            'descripcion': descripcion,
+            'metodo': metodo_pago.obtener_info(),
+            'exito': exito
+        })
+        
+        return exito
+    
+    def mostrar_historial(self):
+        print("\n" + "=" * 50)
+        print("HISTORIAL DE TRANSACCIONES")
+        print("=" * 50)
+        for i, transaccion in enumerate(self.historial, 1):
+            estado = "✓" if transaccion['exito'] else "✗"
+            print(f"{i}. {estado} ${transaccion['monto']} - {transaccion['descripcion']}")
+            print(f"   {transaccion['metodo']}")
+            print()
+
+# Usar el sistema
+procesador = ProcesadorPagos()
+
+# Diferentes métodos de pago
+tarjeta = TarjetaCredito("1234567890123456", "Ana García", "123", "12/25")
+paypal = PayPal("usuario@example.com", "password123")
+transferencia = Transferencia("Banco Nacional", "1234567890", "Carlos López")
+
+# Procesar pagos
+procesador.procesar(tarjeta, 1500, "Compra en línea")
+procesador.procesar(paypal, 3000, "Suscripción mensual")
+procesador.procesar(transferencia, 10000, "Pago de renta")
+procesador.procesar(paypal, 5000, "Compra grande")  # Excede saldo
+
+# Mostrar historial
+procesador.mostrar_historial()
+```
+
+`ProcesadorPagos` sólo conoce la abstracción `MetodoPago`; agregar un nuevo método de pago no
+requiere modificarlo (@fig-pagos-abc).
+
+```{mermaid}
+%%| label: fig-pagos-abc
+%%| fig-cap: "ProcesadorPagos depende de la clase abstracta MetodoPago, no de sus implementaciones."
+classDiagram
+    MetodoPago <|-- TarjetaCredito
+    MetodoPago <|-- PayPal
+    MetodoPago <|-- Transferencia
+    ProcesadorPagos ..> MetodoPago : usa
+    class MetodoPago {
+        <<abstract>>
+        +procesar_pago(monto)*
+        +validar()*
+        +obtener_info()*
+    }
+    class ProcesadorPagos {
+        +historial
+        +procesar(metodo_pago, monto, descripcion)
+        +mostrar_historial()
+    }
+```
+
+## Ejercicios Prácticos
+
+### Ejercicio 1: Sistema de Almacenamiento
+
+Crea una interfaz `Almacenable` con métodos abstractos:
+
+- `guardar(datos)`: Guarda datos
+- `cargar(id)`: Carga datos por ID
+- `eliminar(id)`: Elimina datos
+- `listar()`: Lista todos los datos
+
+Implementa tres clases concretas:
+
+- `AlmacenamientoMemoria`: Usa un diccionario
+- `AlmacenamientoArchivo`: Simula guardado en archivo (usa print)
+- `AlmacenamientoBaseDatos`: Simula base de datos (usa print)
+
+Crea una función que funcione con cualquier tipo de almacenamiento.
+
+```{pyodide}
+#| caption: "Prueba tú: ejercicio 1"
+#| min-lines: 8
+# Escribe aquí tu solución
+```
+
+::: {.callout-tip collapse="true" title="Solución del ejercicio 1"}
+```{python}
+from abc import ABC, abstractmethod
+
+class Almacenable(ABC):
+    @abstractmethod
+    def guardar(self, datos): ...
+    @abstractmethod
+    def cargar(self, id): ...
+    @abstractmethod
+    def eliminar(self, id): ...
+    @abstractmethod
+    def listar(self): ...
+
+class AlmacenamientoMemoria(Almacenable):
+    def __init__(self):
+        self._datos = {}
+        self._siguiente_id = 1
+
+    def guardar(self, datos):
+        id_nuevo = self._siguiente_id
+        self._datos[id_nuevo] = datos
+        self._siguiente_id += 1
+        return id_nuevo
+
+    def cargar(self, id):
+        return self._datos.get(id)
+
+    def eliminar(self, id):
+        return self._datos.pop(id, None) is not None
+
+    def listar(self):
+        return list(self._datos.items())
+
+class AlmacenamientoArchivo(Almacenable):
+    def guardar(self, datos):
+        print(f"  [archivo] escribiendo {datos!r} en datos.json")
+        return 1
+    def cargar(self, id):
+        print(f"  [archivo] leyendo registro {id}")
+    def eliminar(self, id):
+        print(f"  [archivo] borrando registro {id}")
+        return True
+    def listar(self):
+        print("  [archivo] listando datos.json")
+        return []
+
+class AlmacenamientoBaseDatos(Almacenable):
+    def guardar(self, datos):
+        print(f"  [BD] INSERT INTO registros VALUES ({datos!r})")
+        return 1
+    def cargar(self, id):
+        print(f"  [BD] SELECT * FROM registros WHERE id = {id}")
+    def eliminar(self, id):
+        print(f"  [BD] DELETE FROM registros WHERE id = {id}")
+        return True
+    def listar(self):
+        print("  [BD] SELECT * FROM registros")
+        return []
+
+def respaldar(almacen: Almacenable, registros):
+    """Funciona con cualquier implementación de Almacenable."""
+    print(type(almacen).__name__)
+    ids = [almacen.guardar(r) for r in registros]
+    almacen.eliminar(ids[0])
+    return almacen.listar()
+
+for almacen in [AlmacenamientoMemoria(), AlmacenamientoArchivo(), AlmacenamientoBaseDatos()]:
+    resultado = respaldar(almacen, ["Ana", "Luis", "Eva"])
+    if resultado:
+        print("  Quedan:", resultado)
+```
+:::
+
+### Ejercicio 2: Sistema de Notificaciones
+
+Crea una clase abstracta `Notificador` con:
+
+- `enviar(destinatario, mensaje)`: método abstracto
+- `validar_destinatario(destinatario)`: método abstracto
+- `log(mensaje)`: método concreto que imprime el log
+
+Implementa:
+
+- `NotificadorEmail`: valida que tenga @
+- `NotificadorSMS`: valida que sea número de 10 dígitos
+- `NotificadorPush`: valida que tenga formato device-XXXXX
+
+Crea un `GestorNotificaciones` que pueda enviar a múltiples canales.
+
+```{pyodide}
+#| caption: "Prueba tú: ejercicio 2"
+#| min-lines: 8
+# Escribe aquí tu solución
+```
+
+::: {.callout-tip collapse="true" title="Solución del ejercicio 2"}
+```{python}
+import re
+from abc import ABC, abstractmethod
+
+class Notificador(ABC):
+    @abstractmethod
+    def enviar(self, destinatario, mensaje): ...
+
+    @abstractmethod
+    def validar_destinatario(self, destinatario): ...
+
+    def log(self, mensaje):  # Método concreto compartido
+        print(f"  [{type(self).__name__}] {mensaje}")
+
+class NotificadorEmail(Notificador):
+    def validar_destinatario(self, destinatario):
+        return "@" in destinatario
+    def enviar(self, destinatario, mensaje):
+        if not self.validar_destinatario(destinatario):
+            self.log(f"destinatario inválido: {destinatario}")
+            return False
+        self.log(f"email a {destinatario}: {mensaje}")
+        return True
+
+class NotificadorSMS(Notificador):
+    def validar_destinatario(self, destinatario):
+        return destinatario.isdigit() and len(destinatario) == 10
+    def enviar(self, destinatario, mensaje):
+        if not self.validar_destinatario(destinatario):
+            self.log(f"destinatario inválido: {destinatario}")
+            return False
+        self.log(f"SMS a {destinatario}: {mensaje[:160]}")
+        return True
+
+class NotificadorPush(Notificador):
+    def validar_destinatario(self, destinatario):
+        return re.fullmatch(r"device-\w{5}", destinatario) is not None
+    def enviar(self, destinatario, mensaje):
+        if not self.validar_destinatario(destinatario):
+            self.log(f"destinatario inválido: {destinatario}")
+            return False
+        self.log(f"push a {destinatario}: {mensaje}")
+        return True
+
+class GestorNotificaciones:
+    def __init__(self):
+        self.canales = []   # Lista de (notificador, destinatario)
+
+    def suscribir(self, notificador: Notificador, destinatario):
+        self.canales.append((notificador, destinatario))
+
+    def notificar(self, mensaje):
+        enviados = sum(n.enviar(d, mensaje) for n, d in self.canales)
+        print(f"Enviados {enviados}/{len(self.canales)}")
+
+gestor = GestorNotificaciones()
+gestor.suscribir(NotificadorEmail(), "ana@correo.com")
+gestor.suscribir(NotificadorSMS(), "3312345678")
+gestor.suscribir(NotificadorPush(), "device-AB123")
+gestor.suscribir(NotificadorSMS(), "12-34")          # Inválido
+gestor.notificar("Tu pedido va en camino")
+```
+:::
+
+### Ejercicio 3: Sistema de Jugadores (Desafío)
+
+Crea un sistema de juego con interfaces múltiples:
+
+1. Interfaces:
+   - `Atacante`: métodos `atacar()`, `obtener_daño()`
+   - `Defensor`: métodos `defender(daño)`, `obtener_defensa()`
+   - `Curador`: métodos `curar(objetivo)`, `obtener_curacion()`
+
+2. Clase abstracta base `Personaje`:
+   - Atributos: nombre, vida, vida_maxima
+   - Métodos concretos: `esta_vivo()`, `recibir_daño(daño)`, `info()`
+
+3. Implementa personajes que implementen diferentes combinaciones:
+   - `Guerrero`: Personaje + Atacante + Defensor
+   - `Mago`: Personaje + Atacante
+   - `Paladin`: Personaje + Atacante + Defensor + Curador
+   - `Sacerdote`: Personaje + Curador
+
+4. Crea funciones genéricas:
+   - `realizar_ataque(atacante, defensor)`: funciona con cualquier Atacante y Defensor
+   - `realizar_curacion(curador, objetivo)`: funciona con cualquier Curador
+
+Demuestra el sistema con una batalla entre diferentes personajes.
+
+```{pyodide}
+#| caption: "Prueba tú: ejercicio 3"
+#| min-lines: 8
+# Escribe aquí tu solución
+```
+
+::: {.callout-tip collapse="true" title="Solución del ejercicio 3"}
+```{python}
+from abc import ABC, abstractmethod
+
+# Interfaces
+class Atacante(ABC):
+    @abstractmethod
+    def obtener_daño(self): ...
+    def atacar(self):
+        return self.obtener_daño()
+
+class Defensor(ABC):
+    @abstractmethod
+    def obtener_defensa(self): ...
+    def defender(self, daño):
+        return max(0, daño - self.obtener_defensa())
+
+class Curador(ABC):
+    @abstractmethod
+    def obtener_curacion(self): ...
+    def curar(self, objetivo):
+        objetivo.vida = min(objetivo.vida_maxima, objetivo.vida + self.obtener_curacion())
+
+# Clase base abstracta
+class Personaje(ABC):
+    def __init__(self, nombre, vida_maxima):
+        self.nombre = nombre
+        self.vida_maxima = vida_maxima
+        self.vida = vida_maxima
+
+    def esta_vivo(self):
+        return self.vida > 0
+
+    def recibir_daño(self, daño):
+        self.vida = max(0, self.vida - daño)
+
+    def info(self):
+        roles = [c.__name__ for c in (Atacante, Defensor, Curador) if isinstance(self, c)]
+        print(f"  {self.nombre:<7} {type(self).__name__:<9} vida {self.vida:>3}/{self.vida_maxima}"
+              f"  roles: {', '.join(roles)}")
+
+class Guerrero(Personaje, Atacante, Defensor):
+    def obtener_daño(self): return 20
+    def obtener_defensa(self): return 8
+
+class Mago(Personaje, Atacante):
+    def obtener_daño(self): return 30
+
+class Paladin(Personaje, Atacante, Defensor, Curador):
+    def obtener_daño(self): return 15
+    def obtener_defensa(self): return 5
+    def obtener_curacion(self): return 15
+
+class Sacerdote(Personaje, Curador):
+    def obtener_curacion(self): return 25
+
+# Funciones genéricas: dependen de las interfaces, no de las clases concretas
+def realizar_ataque(atacante: Atacante, objetivo: Personaje):
+    daño = atacante.atacar()
+    if isinstance(objetivo, Defensor):
+        daño = objetivo.defender(daño)
+    objetivo.recibir_daño(daño)
+    print(f"{atacante.nombre} ataca a {objetivo.nombre}: {daño} de daño")
+
+def realizar_curacion(curador: Curador, objetivo: Personaje):
+    antes = objetivo.vida
+    curador.curar(objetivo)
+    print(f"{curador.nombre} cura a {objetivo.nombre}: +{objetivo.vida - antes}")
+
+conan, merlin = Guerrero("Conan", 120), Mago("Merlín", 80)
+arturo, teresa = Paladin("Arturo", 110), Sacerdote("Teresa", 70)
+
+realizar_ataque(merlin, conan)      # Conan defiende: 30 - 8
+realizar_ataque(conan, merlin)      # Merlín no es Defensor
+realizar_ataque(merlin, arturo)
+realizar_curacion(teresa, merlin)
+realizar_curacion(arturo, arturo)
+realizar_ataque(arturo, teresa)
+
+print("\nEstado final:")
+for p in (conan, merlin, arturo, teresa):
+    p.info()
+
+print("\n¿Se puede curar con un Mago?", isinstance(merlin, Curador))
+```
+:::
+
+## Resumen
+
+::: {.callout-note title="Lo que aprendiste en este capítulo"}
+- ✅ Qué son las clases abstractas y por qué son útiles
+- ✅ Cómo usar el módulo `abc` en Python
+- ✅ Diferencia entre métodos abstractos y concretos
+- ✅ Cómo crear interfaces en Python
+- ✅ Herencia múltiple con interfaces
+- ✅ Diseño de APIs y contratos
+:::
+
+### Ventajas de Clases Abstractas e Interfaces
+
+1. **Contrato garantizado**: Aseguras que las subclases implementen métodos necesarios
+2. **Documentación viva**: La clase abstracta documenta qué debe implementarse
+3. **Polimorfismo robusto**: Código que funciona con cualquier implementación
+4. **Detección temprana de errores**: Python te avisa si falta implementar algo
+5. **Diseño limpio**: Separa la interfaz de la implementación
+
+### Cuándo Usar
+
+**Clase Abstracta**:
+
+- Quieres compartir código común (métodos concretos)
+- Defines una familia de clases relacionadas
+- Necesitas forzar implementación de ciertos métodos
+
+**Interfaz** (clase abstracta solo con métodos abstractos):
+
+- Solo defines qué hacer, no cómo hacerlo
+- Quieres permitir herencia múltiple sin problemas
+- Defines un "contrato" que múltiples clases no relacionadas pueden cumplir
+
+### Próximo paso
+
+En el siguiente y último capítulo:
+
+- **Proyecto Integrador**: Aplicarás TODO lo aprendido
+- Sistema completo usando todos los conceptos de POO
+- Buenas prácticas y patrones de diseño
+
+**¡Ya conoces todas las herramientas profesionales de POO en Python!**

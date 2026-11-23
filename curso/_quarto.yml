@@ -1,0 +1,48 @@
+project:
+  type: book
+  output-dir: _book
+
+book:
+  title: "Programación Orientada a Objetos en Python"
+  subtitle: "Propedéutico de maestría — CUCEI"
+  author: "Michel López Franco"
+  date: last-modified
+  search: true
+  chapters:
+    - index.qmd
+    - part: "Fundamentos"
+      chapters:
+        - 01_clases_objetos.qmd
+        - 02_atributos_metodos.qmd
+        - 03_constructor_self.qmd
+    - part: "Pilares de la POO"
+      chapters:
+        - 04_herencia.qmd
+        - 05_encapsulamiento.qmd
+        - 06_polimorfismo.qmd
+    - part: "Conceptos avanzados"
+      chapters:
+        - 07_metodos_especiales.qmd
+        - 08_composicion_agregacion.qmd
+        - 09_clases_abstractas.qmd
+    - part: "Proyecto"
+      chapters:
+        - 10_proyecto_integrador.qmd
+
+lang: es
+
+format:
+  live-html:            # html + celdas editables de quarto-live (Pyodide)
+    include-after-body: recursos/live-es.html
+    theme:
+      light: cosmo
+      dark: darkly
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+
+execute:
+  freeze: false

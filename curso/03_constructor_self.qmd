@@ -1,0 +1,624 @@
+---
+title: 'Constructor y Self'
+jupyter: python3
+---
+
+::: {.callout-note title="Objetivos"}
+Al terminar este capítulo podrás:
+
+- Usar el constructor `__init__` para que cada objeto nazca en un estado válido.
+- Comprender qué es `self` y cómo Python lo pasa automáticamente.
+- Usar parámetros con valores por defecto y validar datos en el constructor.
+- Evitar el error clásico de los valores por defecto mutables.
+:::
+
+## El Método `__init__` (Constructor)
+
+Hasta ahora hemos creado objetos y luego asignado sus atributos. Esto no es ideal porque:
+
+1. Es propenso a errores (puedes olvidar asignar un atributo)
+2. Requiere múltiples líneas de código
+3. No garantiza que el objeto esté completamente inicializado
+
+### Analogía del mundo real
+
+Imagina comprar un coche:
+
+- **Sin constructor**: Te entregan un coche vacío y tú tienes que instalar el motor, las ruedas, el volante...
+- **Con constructor**: Te entregan un coche completamente funcional desde el momento de la compra
+
+## Sintaxis del Constructor
+
+```{pyodide}
+#| caption: "Ejemplo interactivo: modifícalo y vuelve a ejecutarlo"
+#| autorun: true
+class Perro:
+    # Constructor: método especial que se ejecuta al crear un objeto
+    def __init__(self, nombre, edad):
+        # Inicializar atributos de instancia
+        self.nombre = nombre
+        self.edad = edad
+    
+    def ladrar(self):
+        print(f"{self.nombre} dice: ¡Guau guau!")
+
+# Crear objetos pasando los valores en el constructor
+perro1 = Perro("Max", 3)
+perro2 = Perro("Luna", 5)
+
+# Los atributos ya están inicializados
+print(f"{perro1.nombre} tiene {perro1.edad} años")
+perro1.ladrar()
+
+print(f"{perro2.nombre} tiene {perro2.edad} años")
+perro2.ladrar()
+```
+
+### Puntos clave sobre `__init__`
+
+1. **Nombre especial**: Siempre se llama `__init__` (con doble guión bajo)
+2. **Se ejecuta automáticamente**: Python lo llama cuando creas un objeto
+3. **Primer parámetro `self`**: Representa el objeto que se está creando
+4. **Inicializa atributos**: Asigna valores iniciales a los atributos
+5. **No usa `return`**: Los constructores no retornan valores
+
+## Comparación: Con y Sin Constructor
+
+```{python}
+# SIN CONSTRUCTOR (forma antigua, no recomendada)
+class PersonaSin:
+    pass
+
+persona1 = PersonaSin()
+persona1.nombre = "Ana"
+persona1.edad = 25
+persona1.ciudad = "Guadalajara"
+
+print(f"Sin constructor: {persona1.nombre}, {persona1.edad}, {persona1.ciudad}")
+```
+
+```{python}
+# CON CONSTRUCTOR (forma correcta, recomendada)
+class PersonaCon:
+    def __init__(self, nombre, edad, ciudad):
+        self.nombre = nombre
+        self.edad = edad
+        self.ciudad = ciudad
+
+persona2 = PersonaCon("Carlos", 30, "México")
+
+print(f"Con constructor: {persona2.nombre}, {persona2.edad}, {persona2.ciudad}")
+```
+
+## Entendiendo `self` en Profundidad
+
+`self` es la referencia al objeto actual. Cuando escribes:
+
+```python
+perro1 = Perro("Max", 3)
+```
+
+Python internamente hace:
+
+```python
+perro1.__init__(perro1, "Max", 3)  # self = perro1
+```
+
+La @fig-init-self muestra la secuencia completa de lo que ocurre al escribir `Perro("Max", 3)`.
+
+```{mermaid}
+%%| label: fig-init-self
+%%| fig-cap: "Qué hace Python al crear un objeto: primero lo crea vacío y luego llama a __init__ pasándolo como self."
+sequenceDiagram
+    participant U as Tu código
+    participant C as Clase Perro
+    participant O as Objeto nuevo (self)
+    U->>C: Perro("Max", 3)
+    C->>O: crea un objeto vacío
+    C->>O: __init__(self, "Max", 3)
+    Note over O: self.nombre = "Max"<br/>self.edad = 3
+    C-->>U: devuelve el objeto (perro1)
+```
+
+### Visualización de self
+
+```{python}
+class Ejemplo:
+    def __init__(self, valor):
+        print(f"self es: {self}")
+        self.valor = valor
+    
+    def mostrar_self(self):
+        print(f"En el método, self es: {self}")
+
+# Crear dos objetos
+obj1 = Ejemplo(10)
+print(f"obj1 es: {obj1}")
+print()
+
+obj2 = Ejemplo(20)
+print(f"obj2 es: {obj2}")
+print()
+
+# self siempre se refiere al objeto específico
+obj1.mostrar_self()
+obj2.mostrar_self()
+```
+
+### Visualízalo paso a paso
+
+Observa cómo, al llamar a `Perro("Max", 3)`, Python crea un objeto vacío, abre el marco de `__init__` con `self` apuntando a ese objeto y, línea por línea, le va agregando atributos.
+
+```{python}
+#| echo: false
+from recursos.pytutor import pytutor
+pytutor("""
+class Perro:
+    def __init__(self, nombre, edad):
+        self.nombre = nombre
+        self.edad = edad
+
+perro1 = Perro("Max", 3)
+perro2 = Perro("Luna", 5)
+""", altura=720)
+```
+
+## Parámetros por Defecto en el Constructor
+
+Puedes asignar valores por defecto a los parámetros:
+
+```{python}
+class CuentaBancaria:
+    def __init__(self, titular, saldo=0, tipo="Ahorro"):
+        self.titular = titular
+        self.saldo = saldo
+        self.tipo = tipo
+    
+    def mostrar_info(self):
+        print(f"Titular: {self.titular}")
+        print(f"Tipo: {self.tipo}")
+        print(f"Saldo: ${self.saldo}")
+        print("-" * 30)
+
+# Diferentes formas de crear objetos
+cuenta1 = CuentaBancaria("Ana")  # Usa valores por defecto
+cuenta2 = CuentaBancaria("Carlos", 1000)  # Especifica saldo
+cuenta3 = CuentaBancaria("María", 5000, "Corriente")  # Especifica todo
+
+cuenta1.mostrar_info()
+cuenta2.mostrar_info()
+cuenta3.mostrar_info()
+```
+
+## Validación en el Constructor
+
+Puedes validar los datos antes de asignarlos:
+
+```{python}
+class Persona:
+    def __init__(self, nombre, edad):
+        # Validar nombre
+        if not nombre or len(nombre.strip()) == 0:
+            raise ValueError("El nombre no puede estar vacío")
+        
+        # Validar edad
+        if edad < 0 or edad > 150:
+            raise ValueError("La edad debe estar entre 0 y 150")
+        
+        self.nombre = nombre
+        self.edad = edad
+    
+    def presentarse(self):
+        print(f"Hola, soy {self.nombre} y tengo {self.edad} años")
+
+# Objeto válido
+persona_valida = Persona("Juan", 25)
+persona_valida.presentarse()
+
+# Intentar crear objeto inválido (descomenta para ver el error)
+# persona_invalida = Persona("", 25)  # Error: nombre vacío
+# persona_invalida = Persona("Ana", 200)  # Error: edad inválida
+```
+
+Si quitas el comentario a una de las líneas inválidas, el constructor detiene la creación del
+objeto con un `ValueError`:
+
+```{python}
+#| error: true
+persona_invalida = Persona("Ana", 200)
+```
+
+## Constructor con Lógica Compleja
+
+```{python}
+class Producto:
+    # Contador de productos creados (atributo de clase)
+    total_productos = 0
+    
+    def __init__(self, nombre, precio, descuento=0):
+        # Asignar ID único
+        Producto.total_productos += 1
+        self.id = Producto.total_productos
+        
+        # Atributos básicos
+        self.nombre = nombre
+        self.precio = precio
+        self.descuento = descuento
+        
+        # Calcular precio final en el constructor
+        self.precio_final = precio - (precio * descuento / 100)
+    
+    def info(self):
+        print(f"ID: {self.id}")
+        print(f"Producto: {self.nombre}")
+        print(f"Precio original: ${self.precio}")
+        print(f"Descuento: {self.descuento}%")
+        print(f"Precio final: ${self.precio_final}")
+        print("-" * 30)
+
+# Crear productos
+prod1 = Producto("Laptop", 15000, 10)
+prod2 = Producto("Mouse", 300)
+prod3 = Producto("Teclado", 800, 15)
+
+prod1.info()
+prod2.info()
+prod3.info()
+
+print(f"Total de productos creados: {Producto.total_productos}")
+```
+
+## Constructor con Tipos de Datos Mutables
+
+**¡Cuidado!** Nunca uses listas o diccionarios vacíos como valores por defecto:
+
+```{pyodide}
+#| caption: "Ejemplo interactivo: modifícalo y vuelve a ejecutarlo"
+#| autorun: true
+# INCORRECTO - ¡No hagas esto!
+class ClaseIncorrecta:
+    def __init__(self, nombre, lista=[]):  # ¡MAL!
+        self.nombre = nombre
+        self.lista = lista
+
+obj1 = ClaseIncorrecta("A")
+obj1.lista.append(1)
+
+obj2 = ClaseIncorrecta("B")
+obj2.lista.append(2)
+
+# ¡Ambos objetos comparten la misma lista!
+print(f"obj1.lista: {obj1.lista}")  # [1, 2] - ¡No esperábamos esto!
+print(f"obj2.lista: {obj2.lista}")  # [1, 2] - ¡No esperábamos esto!
+```
+
+```{python}
+# CORRECTO - Usa None y crea la lista dentro del constructor
+class ClaseCorrecta:
+    def __init__(self, nombre, lista=None):
+        self.nombre = nombre
+        # Crear nueva lista si no se proporciona una
+        self.lista = lista if lista is not None else []
+
+obj1 = ClaseCorrecta("A")
+obj1.lista.append(1)
+
+obj2 = ClaseCorrecta("B")
+obj2.lista.append(2)
+
+# Ahora cada objeto tiene su propia lista
+print(f"obj1.lista: {obj1.lista}")  # [1] - Correcto
+print(f"obj2.lista: {obj2.lista}")  # [2] - Correcto
+```
+
+### ¿Por qué falla la lista por defecto?
+
+La visualización lo deja claro: el valor por defecto `[]` se crea **una sola vez**, cuando se define la función, así que `obj1.lista` y `obj2.lista` terminan apuntando a la **misma** lista.
+
+```{python}
+#| echo: false
+from recursos.pytutor import pytutor
+pytutor("""
+class ClaseIncorrecta:
+    def __init__(self, nombre, lista=[]):
+        self.nombre = nombre
+        self.lista = lista
+
+obj1 = ClaseIncorrecta("A")
+obj1.lista.append(1)
+obj2 = ClaseIncorrecta("B")
+obj2.lista.append(2)
+print(obj1.lista is obj2.lista)
+""", altura=800)
+```
+
+## Ejemplo Completo: Sistema de Estudiantes
+
+```{python}
+class Estudiante:
+    def __init__(self, nombre, matricula, carrera):
+        self.nombre = nombre
+        self.matricula = matricula
+        self.carrera = carrera
+        self.calificaciones = []  # Lista vacía creada correctamente
+    
+    def agregar_calificacion(self, materia, calificacion):
+        if 0 <= calificacion <= 10:
+            self.calificaciones.append({
+                "materia": materia,
+                "calificacion": calificacion
+            })
+            print(f"Calificación agregada: {materia} - {calificacion}")
+        else:
+            print("Error: La calificación debe estar entre 0 y 10")
+    
+    def calcular_promedio(self):
+        if not self.calificaciones:
+            return 0
+        
+        suma = sum(cal["calificacion"] for cal in self.calificaciones)
+        return suma / len(self.calificaciones)
+    
+    def mostrar_historial(self):
+        print(f"\nEstudiante: {self.nombre}")
+        print(f"Matrícula: {self.matricula}")
+        print(f"Carrera: {self.carrera}")
+        print("\nCalificaciones:")
+        
+        if not self.calificaciones:
+            print("  No hay calificaciones registradas")
+        else:
+            for cal in self.calificaciones:
+                print(f"  - {cal['materia']}: {cal['calificacion']}")
+        
+        promedio = self.calcular_promedio()
+        print(f"\nPromedio: {promedio:.2f}")
+        print("-" * 40)
+
+# Crear estudiantes
+est1 = Estudiante("Ana López", "2021001", "Ingeniería en Software")
+est2 = Estudiante("Carlos Ruiz", "2021002", "Ciencias de la Computación")
+
+# Agregar calificaciones
+est1.agregar_calificacion("Python", 9.5)
+est1.agregar_calificacion("Matemáticas", 8.0)
+est1.agregar_calificacion("Bases de Datos", 9.0)
+
+est2.agregar_calificacion("Python", 10.0)
+est2.agregar_calificacion("Algoritmos", 8.5)
+
+# Mostrar información
+est1.mostrar_historial()
+est2.mostrar_historial()
+```
+
+## Ejercicios Prácticos
+
+### Ejercicio 1: Clase Rectangulo con Constructor
+
+Recrea la clase `Rectangulo` del capítulo anterior, pero ahora usando un constructor. El constructor debe:
+
+- Recibir `ancho` y `alto`
+- Validar que ambos sean mayores que 0
+- Incluir los métodos: `calcular_area()`, `calcular_perimetro()`, `es_cuadrado()`
+
+```{pyodide}
+#| caption: "Prueba tú: ejercicio 1"
+#| min-lines: 8
+# Escribe aquí tu solución
+```
+
+::: {.callout-tip collapse="true" title="Solución del ejercicio 1"}
+```{python}
+class Rectangulo:
+    def __init__(self, ancho, alto):
+        if ancho <= 0 or alto <= 0:
+            raise ValueError("El ancho y el alto deben ser mayores que 0")
+        self.ancho = ancho
+        self.alto = alto
+
+    def calcular_area(self):
+        return self.ancho * self.alto
+
+    def calcular_perimetro(self):
+        return 2 * (self.ancho + self.alto)
+
+    def es_cuadrado(self):
+        return self.ancho == self.alto
+
+r = Rectangulo(4, 4)
+print(r.calcular_area(), r.calcular_perimetro(), r.es_cuadrado())
+
+try:
+    Rectangulo(-1, 5)
+except ValueError as e:
+    print("Error:", e)
+```
+:::
+
+### Ejercicio 2: Clase Vehiculo
+
+Crea una clase `Vehiculo` con:
+
+- Constructor que reciba: `marca`, `modelo`, `año`, `kilometraje` (default=0)
+- Método `conducir(km)`: aumenta el kilometraje
+- Método `info()`: muestra toda la información
+- Validación: el año debe estar entre 1900 y 2025
+
+```{pyodide}
+#| caption: "Prueba tú: ejercicio 2"
+#| min-lines: 8
+# Escribe aquí tu solución
+```
+
+::: {.callout-tip collapse="true" title="Solución del ejercicio 2"}
+```{python}
+from datetime import date
+
+class Vehiculo:
+    # El enunciado pide 1900–2025; usamos el año actual + 1 para admitir modelos del año siguiente
+    ANIO_MAXIMO = date.today().year + 1
+
+    def __init__(self, marca, modelo, año, kilometraje=0):
+        if not 1900 <= año <= Vehiculo.ANIO_MAXIMO:
+            raise ValueError(f"El año debe estar entre 1900 y {Vehiculo.ANIO_MAXIMO}")
+        self.marca = marca
+        self.modelo = modelo
+        self.año = año
+        self.kilometraje = kilometraje
+
+    def conducir(self, km):
+        if km > 0:
+            self.kilometraje += km
+
+    def info(self):
+        print(f"{self.marca} {self.modelo} ({self.año}) - {self.kilometraje:,} km")
+
+auto = Vehiculo("Nissan", "Versa", 2020)
+auto.conducir(150)
+auto.conducir(80)
+auto.info()
+
+try:
+    Vehiculo("Ford", "T", 1850)
+except ValueError as e:
+    print("Error:", e)
+```
+:::
+
+### Ejercicio 3: Clase Empleado
+
+Crea una clase `Empleado` con:
+
+- Constructor: `nombre`, `puesto`, `salario_base`, `horas_extra` (default=0)
+- Método `calcular_salario()`: retorna salario_base + (horas_extra × 150)
+- Método `agregar_horas_extra(horas)`: suma horas al total
+- Método `generar_recibo()`: imprime nombre, puesto y salario total
+- Validación: salario_base debe ser mayor a 0
+
+```{pyodide}
+#| caption: "Prueba tú: ejercicio 3"
+#| min-lines: 8
+# Escribe aquí tu solución
+```
+
+::: {.callout-tip collapse="true" title="Solución del ejercicio 3"}
+```{python}
+class Empleado:
+    PAGO_HORA_EXTRA = 150
+
+    def __init__(self, nombre, puesto, salario_base, horas_extra=0):
+        if salario_base <= 0:
+            raise ValueError("El salario base debe ser mayor a 0")
+        self.nombre = nombre
+        self.puesto = puesto
+        self.salario_base = salario_base
+        self.horas_extra = horas_extra
+
+    def calcular_salario(self):
+        return self.salario_base + self.horas_extra * Empleado.PAGO_HORA_EXTRA
+
+    def agregar_horas_extra(self, horas):
+        self.horas_extra += horas
+
+    def generar_recibo(self):
+        print(f"{self.nombre} ({self.puesto}): ${self.calcular_salario():,.2f}")
+
+emp = Empleado("Laura", "Analista", 18000)
+emp.generar_recibo()
+emp.agregar_horas_extra(6)
+emp.generar_recibo()
+```
+:::
+
+### Ejercicio 4: Clase Contacto (Desafío)
+
+Crea una clase `Contacto` para una agenda telefónica con:
+
+- Constructor: `nombre`, `telefono`, `email`, `etiquetas` (default: lista vacía)
+- Atributo de clase: `total_contactos` (contador)
+- Método `agregar_etiqueta(etiqueta)`: agrega una etiqueta a la lista
+- Método `tiene_etiqueta(etiqueta)`: retorna True si la tiene
+- Método `info()`: muestra toda la información incluyendo ID
+- Validación: email debe contener '@'
+- Validación: teléfono debe tener solo dígitos y al menos 10 caracteres
+
+Crea al menos 3 contactos y prueba todos los métodos.
+
+```{pyodide}
+#| caption: "Prueba tú: ejercicio 4"
+#| min-lines: 8
+# Escribe aquí tu solución
+```
+
+::: {.callout-tip collapse="true" title="Solución del ejercicio 4"}
+```{python}
+class Contacto:
+    total_contactos = 0
+
+    def __init__(self, nombre, telefono, email, etiquetas=None):
+        if "@" not in email:
+            raise ValueError("El email debe contener '@'")
+        if not telefono.isdigit() or len(telefono) < 10:
+            raise ValueError("El teléfono debe tener solo dígitos y al menos 10 caracteres")
+        Contacto.total_contactos += 1
+        self.id = Contacto.total_contactos
+        self.nombre = nombre
+        self.telefono = telefono
+        self.email = email
+        # Nunca usar [] como valor por defecto: cada contacto necesita su propia lista
+        self.etiquetas = etiquetas if etiquetas is not None else []
+
+    def agregar_etiqueta(self, etiqueta):
+        if etiqueta not in self.etiquetas:
+            self.etiquetas.append(etiqueta)
+
+    def tiene_etiqueta(self, etiqueta):
+        return etiqueta in self.etiquetas
+
+    def info(self):
+        etiquetas = ", ".join(self.etiquetas) or "sin etiquetas"
+        print(f"[{self.id}] {self.nombre} | {self.telefono} | {self.email} | {etiquetas}")
+
+c1 = Contacto("Ana", "3312345678", "ana@correo.com")
+c2 = Contacto("Beto", "3398765432", "beto@correo.com", ["trabajo"])
+c3 = Contacto("Carla", "5512341234", "carla@correo.com")
+
+c1.agregar_etiqueta("familia")
+c3.agregar_etiqueta("trabajo")
+for c in (c1, c2, c3):
+    c.info()
+
+print("¿Beto es de trabajo?", c2.tiene_etiqueta("trabajo"))
+print("Total de contactos:", Contacto.total_contactos)
+
+for datos in [("X", "123", "x@correo.com"), ("Y", "3312345678", "sin-arroba")]:
+    try:
+        Contacto(*datos)
+    except ValueError as e:
+        print("Error:", e)
+```
+:::
+
+## Resumen
+
+::: {.callout-note title="Lo que aprendiste en este capítulo"}
+- ✅ Qué es el método `__init__` y por qué es importante
+- ✅ Cómo inicializar objetos correctamente
+- ✅ El papel de `self` en detalle
+- ✅ Parámetros por defecto en constructores
+- ✅ Validación de datos en el constructor
+- ✅ Cómo evitar errores comunes con tipos mutables
+- ✅ Constructores con lógica compleja
+:::
+
+### Próximo paso
+
+En el siguiente capítulo aprenderás:
+
+- **Herencia**: Crear clases basadas en otras clases
+- Reutilizar código de manera efectiva
+- El método `super()`
+- Jerarquías de clases
+
+**¡Ahora sabes crear clases profesionales y bien estructuradas!**

@@ -1,0 +1,342 @@
+---
+title: 'Introducción a Clases y Objetos'
+jupyter: python3
+---
+
+::: {.callout-note title="Objetivos"}
+Al terminar este capítulo podrás:
+
+- Explicar qué es la Programación Orientada a Objetos y la diferencia entre **clase** y **objeto**.
+- Definir una clase con `class` y crear instancias de ella.
+- Distinguir los atributos **de clase** de los atributos **de instancia**.
+- Reconocer por qué conviene organizar el código con clases.
+:::
+
+## ¿Qué es la Programación Orientada a Objetos (POO)?
+
+Imagina que estás construyendo con bloques de LEGO. Cada pieza tiene características (color, tamaño, forma) y puedes usarlas para construir cosas más complejas. La POO funciona de manera similar:
+
+- **Clase**: Es el "molde" o "plano" para crear objetos (como el diseño de una pieza de LEGO)
+- **Objeto**: Es una instancia concreta creada a partir de una clase (como una pieza de LEGO específica)
+
+### Analogía del mundo real
+
+Piensa en un coche:
+
+- La **clase** sería el diseño del coche (planos de fábrica)
+- Los **objetos** serían los coches individuales fabricados con ese diseño
+
+## Tu Primera Clase en Python
+
+Vamos a crear una clase simple para representar un perro:
+
+```{pyodide}
+#| caption: "Ejemplo interactivo: modifícalo y vuelve a ejecutarlo"
+#| autorun: true
+# Definir una clase
+class Perro:
+    pass  # Por ahora, una clase vacía
+
+# Crear un objeto (instancia) de la clase Perro
+mi_perro = Perro()
+
+print(mi_perro)
+print(type(mi_perro))
+```
+
+### Explicación del código
+
+1. `class Perro:` - Define una nueva clase llamada Perro (por convención, los nombres de clases usan CamelCase)
+2. `mi_perro = Perro()` - Crea un objeto (instancia) de la clase Perro
+3. Los paréntesis `()` son necesarios para crear la instancia
+
+## Añadiendo Atributos a una Clase
+
+Los atributos son las características o propiedades de un objeto. Vamos a darle características a nuestro perro:
+
+```{python}
+class Perro:
+    # Atributos de clase (compartidos por todas las instancias)
+    especie = "Canis familiaris"
+
+# Crear instancias
+perro1 = Perro()
+perro2 = Perro()
+
+# Acceder al atributo de clase
+print(f"Perro 1 es de la especie: {perro1.especie}")
+print(f"Perro 2 es de la especie: {perro2.especie}")
+```
+
+### Atributos de Instancia
+
+Cada perro debería tener su propio nombre y edad. Estos son **atributos de instancia**:
+
+```{python}
+# Crear objetos
+perro1 = Perro()
+perro2 = Perro()
+
+# Asignar atributos de instancia (no es la mejor práctica, pero es posible)
+perro1.nombre = "Max"
+perro1.edad = 3
+
+perro2.nombre = "Luna"
+perro2.edad = 5
+
+print(f"{perro1.nombre} tiene {perro1.edad} años")
+print(f"{perro2.nombre} tiene {perro2.edad} años")
+```
+
+### Visualízalo paso a paso
+
+Python Tutor dibuja cada objeto como una caja y cada variable como una flecha hacia su objeto. Observa que `perro1` y `perro2` son objetos **distintos**, que el atributo de clase vive en la clase, y que `otro = perro1` **no crea un objeto nuevo**: sólo agrega otra flecha al mismo.
+
+```{python}
+#| echo: false
+from recursos.pytutor import pytutor
+pytutor("""
+class Perro:
+    especie = "Canis familiaris"   # Atributo de clase
+
+perro1 = Perro()
+perro2 = Perro()
+perro1.nombre = "Max"              # Atributos de instancia
+perro2.nombre = "Luna"
+
+otro = perro1                      # ¡Misma flecha, mismo objeto!
+otro.nombre = "Rex"
+print(perro1.nombre)
+""", altura=820)
+```
+
+## Diferencia entre Clase y Objeto
+
+### Clase
+
+- Es una plantilla o molde
+- Define qué atributos y métodos tendrán los objetos
+- Se define una sola vez
+
+### Objeto
+
+- Es una instancia concreta de una clase
+- Tiene valores específicos para sus atributos
+- Pueden existir múltiples objetos de la misma clase
+
+### Ejemplo visual
+
+```{pyodide}
+#| caption: "Ejemplo interactivo: modifícalo y vuelve a ejecutarlo"
+#| autorun: true
+class Coche:
+    ruedas = 4  # Atributo de clase
+
+# Crear tres objetos diferentes de la misma clase
+coche1 = Coche()
+coche2 = Coche()
+coche3 = Coche()
+
+# Agregar atributos de instancia
+coche1.marca = "Toyota"
+coche1.color = "Rojo"
+
+coche2.marca = "Honda"
+coche2.color = "Azul"
+
+coche3.marca = "Ford"
+coche3.color = "Negro"
+
+# Todos comparten el atributo de clase 
+
+print(f"Coche 1: {coche1.marca} {coche1.color} con {coche1.ruedas} ruedas")
+print(f"Coche 2: {coche2.marca} {coche2.color} con {coche2.ruedas} ruedas")
+print(f"Coche 3: {coche3.marca} {coche3.color} con {coche3.ruedas} ruedas")
+```
+
+La @fig-clase-objetos resume el ejemplo anterior: una sola clase sirve de molde para muchos
+objetos; cada objeto guarda sus propios valores y todos comparten el atributo de clase.
+
+```{mermaid}
+%%| label: fig-clase-objetos
+%%| fig-cap: "Una clase (el molde) y tres objetos creados a partir de ella."
+flowchart TB
+    C["<b>Clase Coche</b><br/>ruedas = 4"]
+    C -->|"Coche()"| O1["<b>coche1</b><br/>marca = Toyota<br/>color = Rojo"]
+    C -->|"Coche()"| O2["<b>coche2</b><br/>marca = Honda<br/>color = Azul"]
+    C -->|"Coche()"| O3["<b>coche3</b><br/>marca = Ford<br/>color = Negro"]
+```
+
+## ¿Por qué usar Clases?
+
+### Ventajas de la POO
+
+1. **Organización**: Agrupa datos relacionados y funciones que operan sobre esos datos
+2. **Reutilización**: Puedes crear múltiples objetos con la misma estructura
+3. **Abstracción**: Oculta la complejidad interna
+4. **Mantenibilidad**: Más fácil de mantener y modificar el código
+
+### Comparación: Sin clases vs. Con clases
+
+```{python}
+# SIN CLASES - Usando diccionarios y funciones
+estudiante1 = {"nombre": "Ana", "edad": 20, "carrera": "Informática"}
+estudiante2 = {"nombre": "Carlos", "edad": 22, "carrera": "Matemáticas"}
+
+def presentar_estudiante(estudiante):
+    return f"Hola, soy {estudiante['nombre']}, tengo {estudiante['edad']} años"
+
+print(presentar_estudiante(estudiante1))
+print(presentar_estudiante(estudiante2))
+```
+
+```{python}
+# CON CLASES - Más organizado
+class Estudiante:
+    pass  # Lo mejoraremos en los siguientes cuadernos
+
+estudiante1 = Estudiante()
+estudiante1.nombre = "Ana"
+estudiante1.edad = 20
+estudiante1.carrera = "Informática"
+
+estudiante2 = Estudiante()
+estudiante2.nombre = "Carlos"
+estudiante2.edad = 22
+estudiante2.carrera = "Matemáticas"
+
+print(f"Hola, soy {estudiante1.nombre}, tengo {estudiante1.edad} años")
+print(f"Hola, soy {estudiante2.nombre}, tengo {estudiante2.edad} años")
+```
+
+## Ejercicios Prácticos
+
+### Ejercicio 1: Crear tu primera clase
+
+Crea una clase `Libro` y dos objetos con los atributos `titulo` y `autor`.
+
+Código inicial:
+
+```python
+# Tu código aquí
+class Libro:
+    pass
+
+# Crea dos libros y asigna sus atributos
+```
+
+```{pyodide}
+#| caption: "Prueba tú: ejercicio 1"
+#| min-lines: 8
+# Escribe aquí tu solución
+```
+
+::: {.callout-tip collapse="true" title="Solución del ejercicio 1"}
+```{python}
+class Libro:
+    pass
+
+libro1 = Libro()
+libro1.titulo = "Pedro Páramo"
+libro1.autor = "Juan Rulfo"
+
+libro2 = Libro()
+libro2.titulo = "El laberinto de la soledad"
+libro2.autor = "Octavio Paz"
+
+print(f"'{libro1.titulo}' de {libro1.autor}")
+print(f"'{libro2.titulo}' de {libro2.autor}")
+```
+:::
+
+### Ejercicio 2: Clase con atributo de clase
+
+Crea una clase `CuentaBancaria` con un atributo de clase `banco = "Banco Nacional"` y crea 3 cuentas diferentes con atributos de instancia `titular` y `saldo`.
+
+```{pyodide}
+#| caption: "Prueba tú: ejercicio 2"
+#| min-lines: 8
+# Escribe aquí tu solución
+```
+
+::: {.callout-tip collapse="true" title="Solución del ejercicio 2"}
+```{python}
+class CuentaBancaria:
+    banco = "Banco Nacional"  # Atributo de clase: compartido por todas las cuentas
+
+cuenta1 = CuentaBancaria()
+cuenta1.titular = "Ana"
+cuenta1.saldo = 1500
+
+cuenta2 = CuentaBancaria()
+cuenta2.titular = "Luis"
+cuenta2.saldo = 300
+
+cuenta3 = CuentaBancaria()
+cuenta3.titular = "Sofía"
+cuenta3.saldo = 12000
+
+for cuenta in [cuenta1, cuenta2, cuenta3]:
+    print(f"{cuenta.titular}: ${cuenta.saldo} en {cuenta.banco}")
+```
+:::
+
+### Ejercicio 3: Exploración
+
+Crea una clase `Producto` que represente productos en una tienda. Cada producto debe tener:
+
+- nombre
+- precio
+- cantidad_stock
+
+Crea al menos 3 productos diferentes.
+
+```{pyodide}
+#| caption: "Prueba tú: ejercicio 3"
+#| min-lines: 8
+# Escribe aquí tu solución
+```
+
+::: {.callout-tip collapse="true" title="Solución del ejercicio 3"}
+```{python}
+class Producto:
+    pass
+
+p1 = Producto()
+p1.nombre = "Cuaderno"
+p1.precio = 45.0
+p1.cantidad_stock = 120
+
+p2 = Producto()
+p2.nombre = "Pluma"
+p2.precio = 12.5
+p2.cantidad_stock = 300
+
+p3 = Producto()
+p3.nombre = "Mochila"
+p3.precio = 650.0
+p3.cantidad_stock = 15
+
+for p in [p1, p2, p3]:
+    print(f"{p.nombre:<10} ${p.precio:>8.2f}  stock: {p.cantidad_stock}")
+```
+:::
+
+## Resumen
+
+::: {.callout-note title="Lo que aprendiste en este capítulo"}
+- ✅ Qué es una clase y un objeto
+- ✅ La diferencia entre atributos de clase y de instancia
+- ✅ Cómo crear clases simples en Python
+- ✅ Por qué usar programación orientada a objetos
+:::
+
+### Próximo paso
+
+En el siguiente capítulo aprenderás sobre:
+
+- Métodos de instancia
+- Cómo hacer que tus objetos "hagan cosas"
+- La diferencia entre atributos y métodos
+
+**Nota**: La forma en que asignamos atributos en este capítulo (después de crear el objeto) no es la mejor práctica. En el capítulo 3 aprenderás el método correcto usando `__init__`.

@@ -1,0 +1,40 @@
+<script>
+// Traduce al español los textos de la interfaz de quarto-live (la extensión no tiene opción de idioma).
+(function () {
+  const traducciones = [
+    [/^Run Code$/, "Ejecutar"],
+    [/^Start Over$/, "Reiniciar"],
+    [/^Show Solution$/, "Ver solución"],
+    [/^Show Hint$/, "Ver pista"],
+    [/^Downloading Pyodide/, "Descargando Python (Pyodide)…"],
+    [/^Initialise$/, "Iniciando…"],
+    [/^Pyodide environment setup$/, "Preparando el entorno de Python…"],
+    [/^Downloading package: (.*)$/, "Descargando paquete: $1"],
+    [/^Downloading resource: (.*)$/, "Descargando recurso: $1"],
+  ];
+  function traducir(raiz) {
+    const recorrido = document.createTreeWalker(raiz, NodeFilter.SHOW_TEXT);
+    let nodo;
+    while ((nodo = recorrido.nextNode())) {
+      const texto = nodo.nodeValue.trim();
+      if (!texto) continue;
+      for (const [patron, reemplazo] of traducciones) {
+        if (patron.test(texto)) {
+          nodo.nodeValue = nodo.nodeValue.replace(texto, texto.replace(patron, reemplazo));
+          break;
+        }
+      }
+    }
+  }
+  const observador = new MutationObserver((cambios) => {
+    for (const c of cambios) {
+      if (c.type === "characterData") traducir(c.target.parentNode || document.body);
+      for (const n of c.addedNodes) traducir(n.nodeType === 1 ? n : n.parentNode || document.body);
+    }
+  });
+  document.addEventListener("DOMContentLoaded", () => {
+    traducir(document.body);
+    observador.observe(document.body, { childList: true, subtree: true, characterData: true });
+  });
+})();
+</script>

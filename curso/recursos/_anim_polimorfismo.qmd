@@ -1,0 +1,79 @@
+```{=html}
+<div id="anim-poli" class="anim-poli">
+  <style>
+    .anim-poli { border: 1px solid var(--bs-border-color, #ccc); border-radius: 10px; padding: 1rem; margin: 1rem 0; }
+    .anim-poli .mono { font-family: var(--bs-font-monospace, monospace); font-size: .85rem; }
+    .anim-poli .fila { display: flex; flex-wrap: wrap; gap: .5rem; margin: .6rem 0; align-items: center; }
+    .anim-poli .obj, .anim-poli .clase { border: 2px solid var(--bs-border-color, #bbb); border-radius: 8px;
+                                        padding: .3rem .6rem; transition: all .25s; }
+    .anim-poli .obj.activo { border-color: #2780e3; background: rgba(39,128,227,.15); transform: translateY(-3px); }
+    .anim-poli .clase.activa { border-color: #3fb618; background: rgba(63,182,24,.18); }
+    .anim-poli .clase.base { border-style: dashed; opacity: .75; }
+    .anim-poli .etiqueta { min-width: 5.5rem; opacity: .7; font-size: .85rem; }
+    .anim-poli .salida { white-space: pre-wrap; background: rgba(128,128,128,.08); border-radius: 8px;
+                         padding: .5rem .8rem; min-height: 6.5rem; margin: .6rem 0 0; }
+    .anim-poli .paso { min-height: 1.4rem; }
+  </style>
+  <pre class="mono" style="margin-bottom:.4rem">for animal in animales:
+    print(animal.hacer_sonido())</pre>
+  <div class="fila"><span class="etiqueta">animales</span></div>
+  <div class="fila"><span class="etiqueta">clases</span></div>
+  <div class="paso mono"></div>
+  <pre class="salida mono" aria-live="polite"></pre>
+  <div class="fila">
+    <button class="btn btn-sm btn-primary" data-accion="todo">▶ Ejecutar el ciclo</button>
+    <button class="btn btn-sm btn-outline-primary" data-accion="paso">Siguiente iteración</button>
+    <button class="btn btn-sm btn-outline-secondary" data-accion="reiniciar">Reiniciar</button>
+  </div>
+  <script>
+  (() => {
+    const raiz = document.getElementById("anim-poli");
+    const [filaObjs, filaClases] = raiz.querySelectorAll(".fila");
+    const pasoTxt = raiz.querySelector(".paso");
+    const salida = raiz.querySelector(".salida");
+    const sonidos = { Perro: "¡Guau!", Gato: "¡Miau!", Vaca: "¡Muuu!" };
+    const animales = [["Perro", "Rex"], ["Gato", "Whiskers"], ["Vaca", "Lola"], ["Perro", "Max"]];
+
+    const crear = (fila, clase, texto) => {
+      const e = document.createElement("span"); e.className = clase + " mono"; e.innerHTML = texto;
+      fila.appendChild(e); return e;
+    };
+    const objs = animales.map(([c, n], i) => crear(filaObjs, "obj", `[${i}] ${c}("${n}")`));
+    const base = crear(filaClases, "clase base", "Animal.hacer_sonido()<br><small>genérico</small>");
+    const clases = Object.fromEntries(Object.keys(sonidos).map(c =>
+      [c, crear(filaClases, "clase", `${c}.hacer_sonido()<br><small>sobrescrito</small>`)]));
+
+    let i = 0, ocupado = false;
+    const pausa = ms => new Promise(r => setTimeout(r, ms));
+    const limpiar = () => raiz.querySelectorAll(".activo, .activa").forEach(e => e.classList.remove("activo", "activa"));
+
+    async function iteracion() {
+      if (i >= animales.length) { pasoTxt.textContent = "Fin del ciclo. Pulsa Reiniciar."; return false; }
+      const [clase, nombre] = animales[i];
+      limpiar();
+      objs[i].classList.add("activo");
+      pasoTxt.textContent = `animal = animales[${i}]   →  type(animal) es ${clase}`;
+      await pausa(800);
+      clases[clase].classList.add("activa");
+      pasoTxt.textContent = `animal.hacer_sonido()  →  Python ejecuta ${clase}.hacer_sonido()`;
+      await pausa(800);
+      salida.textContent += `${nombre} dice: ${sonidos[clase]}\n`;
+      i++;
+      return true;
+    }
+    function reiniciar() { i = 0; limpiar(); salida.textContent = ""; pasoTxt.textContent = "Mismo mensaje, distinto comportamiento: pulsa ▶."; }
+
+    raiz.querySelectorAll("button").forEach(b => b.addEventListener("click", async () => {
+      if (ocupado) return;
+      ocupado = true;
+      const accion = b.dataset.accion;
+      if (accion === "reiniciar") reiniciar();
+      else if (accion === "paso") await iteracion();
+      else { if (i >= animales.length) reiniciar(); while (await iteracion()) await pausa(300); limpiar(); }
+      ocupado = false;
+    }));
+    reiniciar();
+  })();
+  </script>
+</div>
+```
