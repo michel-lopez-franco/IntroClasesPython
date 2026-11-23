@@ -12,8 +12,9 @@ Al terminar este capítulo podrás:
 - Hacer que un método llame a otros métodos del mismo objeto.
 :::
 
-::: {.callout-tip title="Diapositivas de este tema"}
-[Abrir la presentación](slides/_site/02_atributos_metodos.html){target="_blank"} para la clase. Pulsa **F** para pantalla completa, **S** para ver las notas del presentador y **Esc** para ver todas las diapositivas.
+::: {.callout-tip title="Material de este tema"}
+- **Diapositivas:** [abrir la presentación](slides/_site/02_atributos_metodos.html){target="_blank"} (**F** pantalla completa, **S** notas del presentador, **Esc** vista general).
+- **Notebook original:** [![Abrir en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/michel-lopez-franco/IntroClasesPython/blob/main/src/02_Atributos_Metodos.ipynb){target="_blank"} — ejecútalo completo en Google Colab, sin instalar nada.
 :::
 
 ## ¿Qué son los Métodos?

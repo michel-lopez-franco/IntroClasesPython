@@ -31,6 +31,8 @@ book:
     - part: "Proyecto"
       chapters:
         - 10_proyecto_integrador.qmd
+  appendices:
+    - recursos/referencia.qmd
 
 lang: es
 
